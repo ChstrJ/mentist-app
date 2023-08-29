@@ -1,19 +1,21 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import Background from './src/screens/Background'
-import { useState } from 'react'
-import Home from './src/screens/Home'
+
+import * as React from 'react';
+import { View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home from './src/screens/Home';
 
 
-const App = () => {
+const Stack = createNativeStackNavigator();
+
+function App() {
   return (
-    <Background>
-    <Home/>
-     
-    </Background>
-  )
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={Home} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
-export default App
-
-const styles = StyleSheet.create({})
+export default App;
