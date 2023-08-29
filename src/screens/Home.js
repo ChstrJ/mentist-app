@@ -30,12 +30,12 @@ const Home = props => {
         <Text className="text-center text-white text-xl mt-10">
           Create an account?
         </Text>
-        <Btn bgColor={green} textColor="white" btnLabel="Register" />
+        <Btn className="flex justify-center items-center w-screen" bgColor={green} textColor="white" btnLabel="Register" />
 
-        <Text className="text-center text-white text-xl">
+        <Text className="text-center w-screen text-white text-xl">
           Already have an account?
         </Text>
-        <Btn bgColor={green} textColor="white" btnLabel="Login" />
+        <Btn className="flex justify-center items-center w-screen" bgColor={green} textColor="white" btnLabel="Login" />
       </View>
     </Background>
   );
