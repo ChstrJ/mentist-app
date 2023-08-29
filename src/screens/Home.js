@@ -7,7 +7,7 @@ import Btn from '../components/Btn';
 const Home = props => {
   return (
     <Background>
-      <View className="flex-1 justify-center items-center w-screen">
+      <View className="flex justify-center items-center w-screen">
         <Image
           className="mt-20"
           source={require('../assets/logo.png')}

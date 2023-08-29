@@ -12,6 +12,7 @@
   "dependencies": {
     "nativewind": "^2.0.11",
     "react": "18.2.0",
+    "react-icons": "^4.10.1",
     "react-native": "0.72.4",
     "twrnc": "^3.6.4"
   },
