@@ -4,22 +4,15 @@ import Background from './Background';
 import {darkGreen, green} from '../components/Constant';
 import Btn from '../components/Btn';
 import { useNavigation } from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native';
+import Logo from '../components/Logo';
 
 const Home = props => {
   const navigation = useNavigation()
   
   return (
     <Background>
-      <View className="flex justify-center items-center w-screen">
-        <Image
-          className="mt-20"
-          source={require('../assets/logo.png')}
-          style={{
-            width: 250,
-            height: 130,
-          }}
-        />
+      <View className="flex justify-center items-center w-screen mt-10">
+        <Logo/>
       </View>
       <View className="justify-center items-center w-screen">
         <Text className="flex justify-center items-center mt-24 text-white text-2xl">
@@ -39,28 +32,15 @@ const Home = props => {
         bgColor={green} 
         textColor="white" 
         btnLabel="Register" 
-        Press={() => navigation.push("SignUp")}
+        Press={() => navigation.navigate("SignUp")}
         />
-        <Btn className="
-        flex justify-center items-center w-screen" 
-        bgColor={green} 
-        textColor="white" 
-        btnLabel="Register" 
-        Press={() => navigation.push("SignUp")}
-        />
+    
 
         <Text className="text-center w-screen text-white text-xl">
           Already have an account?
         </Text>
 
-        <Btn className="flex justify-center items-center w-screen" bgColor={green} textColor="white" btnLabel="Login"/>
-
-        <Btn className="flex justify-center items-center w-screen" 
-        bgColor={green} 
-        textColor="white" 
-        btnLabel="Login"
-        Press={() => navigation.navigate("Login")} 
-        />
+      
 
         <Btn className="flex justify-center items-center w-screen" 
         bgColor={green} 

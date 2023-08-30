@@ -1,13 +1,13 @@
-import {StyleSheet, Text, View, Image, TextInput} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
 import Background from './Background';
 import {darkGreen, green} from '../components/Constant';
 import Btn from '../components/Btn';
-import { useNavigation } from '@react-navigation/native';
-
+import {useNavigation} from '@react-navigation/native';
+import {TextInput, Icon} from 'react-native-paper';
 
 const SignUp = props => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     <Background>
       <View className="flex justify-center items-center w-screen">
@@ -21,24 +21,56 @@ const SignUp = props => {
         />
       </View>
 
-
       <View className="flex justify-center items-center">
         <Text className="text-center text-white text-xl mt-10">
           Create an account
         </Text>
-        <TextInput style={style.text} placeholder='First Name'/>
-        <TextInput style={style.text} placeholder='Last Name'/>
-        <TextInput style={style.text} placeholder='Email'/>
-        <TextInput style={style.text} placeholder='Password'/>
-        <TextInput style={style.text} placeholder='Confirm Password' />
-        
-        <Btn className="
-        flex justify-center items-center w-screen" 
-        bgColor={green} 
-        textColor="white" 
-        btnLabel="Sign Up" 
+
+        <TextInput
+          className="w-[300] mt-5 rounded-lg"
+          label="First Name"
+          mode="focused"
+          left={<TextInput.Icon icon={'account'} />}
         />
 
+        <TextInput
+          className="w-[300] mt-3 rounded-lg"
+          label="Last Name"
+          mode="focused"
+          left={<TextInput.Icon icon={'account'} />}
+        />
+
+        <TextInput
+          className="w-[300] mt-3 rounded-lg"
+          label="Email"
+          mode="focused"
+          left={<TextInput.Icon icon={'email'} />}
+        />
+
+        <TextInput
+          className="w-[300] mt-3 rounded-lg"
+          placeholder="Password"
+          mode="focused"
+          secureTextEntry={true}
+          left={<TextInput.Icon icon={'key'} />}
+          right={<TextInput.Icon icon="eye" />}
+        />
+        <TextInput
+          className="w-[300] mt-3 rounded-lg"
+          mode="focused"
+          placeholder="Confirm Password"
+          secureTextEntry={true}
+          left={<TextInput.Icon icon={'key'} />}
+          right={<TextInput.Icon icon={'eye'} />}
+        />
+
+        <Btn
+          className="
+        flex justify-center items-center w-screen"
+          bgColor={green}
+          textColor="white"
+          btnLabel="Sign Up"
+        />
       </View>
     </Background>
   );
@@ -46,11 +78,9 @@ const SignUp = props => {
 const style = StyleSheet.create({
   text: {
     backgroundColor: '#E5E5E5',
-    height: 50,
     width: 300,
-    borderRadius: 10, 
-    margin: 8
-  }
-})
-export default SignUp
-
+    borderRadius: 10,
+    margin: 8,
+  },
+});
+export default SignUp;

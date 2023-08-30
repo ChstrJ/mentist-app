@@ -8,6 +8,7 @@ export default function BackButton({ goBack }) {
       <Image
         style={style.image}
         source={require('../assets/arrow_back.png')}
+        tintColor={'white'}
       />
     </TouchableOpacity>
   )
