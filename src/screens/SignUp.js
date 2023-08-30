@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, TextInput} from 'react-native';
 import React from 'react';
 import Background from './Background';
 import {darkGreen, green} from '../components/Constant';
@@ -20,34 +20,37 @@ const SignUp = props => {
           }}
         />
       </View>
-      <View className="justify-center items-center w-screen">
-        <Text className="flex justify-center items-center mt-24 text-white text-2xl">
-          Pakyu
-        </Text>
-        <Text className="flex justify-center items-center text-5xl font-extrabold text-green-500">
-          Mentist!
-        </Text>
-      </View>
+
 
       <View className="flex justify-center items-center">
         <Text className="text-center text-white text-xl mt-10">
-          Create an account?
+          Create an account
         </Text>
+        <TextInput style={style.text} placeholder='First Name'/>
+        <TextInput style={style.text} placeholder='Last Name'/>
+        <TextInput style={style.text} placeholder='Email'/>
+        <TextInput style={style.text} placeholder='Password'/>
+        <TextInput style={style.text} placeholder='Confirm Password' />
+        
         <Btn className="
         flex justify-center items-center w-screen" 
         bgColor={green} 
         textColor="white" 
-        btnLabel="Register" 
+        btnLabel="Sign Up" 
         />
 
-        <Text className="text-center w-screen text-white text-xl">
-          Already have an account?
-        </Text>
-        <Btn className="flex justify-center items-center w-screen" bgColor={green} textColor="white" btnLabel="Login" />
       </View>
     </Background>
   );
 };
-
+const style = StyleSheet.create({
+  text: {
+    backgroundColor: '#E5E5E5',
+    height: 50,
+    width: 300,
+    borderRadius: 10, 
+    margin: 8
+  }
+})
 export default SignUp
 
