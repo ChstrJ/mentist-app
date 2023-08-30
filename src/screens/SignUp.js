@@ -4,9 +4,9 @@ import Background from './Background';
 import {darkGreen, green} from '../components/Constant';
 import Btn from '../components/Btn';
 import { useNavigation } from '@react-navigation/native';
-import SignUp from './SignUp';
 
-const Home = props => {
+
+const SignUp = props => {
   const navigation = useNavigation()
   return (
     <Background>
@@ -22,7 +22,7 @@ const Home = props => {
       </View>
       <View className="justify-center items-center w-screen">
         <Text className="flex justify-center items-center mt-24 text-white text-2xl">
-          Welcome to
+          Pakyu
         </Text>
         <Text className="flex justify-center items-center text-5xl font-extrabold text-green-500">
           Mentist!
@@ -38,7 +38,6 @@ const Home = props => {
         bgColor={green} 
         textColor="white" 
         btnLabel="Register" 
-        Press={() => navigation.navigate("SignUp")}
         />
 
         <Text className="text-center w-screen text-white text-xl">
@@ -50,6 +49,5 @@ const Home = props => {
   );
 };
 
-export default Home;
+export default SignUp
 
-const styles = StyleSheet.create({});
