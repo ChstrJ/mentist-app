@@ -38,13 +38,18 @@ const Home = props => {
         bgColor={green} 
         textColor="white" 
         btnLabel="Register" 
-        Press={() => navigation.navigate("SignUp")}
+        Press={() => navigation.push("SignUp")}
         />
 
         <Text className="text-center w-screen text-white text-xl">
           Already have an account?
         </Text>
-        <Btn className="flex justify-center items-center w-screen" bgColor={green} textColor="white" btnLabel="Login" />
+        <Btn className="flex justify-center items-center w-screen" 
+        bgColor={green} 
+        textColor="white" 
+        btnLabel="Login"
+        Press={() => navigation.push("Login")} 
+        />
       </View>
     </Background>
   );
