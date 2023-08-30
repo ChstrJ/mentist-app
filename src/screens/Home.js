@@ -45,8 +45,8 @@ const Home = props => {
         <Btn className="flex justify-center items-center w-screen" 
         bgColor={green} 
         textColor="white" 
-        btnLabel="Login"
-        Press={() => navigation.navigate("Login")} 
+        btnLabel="Log In"
+        Press={() => navigation.push("LogIn")} 
         />
       </View>
     </Background>
