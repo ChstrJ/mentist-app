@@ -35,7 +35,7 @@ const Home = props => {
         <Text className="text-center w-screen text-white text-xl">
           Already have an account?
         </Text>
-        <Btn className="flex justify-center items-center w-screen" bgColor={green} textColor="white" btnLabel="Login" />
+        <Btn className="flex justify-center items-center w-screen" bgColor={green} textColor="white" btnLabel="Login"/>
       </View>
     </Background>
   );
