@@ -4,7 +4,6 @@ import Background from './Background';
 import {darkGreen, green} from '../components/Constant';
 import Btn from '../components/Btn';
 import { useNavigation } from '@react-navigation/native';
-import SignUp from './SignUp';
 
 const Home = props => {
   const navigation = useNavigation()
@@ -48,7 +47,7 @@ const Home = props => {
         bgColor={green} 
         textColor="white" 
         btnLabel="Login"
-        Press={() => navigation.push("Login")} 
+        Press={() => navigation.navigate("Login")} 
         />
       </View>
     </Background>
