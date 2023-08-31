@@ -3,12 +3,13 @@ import {TextInput, Text} from 'react-native-paper';
 import React from 'react';
 import Background from './Background';
 import {darkGreen, green} from '../components/Constant';
+import Center from '../components/Center';
 import Btn from '../components/Btn';
 
 const LogIn = props => {
   return (
     <Background>
-      <View className="flex justify-center items-center w-screen">
+      <View className="flex justify-center  w-screen" style={Center.CenterContainer}>
         <Image
           className="mt-20"
           source={require('../assets/logo.png')}
@@ -19,8 +20,8 @@ const LogIn = props => {
         />
       </View>
 
-      <View className="flex justify-center items-center">
-        <Text className="text-center text-white text-xl mt-10 mb-2">
+      <View className="flex justify-center " style={Center.CenterContainer}>
+        <Text className="text-white text-xl mt-10 mb-2">
           Login Account
         </Text>
 
@@ -58,5 +59,5 @@ const LogIn = props => {
     </Background>
   );
 };
-const style = StyleSheet.create({});
+
 export default LogIn;

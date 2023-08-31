@@ -5,12 +5,12 @@ import {darkGreen, green} from '../components/Constant';
 import Btn from '../components/Btn';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput, Icon} from 'react-native-paper';
-
+import Center from '../components/Center';
 const SignUp = props => {
   const navigation = useNavigation();
   return (
     <Background>
-      <View className="flex justify-center items-center w-screen">
+      <View className="flex justify-center w-screen" style={Center.CenterContainer}>
         <Image
           className="mt-20"
           source={require('../assets/logo.png')}
@@ -21,8 +21,8 @@ const SignUp = props => {
         />
       </View>
 
-      <View className="flex justify-center items-center">
-        <Text className="text-center text-white text-xl mt-10">
+      <View className="flex justify-center" style={Center.CenterContainer}>
+        <Text className=" text-white text-xl mt-10">
           Create an account
         </Text>
 
