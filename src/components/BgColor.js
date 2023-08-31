@@ -3,7 +3,7 @@ import React from 'react'
 
 const BgColor = () => {
   return (
-    <View className="bg-[#00aa80]">
+    <View className=" h-screen w-screen bg-[#00aa80]">
     </View>
   )
 }
