@@ -12,7 +12,7 @@ const Home = props => {
   
   return (
     <Background>
-      <View className="flex-1 justify-center  mt-10" style={styles.CenterContainer}>
+      <View className="flex justify-center  mt-10" style={styles.CenterContainer}>
         <Logo/>
       </View>
       <View className="flex justify-center  w-screen mt-24" style={styles.CenterContainer}>
