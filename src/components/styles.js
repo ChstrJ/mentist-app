@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
       width: Dimensions.get('window').width, 
       justifyContent: 'center',
       textAlign: 'center'
-    }
+    },
   })
 
 export default styles
