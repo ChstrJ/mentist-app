@@ -5,7 +5,7 @@ import {darkGreen, green} from '../components/Constant';
 import Btn from '../components/Btn';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput, Icon} from 'react-native-paper';
-import Center from '../components/Center';
+import Center from '../components/styles';
 const SignUp = props => {
   const navigation = useNavigation();
   return (

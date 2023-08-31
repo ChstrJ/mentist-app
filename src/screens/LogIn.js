@@ -3,10 +3,12 @@ import {TextInput, Text} from 'react-native-paper';
 import React from 'react';
 import Background from './Background';
 import {darkGreen, green} from '../components/Constant';
-import Center from '../components/Center';
+import Center from '../components/styles';
 import Btn from '../components/Btn';
+import { useNavigation } from '@react-navigation/native';
 
 const LogIn = props => {
+  const navigation = useNavigation()
   return (
     <Background>
       <View className="flex justify-center  w-screen" style={Center.CenterContainer}>
@@ -54,6 +56,7 @@ const LogIn = props => {
           bgColor={green}
           textColor="white"
           btnLabel="Log In"
+          Press={() => navigation.navigate("Dashboard")}
         />
       </View>
     </Background>

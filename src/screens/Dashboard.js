@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import Logo from '../components/Logo';
 
 const Dashboard = () => {
+    const navigation = useNavigation()
     return (
         <Background>
             <View className="flex justify-center items-center w-screen">
@@ -19,6 +20,8 @@ const Dashboard = () => {
                 }}
                 />
             </View>
+        
         </Background>
     )
 }
+export default Dashboard;

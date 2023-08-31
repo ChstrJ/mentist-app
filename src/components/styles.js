@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native'
 
 
-const Center = StyleSheet.create({
+const styles = StyleSheet.create({
     CenterContainer: {
       width: Dimensions.get('window').width,
       display: 'flex',
@@ -14,4 +14,4 @@ const Center = StyleSheet.create({
     }
   })
 
-export default Center
+export default styles
