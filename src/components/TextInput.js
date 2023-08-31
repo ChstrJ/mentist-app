@@ -9,8 +9,7 @@ import { theme } from '../core/theme'
            placeholderTextColor={theme.colors.primary}
            underlineColor="transparent"
            returnKeyType='go'
-           autoCorrect={false}
-/>
+           autoCorrect={false} />
 
 
 export default TextInput
