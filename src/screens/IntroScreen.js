@@ -1,31 +1,35 @@
-import {StyleSheet, Text, View, Dimensions} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Onboarding from 'react-native-onboarding-swiper';
 import LottieView from 'lottie-react-native';
 import {useNavigation} from '@react-navigation/native';
 
-const {width, height} = Dimensions.get('window');
-
 const IntroScreen = () => {
   const navigation = useNavigation();
 
+
+
   const handleDone = () => {
-    navigation.navigate('home');
+    navigation.navigate('Home');
   };
 
   return (
     <SafeAreaView className="" style={styles.container}>
-      <Onboarding onDone={handleDone} onSkip={handleDone}
+      <Onboarding
+        onDone={handleDone}
+        onSkip={handleDone}
         pages={[
           {
             backgroundColor: '#8BFFAE',
             image: (
-              <View style={styles.lottie}>
+              <View>
                 <LottieView
-                  source={require('../assets/animations/animation1.json')}
                   autoPlay
                   loop
+                  speed={1}
+                  style={styles.lottie}
+                  source={require('../assets/animations/animation1.json')}
                 />
               </View>
             ),
@@ -37,9 +41,11 @@ const IntroScreen = () => {
             image: (
               <View>
                 <LottieView
-                  source={require('../assets/animations/animation2.json')}
                   autoPlay
                   loop
+                  speed={1}
+                  style={styles.lottie}
+                  source={require('../assets/animations/animation2.json')}
                 />
               </View>
             ),
@@ -51,6 +57,8 @@ const IntroScreen = () => {
             image: (
               <View>
                 <LottieView
+                  style={styles.lottie}
+                  speed={1}
                   source={require('../assets/animations/animation3.json')}
                   autoPlay
                   loop
@@ -74,7 +82,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   lottie: {
-    width: width * 0.9,
-    height: width,
+    height: 400,
+    width: 400,
+    alignSelf: 'center',
+    justifyContent: 'center',
   },
 });
