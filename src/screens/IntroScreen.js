@@ -1,43 +1,64 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Dimensions} from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Onboarding from 'react-native-onboarding-swiper';
+import LottieView from 'lottie-react-native';
+import {useNavigation} from '@react-navigation/native';
 
+const {width, height} = Dimensions.get('window');
 
 const IntroScreen = () => {
+  const navigation = useNavigation();
+
+  const handleDone = () => {
+    navigation.navigate('home');
+  };
+
   return (
     <SafeAreaView className="" style={styles.container}>
-      <Onboarding
+      <Onboarding onDone={handleDone} onSkip={handleDone}
         pages={[
           {
-            backgroundColor: '#8FFFB8',
+            backgroundColor: '#8BFFAE',
             image: (
-              <View>
-                <Text></Text>
+              <View style={styles.lottie}>
+                <LottieView
+                  source={require('../assets/animations/animation1.json')}
+                  autoPlay
+                  loop
+                />
               </View>
             ),
             title: 'Your Mental Health is a Priority',
-            subtitle: 'Done with React Native Onboarding Swiper',
+            subtitle: 'Compassion, Support, and Empowerment',
           },
           {
             backgroundColor: '#8FFFF3',
             image: (
               <View>
-                <Text>ASDASD</Text>
+                <LottieView
+                  source={require('../assets/animations/animation2.json')}
+                  autoPlay
+                  loop
+                />
               </View>
             ),
             title: 'Your Mind Matters',
-            subtitle: 'Done with React Native Onboarding Swiper',
+            subtitle: 'Embracing Wellness and Nurturing Minds',
           },
           {
-            backgroundColor: '#C9FF8F',
+            backgroundColor: '#7BFEAC',
             image: (
               <View>
-                <Text>ASDASD</Text>
+                <LottieView
+                  source={require('../assets/animations/animation3.json')}
+                  autoPlay
+                  loop
+                />
               </View>
             ),
-            title: 'Your Mind Matters',
-            subtitle: 'Done with React Native Onboarding Swiper',
+            title: 'Healing from Within',
+            subtitle: 'Building Communities of Acceptance and Empathy',
           },
         ]}
       />
@@ -51,5 +72,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  lottie: {
+    width: width * 0.9,
+    height: width,
   },
 });
