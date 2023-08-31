@@ -13,7 +13,6 @@ export default function Btn({bgColor, btnLabel, textColor, Press}) {
         paddingVertical: 20,
         marginVertical: 30,
         elevation: 10
-        
       }}>
       <Text style={{color: textColor, fontSize: 25, fontWeight: 'bold'}}>
         {btnLabel}

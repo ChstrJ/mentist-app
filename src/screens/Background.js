@@ -1,6 +1,7 @@
 import { View, ImageBackground } from 'react-native'
 import React from 'react'
 
+
 const Background = ({ children }) => {
   return (
     <View>
