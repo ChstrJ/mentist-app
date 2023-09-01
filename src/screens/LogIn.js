@@ -1,6 +1,6 @@
 import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import {TextInput, Text} from 'react-native-paper';
-import React from 'react';
+import React, { useState } from 'react';
 import Background from './Background';
 import {darkGreen, green} from '../components/Constant';
 import Center from '../components/styles';
@@ -9,6 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 const LogIn = () => {
   const navigation = useNavigation()
+  const {hidePass, setHidePass} = useState([])
+
   return (
     <Background>
       <BackButton goBack={navigation.goBack}/>
@@ -43,9 +45,12 @@ const LogIn = () => {
           label="Password"
           outlineColor="green"
           activeOutlineColor='green'
-          secureTextEntry
+          secureTextEntry={true}
           left={<TextInput.Icon icon={'key'} />}
           right={<TextInput.Icon icon={'eye'} />}
+      
+
+
         />
 
 

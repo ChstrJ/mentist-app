@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
+import {Dimensions} from 'react-native'
 
 const Logo = () => {
   return (
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     image: {
         width: 128,
         height: 128,
-        marginBottom: 12,
+        marginTop: 25,
     }
 
 

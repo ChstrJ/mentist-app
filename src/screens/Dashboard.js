@@ -11,7 +11,7 @@ const Dashboard = () => {
     return (
         <Background>
             
-            <View className="flex justify-center items-center w-screen" style={styles.CenterContainer}>
+            <View className="flex justify-center items-center w-screen">
                 <Image
                 className="mt-20"
                 source={require('../assets/logo.png')}
