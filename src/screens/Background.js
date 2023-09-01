@@ -5,8 +5,8 @@ import { darkGreen } from '../components/Constant'
 import theme from '../core/theme'
 const Background = ({ children }) => {
   return (
-    <View style = {{ height: '100%', backgroundColor: theme.colors.primary}}>
-      <View style={{ position: 'absolute'}} >
+    <View style = {{ height: '100%', backgroundColor: '#A0EAB9'}}>
+      <View style={{ position: 'absolute' }} >
         {children}
       </View>
     </View>
