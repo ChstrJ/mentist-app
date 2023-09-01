@@ -9,6 +9,7 @@ const theme = StyleSheet.create({
     primary: '#A0EAB9',
     secondary: '#006A42',
     error: '#f13a59',
+    white: '#fff', 
   },
   rightColors: {
     primary: '#6FF484', 
