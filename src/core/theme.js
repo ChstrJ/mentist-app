@@ -6,7 +6,7 @@ const theme = StyleSheet.create({
   colors: {
     ...DefaultTheme.colors,
     text: '#000000',
-    primary: '#00aa80',
+    primary: '#A0EAB9',
     secondary: '#006A42',
     error: '#f13a59',
   },
