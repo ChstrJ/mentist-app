@@ -22,7 +22,7 @@ const LogIn = props => {
         />
       </View>
 
-      <View className="flex justify-center " style={Center.CenterContainer}>
+      <View className="flex justify-center items-center mt-10">
         <Text className="text-black text-xl mt-10 mb-2">
           Login Account
         </Text>

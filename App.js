@@ -8,10 +8,13 @@ import LogIn from './src/screens/LogIn';
 import IntroScreen from './src/screens/IntroScreen';
 import Dashboard from './src/screens/Dashboard';
 import Chat from './src/screens/Chat';
+
 import {
   CardStyleInterpolators,
   TransitionPreset,
 } from '@react-navigation/stack';
+import Appointment from './src/screens/Appointment';
+import Progress from './src/screens/Progress';
 
 const Stack = createNativeStackNavigator();
 
@@ -68,6 +71,22 @@ function App() {
           }}
           name="Chat"
           component={Chat}
+        />
+        <Stack.Screen
+          screenOptions={{
+            gestureEnabled: true,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+          name="Appointment"
+          component={Appointment}
+        />
+        <Stack.Screen
+          screenOptions={{
+            gestureEnabled: true,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+          name="Progress"
+          component={Progress}
         />
      
       </Stack.Navigator>

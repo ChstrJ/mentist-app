@@ -4,9 +4,7 @@ import BgColor from '../components/BgColor'
 import { darkGreen } from '../components/Constant'
 const Background = ({ children }) => {
   return (
-    <View>
-      <ImageBackground 
-      style = {{ height: '100%', backgroundColor: '#A0EAB9'}} />
+    <View style = {{ height: '100%', backgroundColor: '#A0EAB9'}}>
       <View style={{ position: 'absolute' }} >
         {children}
       </View>

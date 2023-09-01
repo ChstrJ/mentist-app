@@ -1,8 +1,5 @@
 import React from 'react'
 import { StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
-import styles from './styles'
-import Dashboard from '../screens/Dashboard'
-import { darkGreen, green } from './Constant'
 const Action = ({bgColor, source, textColor, Press, actionLabel}) => {
     return (
         <TouchableOpacity
