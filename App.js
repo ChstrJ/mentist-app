@@ -12,6 +12,8 @@ import {
   CardStyleInterpolators,
   TransitionPreset,
 } from '@react-navigation/stack';
+import Appointment from './src/screens/Appointment';
+import Progress from './src/screens/Progress';
 
 const Stack = createNativeStackNavigator();
 
@@ -69,7 +71,23 @@ function App() {
           name="MessageScreen"
           component={MessageScreen}
         />
-
+        <Stack.Screen
+          screenOptions={{
+            gestureEnabled: true,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+          name="Appointment"
+          component={Appointment}
+        />
+        <Stack.Screen
+          screenOptions={{
+            gestureEnabled: true,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+          name="Progress"
+          component={Progress}
+        />
+     
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -31,7 +31,7 @@ const Login = () => {
             className="w-[300] mt-5"
             mode="focused"
             label="Email"
-            outlineStyle
+            outlineColor="green"
             left={<TextInput.Icon icon={'email'}/>}
             activeOutlineColor={theme.colors.primary}
           />
@@ -41,7 +41,7 @@ const Login = () => {
             mode="focused"
             label="Password"
             secureTextEntry
-            outlineColor="grey"
+            outlineColor="green"
             left={<TextInput.Icon icon={'key'}/>}
             activeOutlineColor={theme.colors.primary}
             right={<TextInput.Icon icon={'eye'}/>}

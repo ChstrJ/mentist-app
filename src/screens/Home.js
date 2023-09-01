@@ -7,14 +7,13 @@ import { useNavigation } from '@react-navigation/native';
 import Center from '../components/styles';
 import Logo from '../components/Logo';
 import styles from '../components/styles'
-import theme from '../core/theme'
 
 const Home = props => {
   const navigation = useNavigation()
   
   return (
     <Background>
-      <View className="flex justify-center  mt-10" style={styles.CenterContainer}>
+      <View className="flex justify-center mt-10" style={styles.CenterContainer}>
         <Logo/>
       </View>
       <View className="flex justify-center  w-screen mt-24" style={styles.CenterContainer}>
@@ -34,7 +33,7 @@ const Home = props => {
         flex justify-center items-center w-screen"
         bgColor={green}
         textColor="white" 
-        btnLabel="Register" 
+        btnLabel="Signup" 
         Press={() => navigation.push("SignUp")}
         
         />
@@ -49,7 +48,7 @@ const Home = props => {
         <Btn className="flex justify-center items-center w-screen" 
         bgColor={green}
         textColor="white" 
-        btnLabel="Log In"
+        btnLabel="Login"
         Press={() => navigation.push("LogIn")} 
         />
       </View>

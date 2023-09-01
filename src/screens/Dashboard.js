@@ -11,7 +11,7 @@ const Dashboard = () => {
     return (
         <Background>
             
-            <View className="flex justify-center items-center w-screen" style={styles.CenterContainer}>
+            <View className="flex justify-center items-center w-screen">
                 <Image
                 className="mt-20"
                 source={require('../assets/logo.png')}
@@ -23,8 +23,9 @@ const Dashboard = () => {
             </View>
             <View className="mt-10" style={styles.CenterContainer}>
                 <Action actionLabel="Ask Question" source={require('../assets/Dashboard/Ask.png')} Press={() => navigation.navigate("MessageScreen")}/>
-                <Action actionLabel="Create Appointment" source={require('../assets/Dashboard/Appointment.png')} Press={() => {}} />
-                <Action actionLabel="Check My Progress" source={require('../assets/Dashboard/Progress.png')} Press={() => {}}/>
+                <Action actionLabel="Create Appointment" source={require('../assets/Dashboard/Appointment.png')} Press={() => navigation.navigate('Appointment')}/>
+                <Action actionLabel="Check My Progress" source={require('../assets/Dashboard/Progress.png')} Press={() => navigation.navigate('Progress')}/>
+
             </View>
         </Background>
     )

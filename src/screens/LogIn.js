@@ -1,16 +1,19 @@
 import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import {TextInput, Text} from 'react-native-paper';
-import React from 'react';
+import React, { useState } from 'react';
 import Background from './Background';
 import {darkGreen, green} from '../components/Constant';
 import Center from '../components/styles';
 import Btn from '../components/Btn';
 import { useNavigation } from '@react-navigation/native';
-import theme from '../core/theme'
-const LogIn = props => {
+import BackButton from '../components/BackButton';
+const LogIn = () => {
   const navigation = useNavigation()
+  const {hidePass, setHidePass} = useState([])
+
   return (
     <Background>
+      <BackButton goBack={navigation.goBack}/>
       <View className="flex justify-center  w-screen" style={Center.CenterContainer}>
         <Image
           className="mt-20"
@@ -22,42 +25,56 @@ const LogIn = props => {
         />
       </View>
 
-      <View className="flex justify-center " style={Center.CenterContainer}>
+      <View className="flex justify-center items-center mt-10">
         <Text className="text-black text-xl mt-10 mb-2">
           Login Account
         </Text>
 
         <TextInput
-          className="w-[300] mt-2 rounded-xl"
+          className="w-[300] mt-2 rounded-md"
           mode="focused"
           label="Email"
           left={<TextInput.Icon icon={'email'} />}
+          outlineColor="green"
+          activeOutlineColor='green'
         />
 
         <TextInput
-          className="w-[300] mt-5 rounded-xl"
+          className="w-[300] mt-5 rounded-md"
           mode="focused"
           label="Password"
-          secureTextEntry
+          outlineColor="green"
+          activeOutlineColor='green'
+          secureTextEntry={true}
           left={<TextInput.Icon icon={'key'} />}
           right={<TextInput.Icon icon={'eye'} />}
+      
+
+
         />
 
 
-          <TouchableOpacity>
+          <View className="flex items-center justify-center">
             <Text className="text-black mt-5">
-              Forgot Password?
+              Don't have an account?
+              <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+                <Text style={{
+                  color: 'blue',
+                  marginVertical: '20'
+                }}> Signup Here</Text>
+              </TouchableOpacity>
             </Text>
-          </TouchableOpacity>
+          
 
         <Btn
           className="
           flex justify-center items-center w-screen"
           bgColor={green}
           textColor="white"
-          btnLabel="Log In"
+          btnLabel="Login"
           Press={() => navigation.push("Dashboard")}
         />
+        </View>
       </View>
     </Background>
   );
