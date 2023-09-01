@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
       primary: '#A0EAB9',
       secondary: '#006A42',
       error: '#f13a59',
+      black: '#140C10',
     }
 
   })

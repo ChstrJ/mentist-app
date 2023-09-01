@@ -1,12 +1,22 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native'
+import React, {useState} from 'react'
 
-export default function DatePicker() {
+
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+const DatePicker = () => {
+
+    const [date, setdate] = useState(new Date()) 
+    const [showMode, setshowMode] = useState(false)
+    
+
   return (
-    <SafeAreaView>
+    <View>
       <Text>DatePicker</Text>
-    </SafeAreaView>
+    </View>
   )
 }
+
+export default DatePicker
+
+const styles = StyleSheet.create({})
