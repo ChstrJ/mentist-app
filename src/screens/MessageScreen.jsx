@@ -4,12 +4,14 @@ import ChatHeader from '../components/ChatComp/ChatHeader'
 import ChatInput from '../components/ChatComp/ChatInput'
 import MessageList from '../components/ChatComp/MessageList'
 
-export default function MessageScreen({ navigation, route }) {
+export default function MessageScreen({ navigation, route, }) {
   return (
-    <View className="flex-1">
+    <View>
       <ChatHeader 
         onPress={() =>{}}
-        onlineStatus={'Online'}
+        username={"Nicky"}
+        onlineStatus={'Hello'}
+        picture={require('../assets/app.jpg')}
       />
     </View>
   )
