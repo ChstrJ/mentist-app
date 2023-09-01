@@ -34,7 +34,7 @@ const Home = props => {
         flex justify-center items-center w-screen"
         bgColor={green}
         textColor="white" 
-        btnLabel="Register" 
+        btnLabel="Signup" 
         Press={() => navigation.push("SignUp")}
         
         />
@@ -49,7 +49,7 @@ const Home = props => {
         <Btn className="flex justify-center items-center w-screen" 
         bgColor={green}
         textColor="white" 
-        btnLabel="Log In"
+        btnLabel="Login"
         Press={() => navigation.push("LogIn")} 
         />
       </View>
