@@ -9,11 +9,17 @@ export default function ChatHeader({ username, bio, picture, onlineStatus, onPre
         <TouchableOpacity style={styles.barsButton}>
                 <Icon name="bars" size={30} color={theme.colors.white}/>
         </TouchableOpacity>
-        <View style={styles.profile}>
-            <Image style={styles.image} source={picture} />
-            <View style={styles.usernameAndOnlineStatus}>
-                <Text style={styles.username}>{username}</Text>
-                <Text style={styles.onlineStatus}>{onlineStatus}</Text>
+        <View style={styles.profileOptions}>
+            <TouchableOpacity style={styles.profile}>
+                <Image style={styles.image} source={picture} />
+                <View style={styles.usernameAndOnlineStatus}>
+                    <Text style={styles.username}>{username}</Text>
+            
+                </View>
+            </TouchableOpacity>
+            <View style={styles.options}>
+                <TouchableOpacity style={{ paddingHorizontal: 5}}>
+                </TouchableOpacity>
             </View>
         </View>
     </View>
@@ -23,14 +29,18 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         backgroundColor: theme.colors.primary, 
-        paddingTop: 50, 
-        paddingBottom: 25
+        paddingTop: 20, 
+        paddingBottom: 15,
+        paddingLeft: 6, 
+        paddingRight: 6,
+        elevation: 2
     }, 
     barsButton: {
         alignSelf: 'center', 
         paddingHorizontal: 10
     }, 
-    profileAndOptions: {
+    profileOptions: {
+        borderColor: '#fff', 
         flexDirection: 'row', 
         justifyContent: 'space-between', 
         flex: 1, 
@@ -39,7 +49,9 @@ const styles = StyleSheet.create({
     }, 
     profile: {
         flexDirection: 'row', 
-        flex: 4
+        flex: 4, 
+        alignItems: 'center',
+        borderColor: '#fff'
     }, 
     image: {
         height: 65, 
@@ -53,6 +65,16 @@ const styles = StyleSheet.create({
     }, 
     username: {
         color: theme.colors.white, 
-        fontSize: 20
+        fontSize: 20, 
+        fontWeight: 'bold'
+    }, 
+    onlineStatus: {
+        color: theme.colors.white
+    }, 
+    options: {
+        flex: 1, 
+        flexDirection: 'row', 
+        justifyContent: 'flex-end', 
+
     }
 })

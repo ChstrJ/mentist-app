@@ -10,6 +10,9 @@ const theme = StyleSheet.create({
     secondary: '#006A42',
     error: '#f13a59',
     white: '#fff', 
+    description: '#9f9f9f', 
+    inputBackground: '#f0f0f0', 
+    inputText: '#000', 
   },
   rightColors: {
     primary: '#6FF484', 
