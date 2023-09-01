@@ -7,7 +7,7 @@ import SignUp from './src/screens/SignUp';
 import LogIn from './src/screens/LogIn';
 import IntroScreen from './src/screens/IntroScreen';
 import Dashboard from './src/screens/Dashboard';
-import Chat from './src/screens/Chat';
+import MessageScreen from './src/screens/MessageScreen';
 import {
   CardStyleInterpolators,
   TransitionPreset,
@@ -66,10 +66,10 @@ function App() {
             gestureEnabled: true,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
-          name="Chat"
-          component={Chat}
+          name="MessageScreen"
+          component={MessageScreen}
         />
-     
+
       </Stack.Navigator>
     </NavigationContainer>
   );
