@@ -5,13 +5,16 @@ const styles = StyleSheet.create({
     CenterContainer: {
       width: Dimensions.get('window').width,
       display: 'flex',
-      alignItems: 'center'
+      alignItems: 'center',
     }, 
     CenterText: {
       width: Dimensions.get('window').width, 
       justifyContent: 'center',
       textAlign: 'center'
     },
+    innerContainer: {
+      
+    }
   })
 
 export default styles

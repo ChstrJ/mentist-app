@@ -7,7 +7,7 @@ export default function Btn({bgColor, btnLabel, textColor, Press}) {
     onPress={Press}
       style={{
         backgroundColor: bgColor,
-        borderRadius: 100,
+        borderRadius: 20,
         alignItems: 'center',
         width: 250,
         paddingVertical: 20,

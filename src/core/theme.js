@@ -1,6 +1,7 @@
 import { DefaultTheme } from 'react-native-paper'
+import { StyleSheet } from 'react-native'
 
-export const theme = {
+const theme = StyleSheet.create({
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
@@ -9,4 +10,8 @@ export const theme = {
     secondary: '#006A42',
     error: '#f13a59',
   },
-}
+  rightColors: {
+    primary: '#6FF484', 
+  }
+})
+export default theme

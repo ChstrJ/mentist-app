@@ -7,6 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 import Center from '../components/styles';
 import Logo from '../components/Logo';
 import styles from '../components/styles'
+import theme from '../core/theme'
+
 const Home = props => {
   const navigation = useNavigation()
   
@@ -16,7 +18,7 @@ const Home = props => {
         <Logo/>
       </View>
       <View className="flex justify-center  w-screen mt-24" style={styles.CenterContainer}>
-        <Text className="flex justify-center text-white text-2xl">
+        <Text className="flex justify-center text-black text-2xl">
           Welcome to
         </Text>
         <Text className="flex justify-center  text-5xl font-extrabold text-green-500">
@@ -25,12 +27,12 @@ const Home = props => {
       </View>
 
       <View className=" justify-center"  style={styles.CenterContainer}>
-        <Text className="text-white text-xl mt-10"  style={styles.CenterText}>
+        <Text className="text-black text-xl mt-10"  style={styles.CenterText}>
           Create an account?
         </Text>
         <Btn className="
         flex justify-center items-center w-screen"
-        bgColor={green} 
+        bgColor={green}
         textColor="white" 
         btnLabel="Register" 
         Press={() => navigation.push("SignUp")}
@@ -38,14 +40,14 @@ const Home = props => {
         />
     
 
-        <Text className="w-screen text-white text-xl" style={styles.CenterText}>
+        <Text className="w-screen text-black text-xl" style={styles.CenterText}>
           Already have an account?
         </Text>
 
       
 
         <Btn className="flex justify-center items-center w-screen" 
-        bgColor={green} 
+        bgColor={green}
         textColor="white" 
         btnLabel="Log In"
         Press={() => navigation.push("LogIn")} 

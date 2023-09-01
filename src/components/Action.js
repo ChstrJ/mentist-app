@@ -8,7 +8,7 @@ const Action = ({bgColor, source, textColor, Press, actionLabel}) => {
         <TouchableOpacity
         onPress={Press}
           style={{
-            backgroundColor: green,
+            backgroundColor: '#6FF484',
             borderRadius: 20,
             alignItems: 'center',
             width: 300,
@@ -22,7 +22,7 @@ const Action = ({bgColor, source, textColor, Press, actionLabel}) => {
             marginBottom: 20, 
           }}>
             
-            <Image source={source} style={{height: 50, marginRight: 5}}></Image>
+            <Image source={source} style={{marginRight: 5}}></Image>
             <Text style={{color: 'white', fontSize: 18, fontWeight: 900, flex: 1}}>
             {actionLabel}
           </Text>

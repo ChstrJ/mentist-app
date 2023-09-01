@@ -6,7 +6,7 @@ import {darkGreen, green} from '../components/Constant';
 import Center from '../components/styles';
 import Btn from '../components/Btn';
 import { useNavigation } from '@react-navigation/native';
-
+import theme from '../core/theme'
 const LogIn = props => {
   const navigation = useNavigation()
   return (
@@ -23,7 +23,7 @@ const LogIn = props => {
       </View>
 
       <View className="flex justify-center " style={Center.CenterContainer}>
-        <Text className="text-white text-xl mt-10 mb-2">
+        <Text className="text-black text-xl mt-10 mb-2">
           Login Account
         </Text>
 
@@ -45,7 +45,7 @@ const LogIn = props => {
 
 
           <TouchableOpacity>
-            <Text className="text-white mt-5">
+            <Text className="text-black mt-5">
               Forgot Password?
             </Text>
           </TouchableOpacity>
@@ -56,7 +56,7 @@ const LogIn = props => {
           bgColor={green}
           textColor="white"
           btnLabel="Log In"
-          Press={() => navigation.navigate("Dashboard")}
+          Press={() => navigation.push("Dashboard")}
         />
       </View>
     </Background>

@@ -7,6 +7,7 @@ import SignUp from './src/screens/SignUp';
 import LogIn from './src/screens/LogIn';
 import IntroScreen from './src/screens/IntroScreen';
 import Dashboard from './src/screens/Dashboard';
+import Chat from './src/screens/Chat';
 import {
   CardStyleInterpolators,
   TransitionPreset,
@@ -60,6 +61,15 @@ function App() {
           name="Dashboard"
           component={Dashboard}
         />
+        <Stack.Screen
+          screenOptions={{
+            gestureEnabled: true,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+          name="Chat"
+          component={Chat}
+        />
+     
       </Stack.Navigator>
     </NavigationContainer>
   );

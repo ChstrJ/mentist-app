@@ -6,6 +6,7 @@ import Btn from '../components/Btn';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput, Icon} from 'react-native-paper';
 import Center from '../components/styles';
+
 const SignUp = props => {
   const navigation = useNavigation();
   return (
@@ -70,6 +71,7 @@ const SignUp = props => {
           bgColor={green}
           textColor="white"
           btnLabel="Sign Up"
+          Press={() => navigation.push("LogIn")}
         />
       </View>
     </Background>
