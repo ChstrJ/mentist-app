@@ -1,3 +1,4 @@
+import theme from '../core/theme'
 import { StyleSheet, Dimensions } from 'react-native'
 
 
@@ -12,9 +13,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       textAlign: 'center'
     },
-    innerContainer: {
-      
-    }
+
   })
 
 export default styles

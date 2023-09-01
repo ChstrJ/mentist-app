@@ -1,11 +1,16 @@
 import React from 'react'
 import { StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
+import styles from './styles'
+import Dashboard from '../screens/Dashboard'
+import { darkGreen, green } from './Constant'
+import theme from '../core/theme'
+
 const Action = ({bgColor, source, textColor, Press, actionLabel}) => {
     return (
         <TouchableOpacity
         onPress={Press}
           style={{
-            backgroundColor: '#6FF484',
+            backgroundColor: theme.rightColors.primary,
             borderRadius: 20,
             alignItems: 'center',
             width: 300,

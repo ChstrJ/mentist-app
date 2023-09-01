@@ -3,7 +3,9 @@ import React from 'react'
 import styles from '../components/styles'
 import Background from './Background'
 
-export default function Chat() {
+
+export default function Chat({ navigation, route}) {
+  
   return (
     <Background>
       
