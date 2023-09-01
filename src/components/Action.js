@@ -1,11 +1,8 @@
 import React from 'react'
-import { StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
-import styles from './styles'
-import Dashboard from '../screens/Dashboard'
-import { darkGreen, green } from './Constant'
+import { Text, Image, TouchableOpacity } from 'react-native'
 import theme from '../core/theme'
 
-const Action = ({bgColor, source, textColor, Press, actionLabel}) => {
+const Action = ({ source, Press, actionLabel}) => {
     return (
         <TouchableOpacity
         onPress={Press}

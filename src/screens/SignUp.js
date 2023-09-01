@@ -25,7 +25,7 @@ const SignUp = props => {
       </View>
 
       <View className="flex justify-center" style={Center.CenterContainer}>
-        <Text className="text-xl mt-10">
+        <Text className=" text-black text-xl mt-10">
           Create an account
         </Text>
 

@@ -1,8 +1,8 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {View, Image} from 'react-native';
 import React from 'react';
 import Background from './Background';
 import { useNavigation } from '@react-navigation/native';
-import Logo from '../components/Logo';
+
 import styles from '../components/styles'
 import Action from '../components/Action'
 
@@ -22,9 +22,15 @@ const Dashboard = () => {
                 />
             </View>
             <View className="mt-10" style={styles.CenterContainer}>
+<<<<<<< HEAD
                 <Action actionLabel="Ask Question" source={require('../assets/Dashboard/Ask.png')} Press={() => navigation.navigate("Chat")}/>
                 <Action actionLabel="Create Appointment" source={require('../assets/Dashboard/Appointment.png')} Press={() => navigation.navigate('Appointment')}/>
                 <Action actionLabel="Check My Progress" source={require('../assets/Dashboard/Progress.png')} Press={() => navigation.navigate('Progress')}/>
+=======
+                <Action actionLabel="Ask Question" source={require('../assets/Dashboard/Ask.png')} Press={() => navigation.navigate("MessageScreen")}/>
+                <Action actionLabel="Create Appointment" source={require('../assets/Dashboard/Appointment.png')} Press={() => {}} />
+                <Action actionLabel="Check My Progress" source={require('../assets/Dashboard/Progress.png')} Press={() => {}}/>
+>>>>>>> e035d95d1afa9876b8895e95dab1a81784ec95cf
             </View>
         </Background>
     )
