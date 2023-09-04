@@ -7,6 +7,7 @@ import Center from '../components/styles';
 import Btn from '../components/Btn';
 import { useNavigation } from '@react-navigation/native';
 import BackButton from '../components/BackButton';
+import styles from '../components/styles';
 const LogIn = () => {
   const navigation = useNavigation()
   const {hidePass, setHidePass} = useState([])
