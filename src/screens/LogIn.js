@@ -1,4 +1,4 @@
-import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity, SafeAreaView} from 'react-native';
 import {TextInput, Text} from 'react-native-paper';
 import React, { useState } from 'react';
 import Background from './Background';
@@ -12,6 +12,9 @@ const LogIn = () => {
   const {hidePass, setHidePass} = useState([])
 
   return (
+
+    <SafeAreaView>
+    
     <Background>
       <BackButton goBack={navigation.goBack}/>
       <View className="flex justify-center  w-screen" style={Center.CenterContainer}>
@@ -53,6 +56,8 @@ const LogIn = () => {
 
         />
 
+      
+
 
           <View className="flex items-center justify-center">
             <Text className="text-black mt-5">
@@ -77,6 +82,7 @@ const LogIn = () => {
         </View>
       </View>
     </Background>
+    </SafeAreaView>
   );
 };
 

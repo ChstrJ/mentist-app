@@ -1,4 +1,4 @@
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, ScrollView, KeyboardAvoidingView} from 'react-native';
 import React from 'react';
 import Background from './Background';
 import {darkGreen, green} from '../components/Constant';
@@ -7,10 +7,14 @@ import {useNavigation} from '@react-navigation/native';
 import {TextInput, Text} from 'react-native-paper';
 import Center from '../components/styles';
 import BackButton from '../components/BackButton';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SignUp = props => {
   const navigation = useNavigation();
   return (
+
+   <SafeAreaView>
     <Background>
       <BackButton goBack={navigation.goBack}/>
       <View className="flex justify-center items-center w-screen" style={Center.CenterContainer}>
@@ -28,11 +32,18 @@ const SignUp = props => {
         <Text className=" text-black text-xl mt-10">
           Create an account
         </Text>
+        <KeyboardAvoidingView
+            style={{ flex: 1, justifyContent: 'center' }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Behavior depends on the platform
+            enabled
+          ></KeyboardAvoidingView>
 
         <TextInput
           className="w-[300] mt-5 rounded-lg"
           label="First Name"
           mode="focused"
+          outlineColor="green"
+          activeOutlineColor="green"
           left={<TextInput.Icon icon={'account'} />}
         />
 
@@ -40,6 +51,8 @@ const SignUp = props => {
           className="w-[300] mt-5 rounded-lg"
           label="Last Name"
           mode="focused"
+          outlineColor="green"
+          activeOutlineColor="green"
           left={<TextInput.Icon icon={'account'} />}
         />
 
@@ -48,6 +61,8 @@ const SignUp = props => {
           className="w-[300] mt-3 rounded-lg"
           label="Email"
           mode="focused"
+          outlineColor="green"
+          activeOutlineColor="green"
           left={<TextInput.Icon icon={'email'} />}
         />
 
@@ -55,6 +70,8 @@ const SignUp = props => {
           className="w-[300] mt-3 rounded-lg"
           placeholder="Password"
           mode="focused"
+          outlineColor="green"
+          activeOutlineColor="green"
           secureTextEntry={true}
           left={<TextInput.Icon icon={'key'} />}
           right={<TextInput.Icon icon="eye" />}
@@ -62,6 +79,8 @@ const SignUp = props => {
         <TextInput
           className="w-[300] mt-3 rounded-lg"
           mode="focused"
+          outlineColor="green"
+          activeOutlineColor="green"
           placeholder="Confirm Password"
           secureTextEntry={true}
           left={<TextInput.Icon icon={'key'} />}
@@ -78,6 +97,10 @@ const SignUp = props => {
         />
       </View>
     </Background>
+    </SafeAreaView>
+   
+  
+  
   );
 };
 const style = StyleSheet.create({

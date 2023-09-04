@@ -39,7 +39,7 @@ const IntroScreen = () => {
           {
             backgroundColor: '#8FFFF3',
             image: (
-              <View>
+              <View className="flex justify-center items-center mr-7">
                 <LottieView
                   autoPlay
                   loop
@@ -55,7 +55,7 @@ const IntroScreen = () => {
           {
             backgroundColor: '#7BFEAC',
             image: (
-              <View>
+              <View className="flex justify-center items-center ml-11">
                 <LottieView
                   style={styles.lottie}
                   speed={1}

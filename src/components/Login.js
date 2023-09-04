@@ -8,6 +8,8 @@ import {TextInput, Text} from 'react-native-paper';
 import {theme} from '../core/theme';
 import BgColor from './BgColor';
 import Btn from './Btn';
+import Button from './Button';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Login = () => {
   const [username, setUsername] = useState();
@@ -20,6 +22,7 @@ const Login = () => {
 
   return (
     <SafeAreaView>
+      <ScrollView>
         <Background>
         <BackButton />
         <View className="flex items-center justify-center w-screen mt-20">
@@ -49,6 +52,8 @@ const Login = () => {
           />
         </View>
 
+       <Button/>
+
         <TouchableOpacity>
           <View className="flex items-center mt-5">
           <Text className="text-white">
@@ -68,7 +73,9 @@ const Login = () => {
 
     
         </Background>
+        </ScrollView>
     </SafeAreaView>
+    
   );
 };
 

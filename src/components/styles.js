@@ -16,8 +16,17 @@ const styles = StyleSheet.create({
     Colors: {
       primary: '#A0EAB9',
       secondary: '#006A42',
+      third: '#6FF484',
       error: '#f13a59',
       black: '#140C10',
+    },
+
+    buttonWidths: {
+      width: 250,
+      display: 'flex',
+      alignItems: 'center',
+      paddingVertical: 20,
+      borderRadius: 20,
     }
 
   })

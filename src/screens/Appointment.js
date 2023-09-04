@@ -8,7 +8,7 @@ import {TextInput, Text} from 'react-native-paper';
 import Logo from '../components/Logo';
 import styles from '../components/styles';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Stack} from '@react-native-material/core';
 import Btn from '../components/Btn';
 
 export default function Appointment() {
@@ -39,19 +39,21 @@ export default function Appointment() {
           style={styles.CenterContainer}>
           <Logo />
 
-          <View className="mt-2">
+          <View className="mt-2 flex items-center">
             <Text className="text-center flex text-xl">Create Appointment</Text>
+           
             <TextInput
-              className="w-[400] mt-3 rounded-md"
+              className="w-[300] mt-3 rounded-md"
               mode="focused"
               label="Full Name"
               left={<TextInput.Icon icon={'account'} />}
               outlineColor="green"
               activeOutlineColor="green"
             />
+            
 
             <TextInput
-              className="w-[400] mt-3 rounded-md"
+              className="w-[300] mt-3 rounded-md"
               mode="focused"
               label="Phone Number"
               keyboardType="numeric"
@@ -61,17 +63,17 @@ export default function Appointment() {
               activeOutlineColor="green"
             />
 
-            <View className="mt-5">
+            <View className="mt-5 w-[300]">
               <Button
-                color={'#006A42'}
+                color={'#6FF484'}
                 title="Choose Date"
                 onPress={() => showMode('date')}
               />
             </View>
 
-            <View className="mt-5">
+            <View className="mt-5 w-[300] text-white">
               <Button
-                color={'#006A42'}
+                color={'#6FF484'}
                 title="Choose Time"
                 onPress={() => showMode('time')}
               />
@@ -93,11 +95,13 @@ export default function Appointment() {
                 {date.toLocaleString()}
               </Text>
             </View>
+
             <View className="flex items-center justify-center">
               <Btn
-                bgColor={'#006A42'}
+                className="flex justify-center items-center w-screen"
+                bgColor={styles.Colors.third}
                 textColor="white"
-                btnLabel="Confirm"
+                btnLabel="Login"
                 Press={() => navigation.push('Dashboard')}
               />
             </View>
