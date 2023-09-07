@@ -21,20 +21,7 @@ export default function ChatInput() {
         value={message}
         onChangeText={(text) => setMessage(text)}
       />
-      <TouchableOpacity style={styles.rightIconButtonStyle}>
-        <Icon
-          name="paperclip"
-          size={23}
-          color={theme.colors.description}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.rightIconButtonStyle}>
-        <Icon
-          name="camera"
-          size={23}
-          color={theme.colors.description}
-        />
-      </TouchableOpacity>
+
     </View>
     <TouchableOpacity style={styles.sendButton}>
       <Icon

@@ -19,6 +19,7 @@ export default function ChatHeader({ username, bio, picture, onlineStatus, onPre
             </TouchableOpacity>
             <View style={styles.options}>
                 <TouchableOpacity style={{ paddingHorizontal: 5}}>
+
                 </TouchableOpacity>
             </View>
         </View>
