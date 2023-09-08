@@ -8,6 +8,7 @@ import BackButton from '../components/BackButton';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import callApi from '../helper/callApi';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -58,8 +59,11 @@ const SignUp = () => {
 
   const handleSubmit = async (data) => {
     if (password == confirmPassword)
-      return await axios('post', '/register/', ...data)
+      return await callApi('post', '/register/', ...data)
       .then(val => console.log(val))
+      .catch(error => 
+        console.log(error),
+        Promise.reject())
     else {
       Alert.alert("Password doesn't match")
     }
