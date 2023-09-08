@@ -31,6 +31,15 @@ const styles = StyleSheet.create({
   font: {
     fontFamily: 'Poppins Regular',
   },
+
+  button:{
+        borderRadius: 20,
+        alignItems: 'center',
+        width: 250,
+        paddingVertical: 20,
+        marginVertical: 30,
+        elevation: 10
+  }
 });
 
 export default styles;

@@ -66,6 +66,7 @@ export default function Appointment() {
             <View className="mt-5 w-[300]">
               <Button
                 color={'#6FF484'}
+                activeOutlineColor='green'
                 title="Choose Date"
                 onPress={() => showMode('date')}
               />
@@ -75,6 +76,7 @@ export default function Appointment() {
               <Button
                 color={'#6FF484'}
                 title="Choose Time"
+                activeOutlineColor='green'
                 onPress={() => showMode('time')}
               />
             </View>
@@ -98,16 +100,16 @@ export default function Appointment() {
 
             <View className="flex items-center justify-center">
               <Btn
-                className="flex justify-center items-center w-screen"
+                className="flex justify-center items-center"
                 bgColor={styles.Colors.third}
                 textColor="white"
                 btnLabel="Confirm"
-                Press={() => navigation.push('Dashboard')}
+                Press={() => navigation.navigate('Dashboard')}
               />
             </View>
           </View>
         </View>
-      </Background>
+        </Background>
     </SafeAreaView>
   );
 }
