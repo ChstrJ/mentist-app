@@ -145,9 +145,7 @@ const SignUp = () => {
                 mode="outlined"
                 activeOutlineColor="green"
                 left={<TextInput.Icon icon={'account'} />}
-                value={value => setFirstName(value)}
-                onChangeText={handleChange('firstName')}
-                onBlur={() => setFieldTouched('firstName')}
+                onChangeText={value => setFirstName(value)}
               />
 
               {touched.firstName && errors.firstName && (
@@ -160,9 +158,7 @@ const SignUp = () => {
                 mode="outlined"
                 activeOutlineColor="green"
                 left={<TextInput.Icon icon={'account'} />}
-                value={values => setlastName(values)}
-                onChangeText={handleChange('lastName')}
-                onBlur={() => setFieldTouched('lastName')}
+                onChangeText={values => setlastName(values)}
               />
 
               {touched.lastName && errors.lastName && (
@@ -195,9 +191,7 @@ const SignUp = () => {
                     onPress={togglePasswordVisibility}
                   />
                 }
-                value={value => setPassword(value)}
-                onChangeText={handleChange('password')}
-                onBlur={() => setFieldTouched('password')}
+                onChangeText={value => setPassword(value)}
               />
               {touched.password && errors.password && (
                 <Text style={styles.errorText}>{errors.password}</Text>
@@ -215,9 +209,7 @@ const SignUp = () => {
                     onPress={togglePasswordVisibility}
                   />
                 }
-                value={value => setConfirmPassword(value)}
-                onChangeText={handleChange('confirmPassword')}
-                onBlur={() => setFieldTouched('confirmPassword')}
+                onChangeText={value => setConfirmPassword(value)}
               />
               {touched.password && errors.password && (
                 <Text style={styles.errorText}>{errors.confirmPassword}</Text>
