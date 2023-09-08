@@ -101,7 +101,7 @@ export default function Appointment() {
                 className="flex justify-center items-center w-screen"
                 bgColor={styles.Colors.third}
                 textColor="white"
-                btnLabel="Login"
+                btnLabel="Confirm"
                 Press={() => navigation.push('Dashboard')}
               />
             </View>
