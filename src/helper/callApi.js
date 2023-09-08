@@ -10,18 +10,18 @@ axios.defaults.headers.post['Accept'] = 'application/json'
 axios.defaults.baseURL = 'https://mentist.onrender.com/api/v1/'
 
 //Axios Token Interceptor
-axios.interceptors.request.use(
-    async config => {
-        const token = await AsyncStorage.getItem('token')
-        if (token) {
-            config.headers.Authorization = "Bearer " + token
-        }
-        return config
-    },
-    error => {
-        return Promise.reject(error)
-    }
-)
+// axios.interceptors.request.use(
+//     async config => {
+//         const token = await AsyncStorage.getItem('token')
+//         if (token) {
+//             config.headers.Authorization = "Bearer " + token
+//         }
+//         return config
+//     },
+//     error => {
+//         return Promise.reject(error)
+//     }
+// )
 
 //Axios function API
 export const callApi = async (method, url, data) => {
