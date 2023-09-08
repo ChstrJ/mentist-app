@@ -18,7 +18,7 @@ const SignUp = props => {
   // const [password, setPassword] = useState('')
 
   const handleSubmit = async values => {
-    const apiUrl = 'https://webhook.site/26f21ab2-7630-4d0e-90bb-9766934faaf6';
+    const apiUrl = 'https://mentist.onrender.com/api/v1/register';
 
     // Data to be sent in the POST request
     const postData = {
@@ -46,6 +46,7 @@ const SignUp = props => {
         console.error('Fetch Error:', error.message);
       });
   };
+
   // for showing and hiding pass
   const [hidePass, setHidePass] = useState(true);
 
@@ -93,7 +94,7 @@ const SignUp = props => {
           confirmPassword: '',
         }}
         validationSchema={SignupSchema}
-        onSubmit={values => Alert.alert(JSON.stringify)}
+        
         
         >
         
