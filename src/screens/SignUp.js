@@ -18,41 +18,34 @@ const SignUp = props => {
   // const [password, setPassword] = useState('')
 
   const handleSubmit = async values => {
-    try {
-      const data = {
-        username: 'tanginamooo',
-        first_name: values.firstName,
-        last_name: values.lastName,
-        email: values.email,
-        password: values.password,
-      };
+    const apiUrl = 'https://webhook.site/26f21ab2-7630-4d0e-90bb-9766934faaf6';
 
-      // Set the "Content-type: application/json" header in the Axios request
-      const headers = {
+    // Data to be sent in the POST request
+    const postData = {
+      username: 'asdasd',
+      first_name: values.firstName,
+      second_name: values.secondName,
+      email: values.email,
+      password: values.password,
+    };
+
+    // Make a POST request using fetch
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
         'Content-Type': 'application/json',
-      };
-
-      // Define the API endpoint URL
-      const url = 'https://webhook.site/26f21ab2-7630-4d0e-90bb-9766934faaf6';
-
-      // Make the POST request with Axios and await the response
-      const response = await axios.post(url, data, {headers});
-
-      // Handle the successful response here
-      console.log('API Response:', response.data);
-
-      // Optionally, you can navigate to another screen or perform other actions here
-    } catch (error) {
-      // Handle any errors that occur during the API request
-      console.error('API Error:', error);
-
-      // Show an error message
-      Alert.alert('Error', 'Registration failed. Please try again.', [
-        {text: 'OK'},
-      ]);
-    }
+      },
+      body: JSON.stringify(postData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response data here
+        console.log('API Response:', data);
+      })
+      .catch(error => {
+        console.error('Fetch Error:', error.message);
+      });
   };
-
   // for showing and hiding pass
   const [hidePass, setHidePass] = useState(true);
 
@@ -99,7 +92,10 @@ const SignUp = props => {
           password: '',
           confirmPassword: '',
         }}
-        validationSchema={SignupSchema}>
+        validationSchema={SignupSchema}
+        onSubmit={values => Alert.alert(JSON.stringify)}
+        
+        >
         
         {({
           values,
