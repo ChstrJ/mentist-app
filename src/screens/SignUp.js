@@ -9,20 +9,21 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 
-const SignUp = props => {
+const SignUp = () => {
   const navigation = useNavigation();
 
   const [firstName, setFirstName] = useState()
   const [lastName, setlastName] = useState()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
+  const [confirmPassword, setConfirmPassword] = useState()
 
   const Data = {
         username: 'asdasd',
-        first_name: values.firstName,
-        second_name: values.secondName,
-        email: values.email,
-        password: values.password,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password,
       };
 
   // const handleSubmit = async values => {
@@ -31,10 +32,10 @@ const SignUp = props => {
   //   // Data to be sent in the POST request
   //   const postData = {
   //     username: 'asdasd',
-  //     first_name: values.firstName,
-  //     second_name: values.secondName,
-  //     email: values.email,
-  //     password: values.password,
+  //     first_name: val => firstName,
+  //     second_name: val => secondName,
+  //     email: val => email,
+  //     password: val => password,
   //   };
 
   //   // Make a POST request using fetch
@@ -55,9 +56,13 @@ const SignUp = props => {
   //     });
   // };
 
-  const handleSubmit = (data) => {
-    return axios('post', '/register/', ...data)
-    .then(val => console.log(val))
+  const handleSubmit = async (data) => {
+    if (password == confirmPassword)
+      return await axios('post', '/register/', ...data)
+      .then(val => console.log(val))
+    else {
+      Alert.alert("Password doesn't match")
+    }
   }
 
   // for showing and hiding pass
@@ -69,36 +74,36 @@ const SignUp = props => {
   };
 
   //schema for validation
-  const SignupSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Please enter your first name.'),
-    lastName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Please enter your last name.'),
-    email: Yup.string()
-      .email('Invalid email')
-      .required('Please enter your email.'),
-    password: Yup.string()
-      .min(8)
-      .required('Invalid password')
-      .matches(
-        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-        'Password must contain at least one lowercase letter, one uppercase letter, and one digit',
-      ),
-    confirmPassword: Yup.string()
-      .min(8)
-      .required('Invalid password')
-      .oneOf([Yup.ref('password')], 'Passwords must match'),
-  });
+  // const SignupSchema = Yup.object().shape({
+  //   firstName: Yup.string()
+  //     .min(2, 'Too Short!')
+  //     .max(50, 'Too Long!')
+  //     .required('Please enter your first name.'),
+  //   lastName: Yup.string()
+  //     .min(2, 'Too Short!')
+  //     .max(50, 'Too Long!')
+  //     .required('Please enter your last name.'),
+  //   email: Yup.string()
+  //     .email('Invalid email')
+  //     .required('Please enter your email.'),
+  //   password: Yup.string()
+  //     .min(8)
+  //     .required('Invalid password')
+  //     .matches(
+  //       /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+  //       'Password must contain at least one lowercase letter, one uppercase letter, and one digit',
+  //     ),
+  //   confirmPassword: Yup.string()
+  //     .min(8)
+  //     .required('Invalid password')
+  //     .oneOf([Yup.ref('password')], 'Passwords must match'),
+  // });
 
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{flexGrow: 1}}>
-      <Formik
+      {/* <Formik
         initialValues={{
           firstName: '',
           lastName: '',
@@ -107,10 +112,7 @@ const SignUp = props => {
           confirmPassword: '',
         }}
         validationSchema={SignupSchema}
-        
-        
         >
-        
         {({
           values,
           errors,
@@ -118,7 +120,7 @@ const SignUp = props => {
           handleChange,
           setFieldTouched,
           isValid,
-        }) => (
+        }) => ( */}
           <Background>
             <BackButton goBack={navigation.goBack} />
             <View style={styles.CenterContainer}>
@@ -143,7 +145,7 @@ const SignUp = props => {
                 mode="outlined"
                 activeOutlineColor="green"
                 left={<TextInput.Icon icon={'account'} />}
-                value={values.firstName}
+                value={value => setFirstName(value)}
                 onChangeText={handleChange('firstName')}
                 onBlur={() => setFieldTouched('firstName')}
               />
@@ -158,7 +160,7 @@ const SignUp = props => {
                 mode="outlined"
                 activeOutlineColor="green"
                 left={<TextInput.Icon icon={'account'} />}
-                value={values.lastName}
+                value={values => setlastName(values)}
                 onChangeText={handleChange('lastName')}
                 onBlur={() => setFieldTouched('lastName')}
               />
@@ -173,7 +175,7 @@ const SignUp = props => {
                 mode="outlined"
                 activeOutlineColor="green"
                 left={<TextInput.Icon icon={'email'} />}
-                value={values.email}
+                value={values => setEmail(values)}
                 onChangeText={handleChange('email')}
                 onBlur={() => setFieldTouched('email')}
               />
@@ -193,7 +195,7 @@ const SignUp = props => {
                     onPress={togglePasswordVisibility}
                   />
                 }
-                value={values.password}
+                value={value => setPassword(value)}
                 onChangeText={handleChange('password')}
                 onBlur={() => setFieldTouched('password')}
               />
@@ -213,7 +215,7 @@ const SignUp = props => {
                     onPress={togglePasswordVisibility}
                   />
                 }
-                value={values.confirmPassword}
+                value={value => setConfirmPassword(value)}
                 onChangeText={handleChange('confirmPassword')}
                 onBlur={() => setFieldTouched('confirmPassword')}
               />
@@ -234,8 +236,8 @@ const SignUp = props => {
               </View>
             </View>
           </Background>
-        )}
-      </Formik>
+      {/* //   )}
+      // </Formik> */}
     </ScrollView>
   );
 };
