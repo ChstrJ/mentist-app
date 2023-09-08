@@ -18,8 +18,11 @@ import styles from '../components/styles';
 
 const LogIn = () => {
   const navigation = useNavigation();
-  const {hidePass, setHidePass} = useState([]);
-
+  const [hidePass, setHidePass] = useState(true);
+  
+  const togglePasswordVisibility = () => {
+    setHidePass(!hidePass);
+  };
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -55,9 +58,14 @@ const LogIn = () => {
             mode="focused"
             label="Password"
             activeOutlineColor="green"
-            secureTextEntry={true}
+            secureTextEntry={hidePass}
             left={<TextInput.Icon icon={'key'} />}
-            right={<TextInput.Icon icon={'eye'} />}
+             right={
+              <TextInput.Icon
+                icon={hidePass ? 'eye-off' : 'eye'} 
+                onPress={togglePasswordVisibility} 
+              />
+            }
           />
 
           <View className="flex items-center justify-center">
@@ -69,8 +77,8 @@ const LogIn = () => {
                     color: 'blue',
                     marginVertical: '20',
                   }}>
-                  {' '}
-                  Signup Here
+                  {' Signup here'}
+                  
                 </Text>
               </TouchableOpacity>
             </Text>

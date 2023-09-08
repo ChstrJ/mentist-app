@@ -5,22 +5,23 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Background from './Background';
 import Btn from '../components/Btn';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput, Text} from 'react-native-paper';
 import styles from '../components/styles';
 import BackButton from '../components/BackButton';
-import Button from '../components/Button';
-import { green } from '../components/Constant';
-
+import {green} from '../components/Constant';
 
 const SignUp = props => {
   const navigation = useNavigation();
 
+  const [hidePass, setHidePass] = useState(true);
+  const togglePasswordVisibility = () => {
+    setHidePass(!hidePass);
+  };
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -70,31 +71,39 @@ const SignUp = props => {
             placeholder="Password"
             mode="focused"
             activeOutlineColor="green"
-            secureTextEntry={true}
+            secureTextEntry={hidePass}
             left={<TextInput.Icon icon={'key'} />}
-            right={<TextInput.Icon icon="eye" />}
+            right={
+              <TextInput.Icon
+                icon={hidePass ? 'eye-off' : 'eye'}
+                onPress={togglePasswordVisibility}
+              />
+            }
           />
           <TextInput
             className="w-[350] mt-3 rounded-lg"
             mode="focused"
             activeOutlineColor="green"
             placeholder="Confirm Password"
-            secureTextEntry={true}
+            secureTextEntry={hidePass}
             left={<TextInput.Icon icon={'key'} />}
-            right={<TextInput.Icon icon={'eye'} />}
+            right={
+              <TextInput.Icon
+                icon={hidePass ? 'eye-off' : 'eye'}
+                onPress={togglePasswordVisibility}
+              />
+            }
           />
 
           <View className="flex justify-center items-center">
-          <Btn
-          className="
+            <Btn
+              className="
           flex justify-center items-center w-screen"
-          bgColor={green}
-          textColor="white"
-          btnLabel="Signup"
-          Press={() => navigation.navigate("LogIn")}
-        />
-
-
+              bgColor={green}
+              textColor="white"
+              btnLabel="Signup"
+              Press={() => navigation.navigate('LogIn')}
+            />
           </View>
         </View>
       </Background>
@@ -109,10 +118,9 @@ const style = StyleSheet.create({
     margin: 8,
   },
 
-  button:{
-    paddingHorizontal:30,
+  button: {
+    paddingHorizontal: 30,
     paddingVertical: 5,
-  }
+  },
 });
 export default SignUp;
-
