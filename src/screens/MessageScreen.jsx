@@ -6,13 +6,14 @@ import MessageList from '../components/ChatComp/MessageList'
 
 export default function MessageScreen({ navigation, route, }) {
   return (
-    <View>
+    <View style={{flex: 1}}>
       <ChatHeader 
         onPress={() =>{}}
-        username={"Nicky"}
-        onlineStatus={'Hello'}
+        username={"Hello "}
         picture={require('../assets/app.jpg')}
       />
+      <MessageList />
+      <ChatInput />
     </View>
   )
 }
