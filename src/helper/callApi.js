@@ -4,7 +4,7 @@ import axios from 'axios';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.defaults.headers.post['Accept'] = 'application/json'
-axios.defaults.baseURL = 'https://mentist.onrender.com/api/v1/'
+axios.defaults.baseURL = 'https://mentist.onrender.com/api/v1/register/'
 
 export const callApi = async (method, url, data) => {
     return axios({

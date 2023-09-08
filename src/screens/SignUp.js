@@ -18,19 +18,19 @@ const SignUp = props => {
   // const [password, setPassword] = useState('')
 
   const handleSubmit = async values => {
-    const apiUrl = 'https://mentist.onrender.com/api/v1/register';
+    const url = 'https://mentist.onrender.com/api/v1/register/';
 
     // Data to be sent in the POST request
     const postData = {
-      username: 'asdasd',
+      username: 'CHARLESSPOGISIGENA',
       first_name: values.firstName,
-      second_name: values.secondName,
+      last_name: values.lastName,
       email: values.email,
       password: values.password,
     };
 
     // Make a POST request using fetch
-    fetch(apiUrl, {
+    fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
