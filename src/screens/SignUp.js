@@ -12,40 +12,53 @@ import axios from 'axios';
 const SignUp = props => {
   const navigation = useNavigation();
 
-  // const [firstName, setFirstName] = useState('')
-  // const [lastName, setlastName] = useState('')
-  // const [email, setEmail] = useState('')
-  // const [password, setPassword] = useState('')
+  const [firstName, setFirstName] = useState()
+  const [lastName, setlastName] = useState()
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
 
-  const handleSubmit = async values => {
-    const url = 'https://mentist.onrender.com/api/v1/register/';
+  const Data = {
+        username: 'asdasd',
+        first_name: values.firstName,
+        second_name: values.secondName,
+        email: values.email,
+        password: values.password,
+      };
 
-    // Data to be sent in the POST request
-    const postData = {
-      username: 'CHARLESSPOGISIGENA',
-      first_name: values.firstName,
-      last_name: values.lastName,
-      email: values.email,
-      password: values.password,
-    };
+  // const handleSubmit = async values => {
+  //   const apiUrl = 'https://mentist.onrender.com/api/v1/register';
 
-    // Make a POST request using fetch
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(postData),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Handle the response data here
-        console.log('API Response:', data);
-      })
-      .catch(error => {
-        console.error('Fetch Error:', error.message);
-      });
-  };
+  //   // Data to be sent in the POST request
+  //   const postData = {
+  //     username: 'asdasd',
+  //     first_name: values.firstName,
+  //     second_name: values.secondName,
+  //     email: values.email,
+  //     password: values.password,
+  //   };
+
+  //   // Make a POST request using fetch
+  //   fetch(apiUrl, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(postData),
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       // Handle the response data here
+  //       console.log('API Response:', data);
+  //     })
+  //     .catch(error => {
+  //       console.error('Fetch Error:', error.message);
+  //     });
+  // };
+
+  const handleSubmit = (data) => {
+    return axios('post', '/register/', ...data)
+    .then(val => console.log(val))
+  }
 
   // for showing and hiding pass
   const [hidePass, setHidePass] = useState(true);
@@ -210,7 +223,7 @@ const SignUp = props => {
 
               <View className="flex justify-center items-center">
                 <TouchableOpacity
-                  onPress={() => handleSubmit(values)}
+                  onPress={() => handleSubmit(Data)}
                   disabled={!isValid}
                   style={[
                     styles.submitBtn,
