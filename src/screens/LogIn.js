@@ -88,6 +88,7 @@ const LogIn = () => {
 
             <View className="flex justify-center items-center">
                 <TouchableOpacity
+                onPress={() => navigation.navigate('Dashboard')}
                   
                   
                   style={[
