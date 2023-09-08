@@ -39,7 +39,32 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         marginVertical: 30,
         elevation: 10
+  },
+
+  errorText:{
+    fontSize: 15,
+    color: '#FF0D10',
+    marginTop: 5,
+  },
+
+  submitBtn:{
+    // backgroundColor: '#6FF484',
+    borderRadius: 10,
+    justifyContent: 'center',
+    width: 350,
+    paddingVertical: 20,
+    marginVertical: 30,
+    elevation: 10
+  },
+
+  submitBtnTxt:{
+    color:'#fff',
+    textAlign: 'center',
+    fontSize: 20,
+    fontFamily: 'Poppins Regular',
+    fontWeight: 'bold',
   }
+
 });
 
 export default styles;

@@ -47,26 +47,28 @@ const LogIn = () => {
 
           <TextInput
             className="w-[350] mt-2 rounded-md"
-            mode="focused"
+            mode="outlined"
             label="Email"
             left={<TextInput.Icon icon={'email'} />}
             activeOutlineColor="green"
           />
 
-          <TextInput
-            className="w-[350] mt-5 rounded-md"
-            mode="focused"
+            <TextInput
+            className="w-[350] mt-2 rounded-md"
+            mode="outlined"
             label="Password"
             activeOutlineColor="green"
             secureTextEntry={hidePass}
             left={<TextInput.Icon icon={'key'} />}
-             right={
+            right={
               <TextInput.Icon
                 icon={hidePass ? 'eye-off' : 'eye'} 
                 onPress={togglePasswordVisibility} 
               />
             }
           />
+
+          
 
           <View className="flex items-center justify-center">
             <Text className="text-black mt-5">
