@@ -60,6 +60,9 @@ const SignUp = () => {
     if (password == confirmPassword)
       return await axios('post', '/register/', ...data)
       .then(val => console.log(val))
+      .catch(error => 
+        console.log(error),
+        Promise.reject())
     else {
       Alert.alert("Password doesn't match")
     }
