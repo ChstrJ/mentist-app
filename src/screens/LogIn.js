@@ -16,6 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import styles from '../components/styles';
 
+
 const LogIn = () => {
   const navigation = useNavigation();
   const [hidePass, setHidePass] = useState(true);
@@ -85,14 +86,17 @@ const LogIn = () => {
               </TouchableOpacity>
             </Text>
 
-            <Btn
-              className="
-              flex justify-center items-center w-screen"
-              bgColor={green}
-              textColor="white"
-              btnLabel="Login"
-              Press={() => navigation.push('Dashboard')}
-            />
+            <View className="flex justify-center items-center">
+                <TouchableOpacity
+                  
+                  
+                  style={[
+                    styles.submitBtn,
+                    {backgroundColor: '#6FF484'},
+                  ]}>
+                  <Text style={styles.submitBtnTxt}>Signup</Text>
+                </TouchableOpacity>
+              </View>
           </View>
         </View>
       </Background>

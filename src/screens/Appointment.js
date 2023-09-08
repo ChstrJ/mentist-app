@@ -31,7 +31,7 @@ export default function Appointment() {
   };
 
   return (
-    <SafeAreaView>
+    
       <Background>
         <BackButton goBack={navigation.goBack} />
         <View
@@ -110,6 +110,6 @@ export default function Appointment() {
           </View>
         </View>
         </Background>
-    </SafeAreaView>
+    
   );
 }

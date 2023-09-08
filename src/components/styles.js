@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
 
   submitBtnTxt:{
-    color:'#fff',
+    
     textAlign: 'center',
     fontSize: 20,
     fontFamily: 'Poppins Regular',

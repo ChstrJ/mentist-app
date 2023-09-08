@@ -1,15 +1,16 @@
-import { View, ImageBackground } from 'react-native'
-import React from 'react'
+import { View } from 'react-native';
+import React from 'react';
+import LinearGradient from 'react-native-linear-gradient';
+
 const Background = ({ children }) => {
   return (
-    <View style = {{ height: '100%', backgroundColor: '#a9ecc0'}}>
-      <View style={{ position: 'flex', }} >
-        {children}
-      </View>
-    </View>
-  )
-}
+    <LinearGradient
+      colors={['#a9ecc0', '#5CA4A9']} // Define your gradient colors here
+      style={{ flex: 1, height:'100%'}}
+    >
+      {children}
+    </LinearGradient>
+  );
+};
 
-
-
-export default Background
+export default Background;

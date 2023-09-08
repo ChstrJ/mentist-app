@@ -18,33 +18,45 @@ const SignUp = props => {
   // const [password, setPassword] = useState('')
 
   const handleSubmit = async (values) => {
-  try {
-    const data = {
-      first_name: values.firstName,
-      last_name: values.lastName,
-      email: values.email,
-      password: values.password,
-    };
-
-    // Set the "Content-type: application/json" header in the Axios request
-    const headers = {
-      'Content-Type': 'application/json',
-    };
-    // Define the API endpoint URL
-    const url = 'https://mentist.onrender.com/api/v1/register/';
-
-    // Make the POST request with Axios and await the response
-    const response = await axios.post(url, data, { headers });
-
-    //handle catch error
-  } catch (error) {
-    // Handle any errors that occur during the API request
-    console.error('API Error:', error);
-
-    // Show an error message
-    Alert.alert('Error', 'Registration failed. Please try again.', [{ text: 'OK' }]);
-  }
-};
+    try {
+      const data = {
+        username: '123123',
+        first_name: values.firstName,
+        last_name: values.lastName,
+        email: values.email,
+        password: values.password,
+      };
+  
+      // Set the "Content-type: application/json" header in the Axios request
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+      // Define the API endpoint URL
+      const url = 'https://mentist.onrender.com/api/v1/register';
+  
+      // Make the POST request with Axios and await the response
+      const response = await axios.post(url,{ headers }, {...data});
+  
+      // Check if the response status code is 2xx (successful)
+      if (response.status >= 200 && response.status < 300) {
+        // Handle the successful response here
+        console.log('API Response:', response.data);
+  
+        // Show a success message
+        Alert.alert('Success', 'Registration successful!', [{ text: 'OK' }]);
+      } else {
+        // Handle unexpected status codes (e.g., 400 Bad Request)
+        console.error('API Error: Unexpected status code', response.status);
+        Alert.alert('Error', 'Registration failed. Please try again.', [{ text: 'OK' }]);
+      }
+    } catch (error) {
+      // Handle any errors that occur during the API request
+      console.error('API Error:', error);
+  
+      // Show an error message
+      Alert.alert('Error', 'Registration failed. Please try again.', [{ text: 'OK' }]);
+    }
+  };
 
 
   // for showing and hiding pass

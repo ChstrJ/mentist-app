@@ -8,10 +8,10 @@ import {useNavigation} from '@react-navigation/native';
 export default function Progress() {
   const navigate = useNavigation();
   return (
-    <SafeAreaView>
+    
       <Background>
         <BackButton goBack={navigate.goBack} />
       </Background>
-    </SafeAreaView>
+   
   );
 }
