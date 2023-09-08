@@ -146,6 +146,7 @@ const SignUp = () => {
                 activeOutlineColor="green"
                 left={<TextInput.Icon icon={'account'} />}
                 onChangeText={value => setFirstName(value)}
+                
               />
 
               {/* {touched.firstName && errors.firstName && (
@@ -159,6 +160,7 @@ const SignUp = () => {
                 activeOutlineColor="green"
                 left={<TextInput.Icon icon={'account'} />}
                 onChangeText={values => setlastName(values)}
+                
               />
 {/* 
               {touched.lastName && errors.lastName && (
@@ -191,7 +193,6 @@ const SignUp = () => {
                   />
                 }
                 onChangeText={value => setPassword(value)}
-               
               />
               {/* {touched.password && errors.password && (
                 <Text style={styles.errorText}>{errors.password}</Text>
@@ -210,7 +211,6 @@ const SignUp = () => {
                   />
                 }
                 onChangeText={value => setConfirmPassword(value)}
-                
               />
 
               {/* {touched.password && errors.password && (
