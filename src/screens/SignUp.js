@@ -145,14 +145,12 @@ const SignUp = () => {
                 mode="outlined"
                 activeOutlineColor="green"
                 left={<TextInput.Icon icon={'account'} />}
-                value={value => setFirstName(value)}
-                onChangeText={handleChange('firstName')}
-                onBlur={() => setFieldTouched('firstName')}
+                onChangeText={value => setFirstName(value)}
               />
 
-              {touched.firstName && errors.firstName && (
+              {/* {touched.firstName && errors.firstName && (
                 <Text style={styles.errorText}>{errors.firstName}</Text>
-              )}
+              )} */}
 
               <TextInput
                 className="w-[350] mt-5 rounded-lg"
@@ -160,14 +158,12 @@ const SignUp = () => {
                 mode="outlined"
                 activeOutlineColor="green"
                 left={<TextInput.Icon icon={'account'} />}
-                value={values => setlastName(values)}
-                onChangeText={handleChange('lastName')}
-                onBlur={() => setFieldTouched('lastName')}
+                onChangeText={values => setlastName(values)}
               />
-
+{/* 
               {touched.lastName && errors.lastName && (
                 <Text style={styles.errorText}>{errors.lastName}</Text>
-              )}
+              )} */}
 
               <TextInput
                 className="w-[350] mt-5 rounded-lg"
@@ -175,13 +171,12 @@ const SignUp = () => {
                 mode="outlined"
                 activeOutlineColor="green"
                 left={<TextInput.Icon icon={'email'} />}
-                value={values => setEmail(values)}
-                onChangeText={handleChange('email')}
-                onBlur={() => setFieldTouched('email')}
+                onChangeText={values => setEmail(values)}
+          
               />
-              {touched.email && errors.email && (
+              {/* {touched.email && errors.email && (
                 <Text style={styles.errorText}>{errors.email}</Text>
-              )}
+              )} */}
 
               <TextInput
                 className="w-[350] mt-5 rounded-lg"
@@ -195,13 +190,12 @@ const SignUp = () => {
                     onPress={togglePasswordVisibility}
                   />
                 }
-                value={value => setPassword(value)}
-                onChangeText={handleChange('password')}
-                onBlur={() => setFieldTouched('password')}
+                onChangeText={value => setPassword(value)}
+               
               />
-              {touched.password && errors.password && (
+              {/* {touched.password && errors.password && (
                 <Text style={styles.errorText}>{errors.password}</Text>
-              )}
+              )} */}
 
               <TextInput
                 className="w-[350] mt-5 rounded-lg"
@@ -215,21 +209,21 @@ const SignUp = () => {
                     onPress={togglePasswordVisibility}
                   />
                 }
-                value={value => setConfirmPassword(value)}
-                onChangeText={handleChange('confirmPassword')}
-                onBlur={() => setFieldTouched('confirmPassword')}
+                onChangeText={value => setConfirmPassword(value)}
+                
               />
-              {touched.password && errors.password && (
+
+              {/* {touched.password && errors.password && (
                 <Text style={styles.errorText}>{errors.confirmPassword}</Text>
-              )}
+              )} */}
 
               <View className="flex justify-center items-center">
                 <TouchableOpacity
                   onPress={() => handleSubmit(Data)}
-                  disabled={!isValid}
+                  // disabled={!isValid}
                   style={[
                     styles.submitBtn,
-                    {backgroundColor: isValid ? '#6FF484' : '#98e7ad'},
+                    {backgroundColor: '#6FF484'}
                   ]}>
                   <Text style={styles.submitBtnTxt}>Signup</Text>
                 </TouchableOpacity>
