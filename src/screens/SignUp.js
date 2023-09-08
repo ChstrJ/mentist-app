@@ -1,10 +1,4 @@
-import {
-  View,
-  Image,
-  ScrollView,
-  Alert,
-  TouchableOpacity
-} from 'react-native';
+import {View, Image, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
@@ -13,6 +7,7 @@ import styles from '../components/styles';
 import BackButton from '../components/BackButton';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const SignUp = props => {
   const navigation = useNavigation();
@@ -22,11 +17,45 @@ const SignUp = props => {
   // const [email, setEmail] = useState('')
   // const [password, setPassword] = useState('')
 
+  const handleSubmit = async (values) => {
+  try {
+    const data = {
+      first_name: values.firstName,
+      last_name: values.lastName,
+      email: values.email,
+      password: values.password,
+    };
+
+    // Set the "Content-type: application/json" header in the Axios request
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    // Define the API endpoint URL
+    const url = 'https://mentist.onrender.com/api/v1/register/';
+
+    // Make the POST request with Axios and await the response
+    const response = await axios.post(url, data, { headers });
+
+    //handle catch error
+  } catch (error) {
+    // Handle any errors that occur during the API request
+    console.error('API Error:', error);
+
+    // Show an error message
+    Alert.alert('Error', 'Registration failed. Please try again.', [{ text: 'OK' }]);
+  }
+};
+
+
+  // for showing and hiding pass
   const [hidePass, setHidePass] = useState(true);
+
+  // toggle hide pass
   const togglePasswordVisibility = () => {
     setHidePass(!hidePass);
   };
 
+  //schema for validation
   const SignupSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, 'Too Short!')
@@ -64,11 +93,7 @@ const SignUp = props => {
           password: '',
           confirmPassword: '',
         }}
-        validationSchema={SignupSchema}
-        onSubmit={values => Alert.alert(JSON.stringify(values))}
-        >
-        
-
+        validationSchema={SignupSchema}>
         {({
           values,
           errors,
@@ -76,7 +101,6 @@ const SignUp = props => {
           handleChange,
           setFieldTouched,
           isValid,
-          handleSubmit,
         }) => (
           <Background>
             <BackButton goBack={navigation.goBack} />
@@ -140,8 +164,6 @@ const SignUp = props => {
                 <Text style={styles.errorText}>{errors.email}</Text>
               )}
 
-        
-
               <TextInput
                 className="w-[350] mt-5 rounded-lg"
                 label="Password"
@@ -155,7 +177,7 @@ const SignUp = props => {
                   />
                 }
                 value={values.password}
-                onChangeText={handleChange('password')}   
+                onChangeText={handleChange('password')}
                 onBlur={() => setFieldTouched('password')}
               />
               {touched.password && errors.password && (
@@ -175,25 +197,23 @@ const SignUp = props => {
                   />
                 }
                 value={values.confirmPassword}
-                onChangeText={handleChange('confirmPassword')}   
+                onChangeText={handleChange('confirmPassword')}
                 onBlur={() => setFieldTouched('confirmPassword')}
               />
               {touched.password && errors.password && (
                 <Text style={styles.errorText}>{errors.confirmPassword}</Text>
               )}
 
-
               <View className="flex justify-center items-center">
-                
-              <TouchableOpacity
-              onPress={handleSubmit}
-              disabled={!isValid}
-              style={[styles.submitBtn, {backgroundColor: isValid ? '#6FF484' : '#98e7ad'},
-              ]}>
-              
-              <Text style={styles.submitBtnTxt}>Signup</Text>
-              </TouchableOpacity>
-
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  disabled={!isValid}
+                  style={[
+                    styles.submitBtn,
+                    {backgroundColor: isValid ? '#6FF484' : '#98e7ad'},
+                  ]}>
+                  <Text style={styles.submitBtnTxt}>Signup</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </Background>
