@@ -18,9 +18,9 @@ const SignUp = props => {
   // const [password, setPassword] = useState('')
 
   const handleSubmit = async values => {
-    console.log('Form Values:', values.firstName); 
     try {
       const data = {
+        username: 'tanginamooo',
         first_name: values.firstName,
         last_name: values.lastName,
         email: values.email,
@@ -100,6 +100,7 @@ const SignUp = props => {
           confirmPassword: '',
         }}
         validationSchema={SignupSchema}>
+        
         {({
           values,
           errors,
@@ -212,7 +213,7 @@ const SignUp = props => {
 
               <View className="flex justify-center items-center">
                 <TouchableOpacity
-                  onPress={handleSubmit}
+                  onPress={() => handleSubmit(values)}
                   disabled={!isValid}
                   style={[
                     styles.submitBtn,
