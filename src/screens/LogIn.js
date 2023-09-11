@@ -17,6 +17,7 @@ import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import styles from '../components/styles';
 import callApi from '../helper/callApi';
+import { err } from 'react-native-svg/lib/typescript/xml';
 
 const LogIn = () => {
   const navigation = useNavigation();
@@ -31,9 +32,20 @@ const LogIn = () => {
   }
 
   const logIn = async(data) =>{
-    await callApi('get', '/login', data)
-    .then(val => console.log(val.response))
-    .catch(error => Alert.alert(error.response.data.error.email))
+    try {
+      const response = await callApi('post', '/login', data)
+      console.log(response.data)
+      
+      if (response.data.success){
+        navigation.navigate('Dashboard')
+      }
+      else{
+        Alert.alert('Login failed')
+      } 
+    } catch (error) {
+      console.error('APU request error', error)
+      Alert.alert('API request error', error)
+    }
   }
   const togglePasswordVisibility = () => {
     setHidePass(!hidePass);
