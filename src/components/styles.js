@@ -48,31 +48,31 @@ const styles = StyleSheet.create({
   },
 
   submitBtn:{
-    // backgroundColor: '#6FF484',
+    backgroundColor: '#6FF484',
     borderRadius: 10,
     justifyContent: 'center',
     width: 350,
     paddingVertical: 20,
     marginVertical: 30,
-    elevation: 10
+    
   },
 
   submitBtnTxt:{
     
     textAlign: 'center',
     fontSize: 20,
-    fontFamily: 'Poppins Regular',
-    fontWeight: 'bold',
+    
   },
 
   lottieLoader: {
     height: 800,
-    width: 400,
+    width: 500,
     alignSelf: 'center',
     justifyContent: 'center',
     opacity: 0.4,
-    position: 'absolute',
     zIndex: 1,
+    backgroundColor: "#6FF484"
+    
     
   }
 
