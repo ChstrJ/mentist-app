@@ -20,7 +20,7 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState()
 
   const Data = {
-        username: 'asdasd',
+        username: 'karl',
         first_name: firstName,
         last_name: lastName,
         email: email,
@@ -58,12 +58,12 @@ const SignUp = () => {
   // };
 
   const handleSubmit = async (data) => {
-    if (password == confirmPassword)
-      return await callApi('post', '/register/', ...data)
-      .then(val => console.log(val))
+    if (password == confirmPassword){
+      return await callApi('post', '/register', data)
+      .then(val => console.log(val.response))
       .catch(error => 
-        console.log(error),
-        Promise.reject())
+        Alert.alert(error.response.data.error.username))
+    }
     else {
       Alert.alert("Password doesn't match")
     }

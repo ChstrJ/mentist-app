@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {TextInput, Text} from 'react-native-paper';
 import React, {useState} from 'react';
@@ -15,12 +16,25 @@ import Btn from '../components/Btn';
 import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import styles from '../components/styles';
-
+import callApi from '../helper/callApi';
 
 const LogIn = () => {
   const navigation = useNavigation();
   const [hidePass, setHidePass] = useState(true);
   
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+
+  const Data = {
+    e_mail: email, 
+    p_word: password
+  }
+
+  const logIn = async(data) =>{
+    await callApi('get', '/login', data)
+    .then(val => console.log(val.response))
+    .catch(error => Alert.alert(error.response.data.error.email))
+  }
   const togglePasswordVisibility = () => {
     setHidePass(!hidePass);
   };
@@ -52,6 +66,7 @@ const LogIn = () => {
             label="Email"
             left={<TextInput.Icon icon={'email'} />}
             activeOutlineColor="green"
+            onChangeText={value => setEmail(value)}
           />
 
             <TextInput
@@ -67,6 +82,7 @@ const LogIn = () => {
                 onPress={togglePasswordVisibility} 
               />
             }
+            onChangeText={value => setPassword(value)}
           />
 
           
@@ -88,9 +104,8 @@ const LogIn = () => {
 
             <View className="flex justify-center items-center">
                 <TouchableOpacity
-                onPress={() => navigation.navigate('Dashboard')}
-                  
-                  
+                // onPress={() => navigation.navigate('Dashboard')}
+                  onPress={() => logIn(Data)}
                   style={[
                     styles.submitBtn,
                     {backgroundColor: '#6FF484'},
