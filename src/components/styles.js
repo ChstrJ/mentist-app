@@ -63,6 +63,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Poppins Regular',
     fontWeight: 'bold',
+  },
+
+  lottieLoader: {
+    height: 800,
+    width: 400,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    opacity: 0.4,
+    position: 'absolute',
+    zIndex: 1,
+    
   }
 
 });
