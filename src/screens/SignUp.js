@@ -37,14 +37,10 @@ const SignUp = () => {
 
   const handleSubmit = async data => {
     if (password === confirmPassword) {
-      setLoading(true);
+      setLoading(true)
       const response = await callApi('post', '/register', data)
-        .then(val =>
-          val.status == 200
-            ? navigation.push('LogIn')
-            : navigation.push('SignUp'),
-        )
-        .catch(e => console.log(e.response.data))
+      .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'))
+      .catch(e => console.log(e.response))
 
         .finally(() => {
           setTimeout(() => {

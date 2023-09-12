@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -18,6 +18,10 @@ import Progress from './src/screens/Progress';
 const Stack = createNativeStackNavigator();
 
 function App() {
+  const [token, setToken] = React.useState()
+  const [isLoggedin, setIsLoggedin] = useState()
+
+
   return (
     <NavigationContainer>
       <Stack.Navigator

@@ -10,22 +10,19 @@ import {
 import {TextInput, Text} from 'react-native-paper';
 import React, {useState} from 'react';
 import Background from './Background';
-import {darkGreen, green} from '../components/Constant';
-import Center from '../components/styles';
-import Btn from '../components/Btn';
 import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import styles from '../components/styles';
 import callApi from '../helper/callApi';
-import {err} from 'react-native-svg/lib/typescript/xml';
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
+import { storeData } from '../helper/auth';
 
-const LogIn = () => {
-  const navigation = useNavigation();
+const LogIn = ({}) => {
+  
   const [hidePass, setHidePass] = useState(true);
-
-  const [email, setEmail] = useState();
+  const navigation = useNavigation();
+  // const [email, setEmail] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const Data = {
@@ -34,15 +31,11 @@ const LogIn = () => {
   };
   const [isloading, setLoading] = useState();
 
-  const logIn = async data => {
+  const handleLogin = async data => {
     setLoading(true);
     if (username == null || password == null) {
       const response = await callApi('post', '/login', data)
-        .then(val =>
-          val.status == 200
-            ? navigation.push('Dashboard')
-            : navigation.push('LogIn'),
-        )
+        .then(val =>val.status == 200 ? navigation.push('Dashboard') : navigation.push('LogIn'),)
         .catch(e => console.log(e.response.data));
 
       setTimeout(() => {
@@ -115,9 +108,11 @@ const LogIn = () => {
               </TouchableOpacity>
             </View>
 
+            
+
             <View className="flex justify-center items-center">
               <TouchableOpacity
-                onPress={() => logIn(Data)}
+                onPress={() => handleLogin(Data)}
                 style={[styles.submitBtn, {backgroundColor: '#6FF484'}]}>
                 <Text style={[styles.submitBtnTxt, styles.fontTitle]}>Login</Text>
               </TouchableOpacity>
