@@ -45,7 +45,7 @@ const SignUp = () => {
         .finally(() => {
           setTimeout(() => {
             setLoading(false);
-          }, 800);
+          }, 500);
         });
     } else {
       Alert.alert("Password doesn't match");

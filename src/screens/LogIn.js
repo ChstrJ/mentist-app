@@ -31,32 +31,26 @@ const LogIn = () => {
     username: username,
     password: password,
   };
-  const [isloading, setLoading] = useState(false)
+  const [isloading, setLoading] = useState()
+
+
   const logIn = async data => {
       setLoading(true)
+      if (username == null || password == null) {
       const response = await callApi('post', '/login', data)
         .then(val => val.status == 200 ? navigation.push('Dashboard'): navigation.push('LogIn'),)
         .catch(e => console.log(e.response.data))
-        .finally(() => {
-          setTimeout(setLoading(false), 500)
-        })
+        
+          setTimeout(() => {
+            setLoading(false);
+          }, 500);
+    
+    } else {
+      Alert.alert("Invalid Credentials");
+    }
   }
-  // const logIn = async(data) =>{
-  //   try {
-  //     const response = await callApi('post', '/login', data)
-  //     console.log(response.data)
-      
-  //     if (response.data.success){
-  //       navigation.navigate('Dashboard')
-  //     }
-  //     else{
-  //       Alert.alert('Login failed')
-  //     } 
-  //   } catch (error) {
-  //     console.error('APU request error', error)
-  //     Alert.alert('API request error', error)
-  //   }
-  // }
+  
+ 
   const togglePasswordVisibility = () => {
     setHidePass(!hidePass);
   };
