@@ -14,6 +14,7 @@ import styles from '../components/styles';
 import BackButton from '../components/BackButton';
 import callApi from '../helper/callApi';
 import Loader from '../components/Loader';
+import Logo from '../components/Logo';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -35,11 +36,14 @@ const SignUp = () => {
   };
 
   const handleSubmit = async data => {
-    
-      if (password === confirmPassword) {
-        setLoading(true)
-        const response = await callApi('post', '/register', data)
-        .then(val =>val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'))
+    if (password === confirmPassword) {
+      setLoading(true);
+      const response = await callApi('post', '/register', data)
+        .then(val =>
+          val.status == 200
+            ? navigation.push('LogIn')
+            : navigation.push('SignUp'),
+        )
         .catch(e => console.log(e.response.data))
 
         .finally(() => {
@@ -60,136 +64,148 @@ const SignUp = () => {
   };
 
   return (
-    
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{flexGrow: 1}}>
-      {isLoading ? <Loader/> : 
-      <Background>
-        <BackButton goBack={navigation.goBack} />
-        <View style={styles.CenterContainer}>
-        
-          <Image
-            className="mt-20"
-            source={require('../assets/logo.png')}
-            style={{
-              width: 250,
-              height: 130,
-            }}
-          />
-        </View>
-
-        <View className="flex justify-center items-center">
-          <Text 
-          style={styles.fontTitle}
-          className=" text-black text-xl mt-10">Create an account</Text>
-
-          <TextInput
-            style={styles.fontField}
-            className="w-[350] mt-5 rounded-lg"
-            label="First Name"
-            mode="outlined"
-            activeOutlineColor="green"
-            left={<TextInput.Icon icon={'account'} />}
-            onChangeText={value => setFirstName(value)}
-          />
-
-          <TextInput
-            style={styles.fontField}
-            className="w-[350] mt-5 rounded-lg"
-            label="Last Name"
-            mode="outlined"
-            activeOutlineColor="green"
-            left={<TextInput.Icon icon={'account'} />}
-            onChangeText={values => setlastName(values)}
-          />
-
-          <TextInput
-            style={styles.fontField}
-            className="w-[350] mt-5 rounded-lg"
-            label="Username"
-            mode="outlined"
-            activeOutlineColor="green"
-            left={<TextInput.Icon icon={'account'} />}
-            onChangeText={values => setUsername(values)}
-          />
-
-          <TextInput
-            style={styles.fontField}
-            className="w-[350] mt-5 rounded-lg"
-            label="Email"
-            mode="outlined"
-            activeOutlineColor="green"
-            left={<TextInput.Icon icon={'email'} />}
-            onChangeText={values => setEmail(values)}
-          />
-
-          <TextInput
-            style={styles.fontField}
-            className="w-[350] mt-5 rounded-lg"
-            label="Password"
-            mode="outlined"
-            activeOutlineColor="green"
-            secureTextEntry={hidePass}
-            left={<TextInput.Icon icon={'key'} />}
-            right={
-              <TextInput.Icon
-                icon={hidePass ? 'eye-off' : 'eye'}
-                onPress={togglePasswordVisibility}
-              />
-            }
-            onChangeText={value => setPassword(value)}
-          />
-
-          <TextInput
-            style={styles.fontField}
-            className="w-[350] mt-5 rounded-lg"
-            label="Confirm Password"
-            mode="outlined"
-            activeOutlineColor="green"
-            secureTextEntry={hidePass}
-            left={<TextInput.Icon icon={'key'} />}
-            right={
-              <TextInput.Icon
-                icon={hidePass ? 'eye-off' : 'eye'}
-                onPress={togglePasswordVisibility}
-              />
-            }
-            onChangeText={value => setConfirmPassword(value)}
-          />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Background>
+          <BackButton goBack={navigation.goBack} />
+          <View className="flex justify-center mt-10" style={styles.CenterContainer}>
+            <Logo/>
+         </View>
 
           <View className="flex justify-center items-center">
-            <TouchableOpacity
-              onPress={() => handleSubmit(Data)}
-              disabled={
-                !username ||
-                !firstName ||
-                !lastName ||
-                !email ||
-                !password ||
-                !confirmPassword
+            <Text
+              style={styles.fontTitle}
+              className=" text-black text-xl mt-10">
+              Create an account
+            </Text>
+
+            <TextInput
+              style={styles.fontField}
+              className="w-[350] mt-5 rounded-lg"
+              label="First Name"
+              mode="outlined"
+              activeOutlineColor="green"
+              left={<TextInput.Icon icon={'account'} />}
+              onChangeText={value => setFirstName(value)}
+            />
+
+            <TextInput
+              style={styles.fontField}
+              className="w-[350] mt-5 rounded-lg"
+              label="Last Name"
+              mode="outlined"
+              activeOutlineColor="green"
+              left={<TextInput.Icon icon={'account'} />}
+              onChangeText={values => setlastName(values)}
+            />
+
+            <TextInput
+              style={styles.fontField}
+              className="w-[350] mt-5 rounded-lg"
+              label="Username"
+              mode="outlined"
+              activeOutlineColor="green"
+              left={<TextInput.Icon icon={'account'} />}
+              onChangeText={values => setUsername(values)}
+            />
+
+            <TextInput
+              style={styles.fontField}
+              className="w-[350] mt-5 rounded-lg"
+              label="Email"
+              mode="outlined"
+              activeOutlineColor="green"
+              left={<TextInput.Icon icon={'email'} />}
+              onChangeText={values => setEmail(values)}
+            />
+
+            <TextInput
+              style={styles.fontField}
+              className="w-[350] mt-5 rounded-lg"
+              label="Password"
+              mode="outlined"
+              activeOutlineColor="green"
+              secureTextEntry={hidePass}
+              left={<TextInput.Icon icon={'key'} />}
+              right={
+                <TextInput.Icon
+                  icon={hidePass ? 'eye-off' : 'eye'}
+                  onPress={togglePasswordVisibility}
+                />
               }
-              style={[
-                styles.submitBtn,
-                {
-                  backgroundColor:
-                    !username ||
-                    !firstName ||
-                    !lastName ||
-                    !email ||
-                    !password ||
-                    !confirmPassword
-                      ? 'rgba(0, 0, 0, 0.2)'
-                      : '#6FF484',
-                },
-              ]}>
-               <Text style={[styles.submitBtnTxt, styles.fontTitle]}>Signup</Text>
-            </TouchableOpacity>
+              onChangeText={value => setPassword(value)}
+            />
+
+            <TextInput
+              style={styles.fontField}
+              className="w-[350] mt-5 rounded-lg"
+              label="Confirm Password"
+              mode="outlined"
+              activeOutlineColor="green"
+              secureTextEntry={hidePass}
+              left={<TextInput.Icon icon={'key'} />}
+              right={
+                <TextInput.Icon
+                  icon={hidePass ? 'eye-off' : 'eye'}
+                  onPress={togglePasswordVisibility}
+                />
+              }
+              onChangeText={value => setConfirmPassword(value)}
+            />
+
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 30,
+              }}>
+              <Text style={[{color: 'white'}, styles.fontText]}>
+                Already have an account?
+              </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
+                <Text style={[{color: 'blue', marginLeft: 5}, styles.fontText]}>
+                  Login here
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View className="flex justify-center items-center">
+              <TouchableOpacity
+                onPress={() => handleSubmit(Data)}
+                disabled={
+                  !username ||
+                  !firstName ||
+                  !lastName ||
+                  !email ||
+                  !password ||
+                  !confirmPassword
+                }
+                style={[
+                  styles.submitBtn,
+                  {
+                    backgroundColor:
+                      !username ||
+                      !firstName ||
+                      !lastName ||
+                      !email ||
+                      !password ||
+                      !confirmPassword
+                        ? 'rgba(0, 0, 0, 0.2)'
+                        : '#6FF484',
+                  },
+                ]}>
+                <Text style={[styles.submitBtnTxt, styles.fontTitle]}>
+                  Signup
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        
-      </Background>
-    }
+        </Background>
+      )}
     </ScrollView>
   );
 };

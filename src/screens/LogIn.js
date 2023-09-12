@@ -107,6 +107,7 @@ const LogIn = () => {
                 alignItems: 'center',
                 marginTop: 20,
               }}>
+
               <Text style={[{color: 'white'}, styles.fontText]}>Don't have an account?</Text>
               <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
               <Text style={[{ color: 'blue', marginLeft: 5 }, styles.fontText]}>Signup here</Text>
@@ -118,7 +119,7 @@ const LogIn = () => {
               <TouchableOpacity
                 onPress={() => logIn(Data)}
                 style={[styles.submitBtn, {backgroundColor: '#6FF484'}]}>
-                <Text style={[styles.submitBtnTxt, styles.fontTitle]}>Signup</Text>
+                <Text style={[styles.submitBtnTxt, styles.fontTitle]}>Login</Text>
               </TouchableOpacity>
             </View>
           </View>
