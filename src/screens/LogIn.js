@@ -18,6 +18,7 @@ import BackButton from '../components/BackButton';
 import styles from '../components/styles';
 import callApi from '../helper/callApi';
 import {err} from 'react-native-svg/lib/typescript/xml';
+import Loader from '../components/Loader';
 
 const LogIn = () => {
   const navigation = useNavigation();
@@ -26,20 +27,36 @@ const LogIn = () => {
   const [email, setEmail] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-
   const Data = {
     username: username,
     password: password,
   };
-
+  const [isloading, setLoading] = useState(false)
   const logIn = async data => {
+      setLoading(true)
       const response = await callApi('post', '/login', data)
-        .then(val =>val.status == 200 ? navigation.push('Dashboard'): navigation.push('LogIn'),
-        )
-        .catch(e => console.log(e.response.data));
-   
+        .then(val => val.status == 200 ? navigation.push('Dashboard'): navigation.push('LogIn'),)
+        .catch(e => console.log(e.response.data))
+        .finally(() => {
+          setTimeout(setLoading(false), 500)
+        })
   }
-
+  // const logIn = async(data) =>{
+  //   try {
+  //     const response = await callApi('post', '/login', data)
+  //     console.log(response.data)
+      
+  //     if (response.data.success){
+  //       navigation.navigate('Dashboard')
+  //     }
+  //     else{
+  //       Alert.alert('Login failed')
+  //     } 
+  //   } catch (error) {
+  //     console.error('APU request error', error)
+  //     Alert.alert('API request error', error)
+  //   }
+  // }
   const togglePasswordVisibility = () => {
     setHidePass(!hidePass);
   };
@@ -47,6 +64,7 @@ const LogIn = () => {
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{flexGrow: 1}}>
+        {isloading ? <Loader/> : 
       <Background>
         <BackButton goBack={navigation.goBack} />
         <View
@@ -115,6 +133,7 @@ const LogIn = () => {
           </View>
         </View>
       </Background>
+    }
     </ScrollView>
   );
 };
