@@ -37,16 +37,15 @@ const SignUp = () => {
 
   const handleSubmit = async data => {
     if (password === confirmPassword) {
-      setLoading(true)
+      setLoading(true);
       const response = await callApi('post', '/register', data)
-      .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'))
-      .catch(e => console.log(e.response))
+        .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'),
+        )
+        .catch(e => Alert.alert(e.response.data.error));
 
-        .finally(() => {
-          setTimeout(() => {
-            setLoading(false);
-          }, 500);
-        });
+      setTimeout(() => {
+        setLoading(false);
+      }, 200);
     } else {
       Alert.alert("Password doesn't match");
     }
@@ -68,9 +67,11 @@ const SignUp = () => {
       ) : (
         <Background>
           <BackButton goBack={navigation.goBack} />
-          <View className="flex justify-center mt-10" style={styles.CenterContainer}>
-            <Logo/>
-         </View>
+          <View
+            className="flex justify-center mt-10"
+            style={styles.CenterContainer}>
+            <Logo />
+          </View>
 
           <View className="flex justify-center items-center">
             <Text

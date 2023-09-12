@@ -32,19 +32,21 @@ const LogIn = ({}) => {
   const [isloading, setLoading] = useState();
 
   const handleLogin = async data => {
-    setLoading(true);
-    if (username == null || password == null) {
+    if (username == data.username || password == data.password) {
+      setLoading(true)
       const response = await callApi('post', '/login', data)
         .then(val =>val.status == 200 ? navigation.push('Dashboard') : navigation.push('LogIn'),)
-        .catch(e => console.log(e.response.data));
+        .catch(e => console.log((e.response.data.error)))
 
       setTimeout(() => {
         setLoading(false);
-      }, 500);
+      }, 200);
     } else {
-      Alert.alert('Invalid Credentials');
+      Alert.alert("Invalid Credentials")
     }
+   
   };
+  
 
   const togglePasswordVisibility = () => {
     setHidePass(!hidePass);
