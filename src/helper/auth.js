@@ -2,12 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // auth login
 export const storeData = (token, username) => {
-    AsyncStorage.setItem('token', response.data.token)
-    AsyncStorage.setItem('username', response.data.username)
+    AsyncStorage.setItem('token', token)
+    AsyncStorage.setItem('username', username)
 }
 
 export const getData = (token, username) => {
-    AsyncStorage.getItem('token', response.data.token)
-    AsyncStorage.getItem('username', response.data.username)
+    AsyncStorage.getItem('token', token)
+    AsyncStorage.getItem('username', username)
 }
 

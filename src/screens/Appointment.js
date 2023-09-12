@@ -14,6 +14,9 @@ import Btn from '../components/Btn';
 export default function Appointment() {
   const navigation = useNavigation();
   //declare usestate
+
+  const [name, setName] = useState()
+  const [phone, setPhone] = useState()
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
