@@ -16,17 +16,25 @@ const Home = props => {
       <View className="flex justify-center mt-10" style={styles.CenterContainer}>
         <Logo/>
       </View>
-      <View className="flex justify-center  w-screen mt-24" style={styles.CenterContainer}>
-        <Text className="flex justify-center text-black text-2xl">
+
+      <View className="flex justify-center mt-24" style={styles.CenterContainer}>
+      <View></View>
+        <Text 
+        style={styles.fontSub} 
+        >
           Welcome to
         </Text>
-        <Text className="flex justify-center  text-5xl font-extrabold text-green-500">
+        <Text 
+        style={styles.fontHome} 
+        className="text-5xl text-green-500">
           Mentist!
         </Text>
       </View>
 
-      <View className=" justify-center"  style={styles.CenterContainer}>
-        <Text className="text-black text-xl mt-10"  style={styles.CenterText}>
+      <View style={styles.CenterContainer}>
+        <Text 
+        style={styles.fontSub}
+        className="text-xl mt-10">
           Create an account?
         </Text>
         <Btn className="
@@ -39,14 +47,16 @@ const Home = props => {
         />
     
 
-        <Text className="w-screen text-black text-xl" style={styles.CenterText}>
+        <Text 
+        style={styles.fontSub}
+        className="flex justify-center items-center">
           Already have an account?
         </Text>
 
       
 
         <Btn className="flex justify-center items-center w-screen" 
-        bgColor={green}
+        bgColor={'#6FF484'}
         
         btnLabel="Login"
         Press={() => navigation.push("LogIn")} 

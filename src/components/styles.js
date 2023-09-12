@@ -36,11 +36,22 @@ const styles = StyleSheet.create({
     
   },
 
+  fontSub: {
+    fontFamily: 'Poppins Regular',
+    fontSize: 20,
+    color: 'white'
+    
+  },
+
+  fontHome: {
+    fontFamily: 'Poppins Bold',
+    fontSize: 40,
+    color: 'green'
+    
+  },
   fontText: {
     fontFamily: 'Poppins Regular',
     fontSize: 18,
-  
-    
   },
 
   fontField: {
