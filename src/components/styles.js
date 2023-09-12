@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     display: 'flex',
     alignItems: 'center',
+    
   },
   CenterText: {
     width: Dimensions.get('window').width,
@@ -28,8 +29,25 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
 
-  font: {
+  fontTitle: {
+    fontFamily: 'Poppins Bold',
+    fontSize: 25,
+    color: 'white'
+    
+  },
+
+  fontText: {
     fontFamily: 'Poppins Regular',
+    fontSize: 18,
+  
+    
+  },
+
+  fontField: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 18,
+    color: 'white'
+    
   },
 
   button:{
@@ -41,26 +59,22 @@ const styles = StyleSheet.create({
         elevation: 10
   },
 
-  errorText:{
-    fontSize: 15,
-    color: '#FF0D10',
-    marginTop: 5,
-  },
-
+ 
   submitBtn:{
     backgroundColor: '#6FF484',
     borderRadius: 10,
     justifyContent: 'center',
     width: 350,
-    paddingVertical: 20,
+    paddingVertical: 10,
     marginVertical: 30,
+    
     
   },
 
   submitBtnTxt:{
     
     textAlign: 'center',
-    fontSize: 20,
+    
     
   },
 

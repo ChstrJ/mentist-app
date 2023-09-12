@@ -19,6 +19,7 @@ import styles from '../components/styles';
 import callApi from '../helper/callApi';
 import {err} from 'react-native-svg/lib/typescript/xml';
 import Loader from '../components/Loader';
+import Logo from '../components/Logo';
 
 const LogIn = () => {
   const navigation = useNavigation();
@@ -31,26 +32,27 @@ const LogIn = () => {
     username: username,
     password: password,
   };
-  const [isloading, setLoading] = useState()
-
+  const [isloading, setLoading] = useState();
 
   const logIn = async data => {
-      setLoading(true)
-      if (username == null || password == null) {
+    setLoading(true);
+    if (username == null || password == null) {
       const response = await callApi('post', '/login', data)
-        .then(val => val.status == 200 ? navigation.push('Dashboard'): navigation.push('LogIn'),)
-        .catch(e => console.log(e.response.data))
-        
-          setTimeout(() => {
-            setLoading(false);
-          }, 500);
-    
+        .then(val =>
+          val.status == 200
+            ? navigation.push('Dashboard')
+            : navigation.push('LogIn'),
+        )
+        .catch(e => console.log(e.response.data));
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     } else {
-      Alert.alert("Invalid Credentials");
+      Alert.alert('Invalid Credentials');
     }
-  }
-  
- 
+  };
+
   const togglePasswordVisibility = () => {
     setHidePass(!hidePass);
   };
@@ -58,76 +60,70 @@ const LogIn = () => {
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{flexGrow: 1}}>
-        {isloading ? <Loader/> : 
-      <Background>
-        <BackButton goBack={navigation.goBack} />
-        <View
-          className="flex justify-center  w-screen"
-          style={Center.CenterContainer}>
-          <Image
-            className="mt-20"
-            source={require('../assets/logo.png')}
-            style={{
-              width: 250,
-              height: 130,
-            }}
-          />
-        </View>
+      {isloading ? (
+        <Loader />
+      ) : (
+        <Background>
+          <BackButton goBack={navigation.goBack} />
+          <View className="flex justify-center mt-10" style={styles.CenterContainer}>
+            <Logo/>
+         </View>
 
-        <View className="flex justify-center items-center mt-10">
-          <Text className="text-black text-xl mt-10 mb-2">Login Account</Text>
-
-          <TextInput
-            className="w-[350] mt-5 rounded-lg"
-            label="Username"
-            mode="outlined"
-            activeOutlineColor="green"
-            left={<TextInput.Icon icon={'account'} />}
-            onChangeText={values => setUsername(values)}
-          />
-
-          <TextInput
-            className="w-[350] mt-2 rounded-md"
-            mode="outlined"
-            label="Password"
-            activeOutlineColor="green"
-            secureTextEntry={hidePass}
-            left={<TextInput.Icon icon={'key'} />}
-            right={
-              <TextInput.Icon
-                icon={hidePass ? 'eye-off' : 'eye'}
-                onPress={togglePasswordVisibility}
-              />
-            }
-            onChangeText={value => setPassword(value)}
-          />
-
-          <View className="flex items-center justify-center">
-            <Text className="text-black mt-5">
-              Don't have an account?
-              <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                <Text
-                  style={{
-                    color: 'blue',
-                    marginVertical: '20',
-                  }}>
-                  {' Signup here'}
-                </Text>
-              </TouchableOpacity>
+          <View className="flex justify-center items-center mt-10">
+            <Text className="text-white" style={styles.fontTitle}>
+              Login Account
             </Text>
+
+            <TextInput
+              style={styles.fontField}
+              className="w-[350] mt-5 rounded-lg"
+              label="Username"
+              mode="outlined"
+              activeOutlineColor="green"
+              left={<TextInput.Icon icon={'account'} />}
+              onChangeText={values => setUsername(values)}
+            />
+
+            <TextInput
+              className="w-[350] mt-2 rounded-md"
+              style={styles.fontField}
+              mode="outlined"
+              label="Password"
+              activeOutlineColor="green"
+              secureTextEntry={hidePass}
+              left={<TextInput.Icon icon={'key'} />}
+              right={
+                <TextInput.Icon
+                  icon={hidePass ? 'eye-off' : 'eye'}
+                  onPress={togglePasswordVisibility}
+                />
+              }
+              onChangeText={value => setPassword(value)}
+            />
+
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 20,
+              }}>
+              <Text style={[{color: 'white'}, styles.fontText]}>Don't have an account?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+              <Text style={[{ color: 'blue', marginLeft: 5 }, styles.fontText]}>Signup here</Text>
+
+              </TouchableOpacity>
+            </View>
 
             <View className="flex justify-center items-center">
               <TouchableOpacity
-                // onPress={() => navigation.navigate('Dashboard')}
                 onPress={() => logIn(Data)}
                 style={[styles.submitBtn, {backgroundColor: '#6FF484'}]}>
-                <Text style={styles.submitBtnTxt}>Signup</Text>
+                <Text style={[styles.submitBtnTxt, styles.fontTitle]}>Signup</Text>
               </TouchableOpacity>
             </View>
           </View>
-        </View>
-      </Background>
-    }
+        </Background>
+      )}
     </ScrollView>
   );
 };

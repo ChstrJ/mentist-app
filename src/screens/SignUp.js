@@ -80,9 +80,12 @@ const SignUp = () => {
         </View>
 
         <View className="flex justify-center items-center">
-          <Text className=" text-black text-xl mt-10">Create an account</Text>
+          <Text 
+          style={styles.fontTitle}
+          className=" text-black text-xl mt-10">Create an account</Text>
 
           <TextInput
+            style={styles.fontField}
             className="w-[350] mt-5 rounded-lg"
             label="First Name"
             mode="outlined"
@@ -92,6 +95,7 @@ const SignUp = () => {
           />
 
           <TextInput
+            style={styles.fontField}
             className="w-[350] mt-5 rounded-lg"
             label="Last Name"
             mode="outlined"
@@ -101,6 +105,7 @@ const SignUp = () => {
           />
 
           <TextInput
+            style={styles.fontField}
             className="w-[350] mt-5 rounded-lg"
             label="Username"
             mode="outlined"
@@ -110,6 +115,7 @@ const SignUp = () => {
           />
 
           <TextInput
+            style={styles.fontField}
             className="w-[350] mt-5 rounded-lg"
             label="Email"
             mode="outlined"
@@ -119,6 +125,7 @@ const SignUp = () => {
           />
 
           <TextInput
+            style={styles.fontField}
             className="w-[350] mt-5 rounded-lg"
             label="Password"
             mode="outlined"
@@ -135,6 +142,7 @@ const SignUp = () => {
           />
 
           <TextInput
+            style={styles.fontField}
             className="w-[350] mt-5 rounded-lg"
             label="Confirm Password"
             mode="outlined"
@@ -175,7 +183,7 @@ const SignUp = () => {
                       : '#6FF484',
                 },
               ]}>
-              <Text style={styles.submitBtnTxt}>Signup</Text>
+               <Text style={[styles.submitBtnTxt, styles.fontTitle]}>Signup</Text>
             </TouchableOpacity>
           </View>
         </View>
