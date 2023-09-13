@@ -16,6 +16,7 @@ import {
 import Appointment from './src/screens/Appointment';
 import Progress from './src/screens/Progress';
 import {getData} from './src/helper/auth';
+import Splashscreen from './src/components/Splashscreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,8 +44,16 @@ function App() {
     // <Provider>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="IntroScreen"
         screenOptions={{headerShown: false}}>
+
+          <Stack.Screen
+              name='Splashscreen'
+              component={Splashscreen}
+              options={{
+                headerShown: false,
+              }}
+              
+            />
         <Stack.Screen
           name="IntroScreen"
           screenOptions={{
@@ -53,6 +62,7 @@ function App() {
           }}
           component={IntroScreen}
         />
+        
         <Stack.Screen
           screenOptions={{
             gestureEnabled: true,

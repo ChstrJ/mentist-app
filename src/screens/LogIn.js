@@ -37,9 +37,13 @@ const LogIn = ({}) => {
     if (username == data.username || password == data.password) {
       setLoading(false)
       const response = await callApi('post', '/login', data)
-        // .then(val =>val.status == 200 ? navigation.push('Dashboard') : navigation.push('LogIn'),)
+      // .then(token => storeData(token.response.token))
+      // .then(val =>val.status == 200 ? navigation.push('Dashboard') : navigation.push('LogIn'))
+      // .catch(e => (console.log(e.response)))
       if(val => val.status == 200) {
-        getData()
+        const token = response.data.token
+        storeData(response.data.token)
+        console.log({token})
         navigation.push("Dashboard")
       } else {
         navigation.push("LogIn")
@@ -57,6 +61,8 @@ const LogIn = ({}) => {
       }
     } else {
       Alert.alert("Invalid Credentials");
+
+
     }
   };
   
