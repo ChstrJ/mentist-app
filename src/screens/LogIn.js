@@ -14,14 +14,16 @@ import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import styles from '../components/styles';
 import callApi from '../helper/callApi';
+// import { useDispatch } from "react-redux"
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
-import { storeData } from '../helper/auth';
+import { getData, storeData } from '../helper/auth';
 
 const LogIn = ({}) => {
   
   const [hidePass, setHidePass] = useState(true);
   const navigation = useNavigation();
+  // const dispatch = useDispatch();
   // const [email, setEmail] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -33,19 +35,36 @@ const LogIn = ({}) => {
 
   const handleLogin = async data => {
     if (username == data.username || password == data.password) {
-      setLoading(true)
+      setLoading(false)
       const response = await callApi('post', '/login', data)
-        .then(val =>val.status == 200 ? navigation.push('Dashboard') : navigation.push('LogIn'),)
-        .catch(e => console.log((e.response.data.error)))
+        // .then(val =>val.status == 200 ? navigation.push('Dashboard') : navigation.push('LogIn'),)
+      if(val => val.status == 200) {
+        getData()
+        navigation.push("Dashboard")
+      } else {
+        navigation.push("LogIn")
+        Alert.alert(console.log(response.data.error))
+      }
 
-      setTimeout(() => {
-        setLoading(false);
-      }, 200);
+      try {
+        // set loading to false when authenticated
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      } catch (e) {
+        // Handle any errors here
+        console.error(e.response.data.error);
+      }
     } else {
-      Alert.alert("Invalid Credentials")
+      Alert.alert("Invalid Credentials");
     }
-   
   };
+ 
+  
+  
+  
+  
+  
   
 
   const togglePasswordVisibility = () => {

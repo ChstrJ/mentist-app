@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './src/screens/Home';
 import SignUp from './src/screens/SignUp';
+import { useDispatch, Provider} from "react-redux"
 import LogIn from './src/screens/LogIn';
 import IntroScreen from './src/screens/IntroScreen';
 import Dashboard from './src/screens/Dashboard';
@@ -14,16 +15,32 @@ import {
 } from '@react-navigation/stack';
 import Appointment from './src/screens/Appointment';
 import Progress from './src/screens/Progress';
+import {getData} from './src/helper/auth';
 
 const Stack = createNativeStackNavigator();
 
-function App() {
-  
-  const [token, setToken] = useState()
-  const [isLoggedin, setIsLoggedin] = useState()
 
+
+function App() {
+
+  // const checkIfLoggedin = async () => {
+  //   let loggedIn = getData(token);
+
+  //   if (loggedIn == null) {
+  //     // Navigate to dashboard
+  //     navigation.push('Dashboard');
+  //   } else {
+  //     // If no token, redirect to login
+  //     navigation.push('LogIn');
+  //   }
+  // };
+ 
+  // useEffect(() => {
+  //   checkIfLoggedin();
+  // }, []);
 
   return (
+    // <Provider>
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="IntroScreen"
@@ -92,9 +109,9 @@ function App() {
           name="Progress"
           component={Progress}
         />
-     
       </Stack.Navigator>
     </NavigationContainer>
+    // </Provider>
   );
 }
 

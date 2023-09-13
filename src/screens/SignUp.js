@@ -15,6 +15,8 @@ import BackButton from '../components/BackButton';
 import callApi from '../helper/callApi';
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { storeData } from '../helper/auth';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -35,19 +37,32 @@ const SignUp = () => {
     password: password,
   };
 
+  //signup button
   const handleSubmit = async data => {
     if (password === confirmPassword) {
-      setLoading(true);
-      const response = await callApi('post', '/register', data)
-        .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'),
-        )
-        .catch(e => Alert.alert(e.response.data.error));
-
-      setTimeout(() => {
-        setLoading(false);
-      }, 200);
+      setLoading(false);
+      const response = await callApi('post', '/register', data);
+      // .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'),
+      // )
+      if (val => val.status == 200) {
+        // storeData(token, username)
+        navigation.push('LogIn');
+        console.log(response.data)
+      } else {
+        navigation.push('SignUp')
+        Alert.alert(console.log(response.data))
+      }
+      try {
+        // set loading to false when authenticated
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      } catch (e) {
+        // Handle any errors here
+        console.error(e.response.data.error);
+      }
     } else {
-      Alert.alert("Password doesn't match");
+      Alert.alert("Invalid Credentials");
     }
   };
   // for showing and hiding pass
@@ -89,6 +104,10 @@ const SignUp = () => {
               left={<TextInput.Icon icon={'account'} />}
               onChangeText={value => setFirstName(value)}
             />
+            {/* <Text
+              style={styles.errorTxt}
+              
+              >{response.data.error}</Text> */}
 
             <TextInput
               style={styles.fontField}

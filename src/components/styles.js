@@ -70,6 +70,12 @@ const styles = StyleSheet.create({
         elevation: 10
   },
 
+  errorTxt: {
+    fontFamily: 'Poppins Regular',
+    fontSize: 10,
+    color: 'red'
+  },
+
  
   submitBtn:{
     backgroundColor: '#6FF484',
