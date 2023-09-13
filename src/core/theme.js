@@ -16,6 +16,7 @@ const theme = StyleSheet.create({
   },
   rightColors: {
     primary: '#6FF484', 
+    logOutColor: '#c4c4c4'
   }
 })
 export default theme

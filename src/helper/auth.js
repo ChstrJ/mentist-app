@@ -14,11 +14,17 @@ export const getData = async () => {
     
     return { token };
   }
-export const removeData = (token, username) => {
-    AsyncStorage.removeItem('token', token)
-    AsyncStorage.removeItem('username', username)
-
-    return { token, username };
+export const removeData = async () => {
+    // AsyncStorage.removeItem('token', token)
+    // AsyncStorage.removeItem('username', username)
+    try {
+      await AsyncStorage.removeItem('token', token)
+      return true
+    } catch(error){
+      console.log("Error removing token", error)
+      return false
+    }
+    // return { token, username };
 }
 
 

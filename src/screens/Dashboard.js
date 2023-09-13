@@ -2,15 +2,38 @@ import {View, Image} from 'react-native';
 import React from 'react';
 import Background from './Background';
 import { useNavigation } from '@react-navigation/native';
-
+import Logout from '../components/Logout';
 import styles from '../components/styles'
 import Action from '../components/Action'
-
+import { getData, removeData } from '../helper/auth';
 
 
 
 const Dashboard = () => {
     const navigation = useNavigation()
+
+    const handleLogout = async () => {
+        const token = await getToken()
+        
+        if (token){
+            const success = await removeData()
+            if (success){
+                navigation.navigate('Home')
+            } else{
+                console.log("error")
+            }
+        }
+
+    }
+    const getToken = async () => {
+        try{
+            const data = await getData()
+            return data.token
+        }
+        catch(e){
+            console.log('error getting token ', e)
+        }
+    }
     return (
         <Background>
             
@@ -28,7 +51,7 @@ const Dashboard = () => {
                 <Action actionLabel="Ask Question" source={require('../assets/Dashboard/Ask.png')} Press={() => navigation.navigate("MessageScreen")}/>
                 <Action actionLabel="Create Appointment" source={require('../assets/Dashboard/Appointment.png')} Press={() => navigation.navigate('Appointment')}/>
                 <Action actionLabel="Check My Progress" source={require('../assets/Dashboard/Progress.png')} Press={() => navigation.navigate('Progress')}/>
-
+                <Logout actionLabel="Log Out" Press={() => handleLogout()}/>
             </View>
         </Background>
     )
