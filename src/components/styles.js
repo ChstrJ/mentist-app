@@ -105,8 +105,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#6FF484"
     
     
+  },
+  loaderContainer: {
+    width: Dimensions.get('window').width,
+    display: 'flex',
+    alignItems: 'center',
+    height: Dimensions.get('window').height,
   }
-
 });
 
 export default styles;

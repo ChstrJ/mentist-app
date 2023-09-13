@@ -53,18 +53,12 @@ const LogIn = ({}) => {
         }, 1000);
       } catch (e) {
         // Handle any errors here
-        console.error(e.response.data.error);
+        console.error("tanga");
       }
     } else {
       Alert.alert("Invalid Credentials");
     }
   };
- 
-  
-  
-  
-  
-  
   
 
   const togglePasswordVisibility = () => {
