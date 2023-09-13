@@ -4,7 +4,7 @@ import LottieView from 'lottie-react-native';
 import styles from './styles';
 const Loader = () => {
   return (
-    <View style={styles.CenterContainer}>
+    <View style={styles.loaderContainer}>
       <LottieView
         source={require('../assets/animations/loading.json')}
         autoPlay
