@@ -6,33 +6,29 @@ import Logout from '../components/Logout';
 import styles from '../components/styles'
 import Action from '../components/Action'
 import { getData, removeData } from '../helper/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 const Dashboard = () => {
     const navigation = useNavigation()
 
+    // const handleLogout = async () => {
+    //     try {
+    //       const removeToken = await getData() 
+    //       const success = removeData(removeToken.token);
+    //       if (!removeToken.token) {
+    //         navigation.navigate('Home');
+    //       } else {
+    //         console.log("Error logging out");
+    //       }
+    //     } catch (error) {
+    //       console.error("An error occurred while logging out:", error, success);
+    //     }
+    //   }
     const handleLogout = async () => {
-        const token = await getToken()
-        
-        if (token){
-            const success = await removeData()
-            if (success){
-                navigation.navigate('Home')
-            } else{
-                console.log("error")
-            }
-        }
-
-    }
-    const getToken = async () => {
-        try{
-            const data = await getData()
-            return data.token
-        }
-        catch(e){
-            console.log('error getting token ', e)
-        }
+      const removed = await removeData();
+      removed ? navigation.navigate('Home'):console.log("Error logging out");
     }
     return (
         <Background>

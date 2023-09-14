@@ -38,17 +38,18 @@ const LogIn = ({}) => {
       setLoading(false)
       const response = await callApi('post', '/login', data)
       // .then(token => storeData(token.response.token))
-      // .then(val =>val.status == 200 ? navigation.push('Dashboard') : navigation.push('LogIn'))
-      // .catch(e => (console.log(e.response)))
-      if(val => val.status == 200) {
-        const token = response.data.token
-        storeData(response.data.token)
-        console.log({token})
-        navigation.push("Dashboard")
-      } else {
-        navigation.push("LogIn")
-        Alert.alert(console.log(response.data.error))
-      }
+      .then(token => storeData(response.data.token))
+      .then(val => val.status == 200 ? navigation.push('Dashboard') : navigation.push('LogIn'))
+      .catch(e => (Alert.alert("Invalid Credentials", "Wrong Username or Password" + e)))
+      // if(val => val.status == 200) {
+      //   const token = response.data.token
+      //   storeData(response.data.token)
+      //   console.log({token})
+      //   navigation.push("Dashboard")
+      // } else {
+      //   navigation.push("LogIn")
+      //   Alert.alert("Invalid")
+      // }
 
       try {
         // set loading to false when authenticated
