@@ -69,8 +69,6 @@ const SignUp = () => {
     if (password === confirmPassword) {
       setLoading(false);
       const response = await callApi('post', '/register', data)
-      const error = response.data.error
-      setErrorMessage(error)
         .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'),)
         .catch(e => console.log(e.response.data))
           setTimeout(() => {

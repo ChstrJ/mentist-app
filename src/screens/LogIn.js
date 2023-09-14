@@ -37,9 +37,10 @@ const LogIn = ({}) => {
 
 
   const handleLogin = async (data) => {
-    if (username === data.username && password === data.password) {
+    if (username == data.username && password == data.password) {
       setLoading(false);
       const response = callApi('post', '/login', { username, password})
+      
         .then(async (response) => {
           // store token in var
           const token = response.data.token
@@ -129,8 +130,19 @@ const LogIn = ({}) => {
             <View className="flex justify-center items-center">
               <TouchableOpacity
                 onPress={() => handleLogin(Data)}
-                style={[styles.submitBtn, {backgroundColor: '#6FF484'}]}>
-                <Text style={[styles.submitBtnTxt, styles.fontTitle]}>Login</Text>
+                disabled={
+                  !username || !password
+                 
+                }
+                style={[
+                  styles.submitBtn,
+                  {
+                    backgroundColor:
+                      !username || !password ? 'rgba(0, 0, 0, 0.2)' : '#6FF484', }
+                ]}>
+                <Text style={[styles.submitBtnTxt, styles.fontTitle]}>
+                  Login
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
