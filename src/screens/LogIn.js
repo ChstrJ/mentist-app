@@ -40,14 +40,13 @@ const LogIn = ({}) => {
     if (username == data.username && password == data.password) {
       setLoading(false);
       const response = callApi('post', '/login', { username, password})
-      
-        .then(async (response) => {
+        .then((response) => {
           // store token in var
           const token = response.data.token
-          // const first_name = response.data.first_name
+          const first_name = response.data.user.first_name
           // store token
-          storeData(token)
-          console.log(token)
+          storeData(token, first_name)
+          console.log(token, first_name)
           if (response.status === 200) {
             navigation.push('Dashboard');
           } else {

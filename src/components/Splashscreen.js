@@ -8,15 +8,17 @@ import {Alert, View} from 'react-native';
 const Splashscreen = ({navigation}) => {
   const getData = async () => {
         const token = await AsyncStorage.getItem('token', token);
-        
-        // const first_name = await AsyncStorage.getItem('first_name', first_name);
+
       if (token === null) {
-        console.log(token)
+        
         navigation.push("IntroScreen")
       } else {
         navigation.push('Dashboard');
-        // Alert.alert("Welcome back:" + first_name)
       }
+      
+
+      // .then((token) => navigation.push(token === null ? 'IntroScreen' : 'Dashboard'))
+      // .catch((error) => console.error('Error checking token:', error));
    
   };
   useEffect(() => {
