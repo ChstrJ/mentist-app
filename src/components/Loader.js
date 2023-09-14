@@ -4,7 +4,7 @@ import LottieView from 'lottie-react-native';
 import styles from './styles';
 const Loader = () => {
   return (
-    <View style={styles.loaderContainer}>
+    <View className="absolute justify-center items-center w-screen">
       <LottieView
         source={require('../assets/animations/loading.json')}
         autoPlay

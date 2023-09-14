@@ -14,6 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import styles from '../components/styles';
 import callApi from '../helper/callApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { useDispatch } from "react-redux"
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
@@ -33,41 +34,34 @@ const LogIn = ({}) => {
   };
   const [isloading, setLoading] = useState();
 
-  const handleLogin = async data => {
-    if (username == data.username || password == data.password) {
-      setLoading(false)
-      const response = await callApi('post', '/login', data)
-      // .then(token => storeData(token.response.token))
-      .then(token => storeData(response.data.token))
-      .then(val => val.status == 200 ? navigation.push('Dashboard') : navigation.push('LogIn'))
-      .catch(e => (Alert.alert("Invalid Credentials", "Wrong Username or Password" + e)))
-      // if(val => val.status == 200) {
-      //   const token = response.data.token
-      //   storeData(response.data.token)
-      //   console.log({token})
-      //   navigation.push("Dashboard")
-      // } else {
-      //   navigation.push("LogIn")
-      //   Alert.alert("Invalid")
-      // }
 
-      try {
-        // set loading to false when authenticated
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
-      } catch (e) {
-        // Handle any errors here
-        console.error("tanga");
-      }
+
+  const handleLogin = async (data) => {
+    if (username === data.username && password === data.password) {
+      setLoading(false);
+      const response = callApi('post', '/login', { username, password})
+        .then(async (response) => {
+          // store token in var
+          const token = response.data.token
+          // const first_name = response.data.first_name
+          // store token
+          storeData(token)
+          console.log(token)
+          if (response.status === 200) {
+            navigation.push('Dashboard');
+          } else {
+            navigation.push('LogIn');
+          }
+
+        })
+        .catch((e) => console.log(e));
     } else {
-      Alert.alert("Invalid Credentials");
-
-
+      Alert.alert("Something went wrong");
     }
   };
-  
 
+
+  
   const togglePasswordVisibility = () => {
     setHidePass(!hidePass);
   };
@@ -91,7 +85,7 @@ const LogIn = ({}) => {
 
             <TextInput
               style={styles.fontField}
-              className="w-[350] mt-5 rounded-lg"
+              className="flex w-4/5 mt-5 rounded-lg"
               label="Username"
               mode="outlined"
               activeOutlineColor="green"
@@ -100,7 +94,7 @@ const LogIn = ({}) => {
             />
 
             <TextInput
-              className="w-[350] mt-2 rounded-md"
+              className="flex w-4/5 mt-2 rounded-md"
               style={styles.fontField}
               mode="outlined"
               label="Password"

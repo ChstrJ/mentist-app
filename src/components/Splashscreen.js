@@ -3,24 +3,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from './Logo';
 import styles from './styles';
 import Background from '../screens/Background';
-import {View} from 'react-native';
+import {Alert, View} from 'react-native';
 
 const Splashscreen = ({navigation}) => {
   const getData = async () => {
-    try {
         const token = await AsyncStorage.getItem('token', token);
-        // const username = await AsyncStorage.getItem('username', username);
-      if (token == null) {
+        
+        // const first_name = await AsyncStorage.getItem('first_name', first_name);
+      if (token === null) {
         console.log(token)
-        // console.log(username)
         navigation.push("IntroScreen")
       } else {
         navigation.push('Dashboard');
-        console.log(token)
+        // Alert.alert("Welcome back:" + first_name)
       }
-    } catch (e) {
-      console.log(e.data);
-    }
+   
   };
   useEffect(() => {
     setTimeout(() => {
@@ -30,7 +27,7 @@ const Splashscreen = ({navigation}) => {
   return (
     <Background>
       <View
-        className="flex justify-center mt-10"
+        className="flex justify-center items-center mt-64"
         style={styles.CenterContainer}>
         <Logo />
       </View>

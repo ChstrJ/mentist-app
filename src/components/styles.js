@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
   fontField: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 18,
-    color: 'white'
+    color: 'white',
+    
     
   },
 
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
     
   },
   loaderContainer: {
-    width: Dimensions.get('window').width,
+    
     display: 'flex',
     alignItems: 'center',
     height: Dimensions.get('window').height,

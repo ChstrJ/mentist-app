@@ -24,6 +24,7 @@ const SignUp = () => {
   const [username, setUsername] = useState();
   const [firstName, setFirstName] = useState();
   const [lastName, setlastName] = useState();
+  const [errorMessage, setErrorMessage] = useState(false);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
@@ -38,53 +39,48 @@ const SignUp = () => {
   };
 
   //signup button
-  const handleSubmit = async data => {
-    if (password === confirmPassword) {
-      setLoading(false);
-      const response = await callApi('post', '/register', data);
-      // .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'),
-      // )
-      if (val => val.status == 200) {
-        // storeData(token, username)
-        navigation.push('LogIn');
-        console.log(response.data)
-      } else {
-        navigation.push('SignUp')
-        Alert.alert(console.log(response.data))
-      }
-      try {
-        // set loading to false when authenticated
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
-      } catch (e) {
-        // Handle any errors here
-        console.error(e.response.data.error);
-      }
-    } else {
-      Alert.alert("Invalid Credentials");
-    }
-  };
   // const handleSubmit = async data => {
   //   if (password === confirmPassword) {
   //     setLoading(true);
-  //     const response = await callApi('post', '/register', data)
-  //       .then(val =>
-  //         val.status == 200
-  //           ? navigation.push('LogIn')
-  //           : navigation.push('SignUp'),
-  //       )
-  //       .catch(e => console.log(e.response.data))
-
-  //       .finally(() => {
-  //         setTimeout(() => {
-  //           setLoading(false);
-  //         }, 500);
-  //       });
+  //     const response = await callApi('post', '/register', data);
+      // .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'),
+      // )
+      
+  //     if (val => val.status == 200) {
+  //       navigation.push('LogIn');
+  //       console.log(response.data)
+  //     } else {
+  //       navigation.push('SignUp')
+  //       Alert.alert(console.log(response.data))
+  //     }
+      
+  //       // set loading to false when authenticated
+  //       setTimeout(() => {
+  //         setLoading(false);
+  //       }, 500);
+    
   //   } else {
-  //     Alert.alert("Password doesn't match");
+  //     Alert.alert("Something went wrong");
   //   }
   // };
+
+
+  const handleSubmit = async data => {
+    if (password === confirmPassword) {
+      setLoading(false);
+      const response = await callApi('post', '/register', data)
+      const error = response.data.error
+      setErrorMessage(error)
+        .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'),)
+        .catch(e => console.log(e.response.data))
+          setTimeout(() => {
+            setLoading(false);
+          }, 500);
+       
+    } else {
+      Alert.alert("Password doesn't match");
+    }
+  };
   // for showing and hiding pass
   const [hidePass, setHidePass] = useState(true);
 
@@ -115,23 +111,21 @@ const SignUp = () => {
               Create an account
             </Text>
 
+         
             <TextInput
               style={styles.fontField}
-              className="w-[350] mt-5 rounded-lg"
+              className="flex w-4/5 mt-5 rounded-xl"
               label="First Name"
               mode="outlined"
               activeOutlineColor="green"
               left={<TextInput.Icon icon={'account'} />}
               onChangeText={value => setFirstName(value)}
             />
-            {/* <Text
-              style={styles.errorTxt}
-              
-              >{response.data.error}</Text> */}
+            {errorMessage && <Text>{errorMessage}</Text>}
 
             <TextInput
               style={styles.fontField}
-              className="w-[350] mt-5 rounded-lg"
+              className="flex w-4/5 mt-5 rounded-lg"
               label="Last Name"
               mode="outlined"
               activeOutlineColor="green"
@@ -141,17 +135,20 @@ const SignUp = () => {
 
             <TextInput
               style={styles.fontField}
-              className="w-[350] mt-5 rounded-lg"
+              className="flex w-4/5 mt-5 rounded-lg"
               label="Username"
               mode="outlined"
               activeOutlineColor="green"
               left={<TextInput.Icon icon={'account'} />}
               onChangeText={values => setUsername(values)}
+
             />
+              {errorMessage ? (<Text style={styles.errorTxt}>{errorMessage}</Text>) : null}
+
 
             <TextInput
               style={styles.fontField}
-              className="w-[350] mt-5 rounded-lg"
+              className="flex w-4/5 mt-5 rounded-lg"
               label="Email"
               mode="outlined"
               activeOutlineColor="green"
@@ -161,7 +158,7 @@ const SignUp = () => {
 
             <TextInput
               style={styles.fontField}
-              className="w-[350] mt-5 rounded-lg"
+              className="flex w-4/5 mt-5 rounded-lg"
               label="Password"
               mode="outlined"
               activeOutlineColor="green"
@@ -178,7 +175,7 @@ const SignUp = () => {
 
             <TextInput
               style={styles.fontField}
-              className="w-[350] mt-5 rounded-lg"
+              className="flex w-4/5 mt-5 rounded-lg"
               label="Confirm Password"
               mode="outlined"
               activeOutlineColor="green"
