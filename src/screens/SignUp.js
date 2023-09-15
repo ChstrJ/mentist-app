@@ -15,17 +15,21 @@ import BackButton from '../components/BackButton';
 import callApi from '../helper/callApi';
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SIGNUP_REQUEST, SIGNUP_FAILURE, SIGNUP_SUCCESS } from '../actions/types/types';
 import { storeData } from '../helper/auth';
+import { useDispatch, useSelector } from 'react-redux';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const SignUp = () => {
   const navigation = useNavigation();
 
+  const dispatch = useDispatch();
+  const isSigningUp = useSelector((state) => state.signup.isSigningUp);
+  const error = useSelector((state) => state.signup.error);
+
   const [username, setUsername] = useState();
   const [firstName, setFirstName] = useState();
   const [lastName, setlastName] = useState();
-  const [errorMessage, setErrorMessage] = useState(false);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
@@ -39,47 +43,45 @@ const SignUp = () => {
     password: password,
   };
 
-  //signup button
+
   // const handleSubmit = async data => {
   //   if (password === confirmPassword) {
   //     setLoading(true);
-  //     const response = await callApi('post', '/register', data);
-      // .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'),
-      // )
-      
-  //     if (val => val.status == 200) {
-  //       navigation.push('LogIn');
-  //       console.log(response.data)
-  //     } else {
-  //       navigation.push('SignUp')
-  //       Alert.alert(console.log(response.data))
-  //     }
-      
-  //       // set loading to false when authenticated
-  //       setTimeout(() => {
-  //         setLoading(false);
-  //       }, 500);
-    
+  //     const response = await callApi('post', '/register', data)
+  //       .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'),)
+  //       .catch(e => console.log(e.response.data))
+  //         setTimeout(() => {
+  //           setLoading(false);
+  //         }, 500);
+       
   //   } else {
-  //     Alert.alert("Something went wrong");
+  //     Alert.alert("Password doesn't match");
   //   }
   // };
+  
 
-
-  const handleSubmit = async data => {
+  const handleSubmit = async (data) => {
     if (password === confirmPassword) {
-      setLoading(false);
-      const response = await callApi('post', '/register', data)
-        .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'),)
-        .catch(e => console.log(e.response.data))
-          setTimeout(() => {
-            setLoading(false);
-          }, 500);
-       
+      setLoading(true)
+      dispatch({ type: SIGNUP_REQUEST });
+
+      try {
+        const response = await callApi('post', '/register', data);
+        dispatch({ type: SIGNUP_SUCCESS, payload: response.data.user });
+        navigation.push('LogIn');
+      } catch (error) {
+        dispatch({ type: SIGNUP_FAILURE, payload: error.message });
+        // Handle error display or logging here
+      } finally {
+        setLoading(false);
+      }
     } else {
       Alert.alert("Password doesn't match");
     }
   };
+
+
+  
   // for showing and hiding pass
   const [hidePass, setHidePass] = useState(true);
 
@@ -120,7 +122,7 @@ const SignUp = () => {
               left={<TextInput.Icon icon={'account'} />}
               onChangeText={value => setFirstName(value)}
             />
-            {errorMessage && <Text>{errorMessage}</Text>}
+            {/* {errorMessage && <Text>{errorMessage}</Text>} */}
 
             <TextInput
               style={[{ width: wp(80) }, styles.fontField]}
@@ -142,7 +144,7 @@ const SignUp = () => {
               onChangeText={values => setUsername(values)}
 
             />
-              {errorMessage ? (<Text style={styles.errorTxt}>{errorMessage}</Text>) : null}
+              {/* {errorMessage ? (<Text style={styles.errorTxt}>{errorMessage}</Text>) : null} */}
 
 
             <TextInput

@@ -4,6 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Onboarding from 'react-native-onboarding-swiper';
 import LottieView from 'lottie-react-native';
 import {useNavigation} from '@react-navigation/native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const IntroScreen = () => {
   const navigation = useNavigation();
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   lottie: {
-    height: 400,
+    height: hp(50),
     width: 400,
     alignSelf: 'center',
     justifyContent: 'center',

@@ -4,6 +4,7 @@ import Background from './Background';
 import {darkGreen, green} from '../components/Constant';
 import Btn from '../components/Btn';
 import { useNavigation } from '@react-navigation/native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Center from '../components/styles';
 import Logo from '../components/Logo';
 import styles from '../components/styles'
@@ -13,7 +14,9 @@ const Home = props => {
   
   return (
     <Background>
-      <View className="flex justify-center mt-10" style={styles.CenterContainer}>
+      <View 
+      style={{height: hp(10)}}
+      className="flex items-center justify-center mt-10">
         <Logo/>
       </View>
 

@@ -14,19 +14,20 @@ import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import styles from '../components/styles';
 import callApi from '../helper/callApi';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from 'react-redux';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
-import { getData, storeData } from '../helper/auth';
+import { storeData } from '../helper/auth';
 
 const LogIn = ({}) => {
   
+  const dispatch = useDispatch();
+  const isLoggingIn = useSelector((state) => state.login.isLoggingIn);
+  const error = useSelector((state) => state.login.error);
+
   const [hidePass, setHidePass] = useState(true);
   const navigation = useNavigation();
-  // const dispatch = useDispatch();
-  // const [email, setEmail] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const Data = {
@@ -37,30 +38,56 @@ const LogIn = ({}) => {
 
 
 
-  const handleLogin = async (data) => {
-    if (username == data.username && password == data.password) {
-      setLoading(false);
-      const response = callApi('post', '/login', { username, password})
-        .then((response) => {
-          // store token in var
-          const token = response.data.token
-          const first_name = response.data.user.first_name
-          // store token
-          storeData(token, first_name)
-          console.log(token, first_name)
-          if (response.status === 200) {
-            navigation.push('Dashboard');
-          } else {
-            navigation.push('LogIn');
-          }
+  // const handleLogin = async (data) => {
+  //   if (username == data.username && password == data.password) {
+  //     setLoading(true);
+  //     const response = callApi('post', '/login', { username, password})
+  //       .then((response) => {
+  //         // store token in var
+  //         const token = response.data.token
+  //         const first_name = response.data.user.first_name
+  //         const id = JSON.stringify(response.data.user.id);
+  //         // store token
+  //         storeData(token, first_name, id)
+  //         console.log(token, first_name, id)
+  //         if (response.status === 200) {
+  //           navigation.push('Dashboard');
+  //         } else {
+  //           navigation.push('LogIn');
+  //         }
 
-        })
-        .catch((e) => console.log(e));
-    } else {
-      Alert.alert("Something went wrong");
+  //       })
+  //       .catch((e) => console.log(e));
+  //   } else {
+  //     Alert.alert("Something went wrong");
+  //   }
+  // };
+
+  const handleLogin = async (data) => {
+    dispatch({ type: 'LOGIN_REQUEST' });
+
+    try {
+      // Perform your login API call here and handle success and failure cases
+      setLoading(true)
+      const response = await callApi('post', '/login', data);
+
+      // Dispatch LOGIN_SUCCESS and store user data if login is successful
+      dispatch({ type: 'LOGIN_SUCCESS', payload: response.data.user });
+      // Store user data if needed
+      const id = JSON.stringify(response.data.user.id)
+      storeData(response.data.token, response.data.user.first_name, id);
+
+      // Navigate to the dashboard or another screen upon successful login
+      navigation.push('Dashboard');
+    } catch (error) {
+      // Dispatch LOGIN_FAILURE with an error message if login fails
+      dispatch({ type: 'LOGIN_FAILURE', payload: error.message });
+      // Handle error display or logging here
+    } finally {
+      // Set loading state to false when the login process is complete
+      setLoading(false);
     }
   };
-
 
   
   const togglePasswordVisibility = () => {

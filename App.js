@@ -8,6 +8,7 @@ import { useDispatch, Provider} from "react-redux"
 import LogIn from './src/screens/LogIn';
 import IntroScreen from './src/screens/IntroScreen';
 import Dashboard from './src/screens/Dashboard';
+import store from './src/store/store';
 import MessageScreen from './src/screens/MessageScreen';
 import Chat from './src/components/Chat';
 import Chatscreen from './src/screens/Chatscreen';
@@ -29,7 +30,7 @@ function App() {
  
 
   return (
-    // <Provider>
+    <Provider store={store}>
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{headerShown: false}}>
@@ -109,7 +110,7 @@ function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-    // </Provider>
+    </Provider>
   );
 }
 
