@@ -23,6 +23,14 @@ axios.defaults.baseURL = 'https://mentist.onrender.com/api/v1/'
 //     }
 // )
 
+
+
+
+
+
+
+
+
 //Axios function API
 export const callApi = async (method, url, data) => {
     return axios({

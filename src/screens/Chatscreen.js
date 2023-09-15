@@ -1,78 +1,112 @@
-// import React, {useState, useEffect} from 'react';
-// // import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
-// // import Voice from '@react-native-voice/voice';
-// // import styles from './styles';
-// // import Logo from './Logo';
-// // import Background from '../screens/Background';
-// // import { dummyMessages } from './dummy';
-// // import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import React, {useState, useEffect} from 'react';
+import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
+import {GiftedChat, InputToolbar, Send, Bubble} from 'react-native-gifted-chat';
+import callApi from '../helper/callApi';
+// Import your API function
 
-// // function Chat() {
+export default function Chatscreen() {
+  const [messages, setMessages] = useState([]);
+  const [inputText, setInputText] = useState('');
 
-// //     const [messages, setMessage] = (dummyMessages)
-// //   //   const [result, setResult] = useState('');
-// //   //   const [error, setError] = useState('');
-// //   //   const [isRecording, setIsRecording] = useState(false);
+    useEffect(() => {
+      // Load initial chat history
+      chatHistory();
+    }, []);
 
-// //   //   useEffect(() => {
-// //   //     Voice.onSpeechStart = () => setIsRecording(true);
-// //   //     Voice.onSpeechEnd = () => setIsRecording(false);
-// //   //     Voice.onSpeechError = (err) => setError(err.error);
-// //   //     Voice.onSpeechResults = (result) => setResult(result.value[0]);
+    const chatHistory = () => {
+      // call api
+      callApi('get', '/chat', data)
+        .then(response => {
+          const historyMessages = response.data.messages.map(message => ({
+            _id: message.data.user.user_id,
+            text: message.data.user.content,
+            createdAt: new Date(message.data.message.timestamp),
+            user: {
+              role: response.data.messages.role,
+              content: response.data.messages.content,
+              // add
+            }
 
-// //   //     return () => {
-// //   //       // Clean up the event listeners when the component unmounts
-// //   //       Voice.removeAllListeners();
-// //   //     };
-// //   //   }, []);
+          }));
+          setMessages(historyMessages);
+        })
+        .catch(error => {
+          console.error('error: ', error);
+        });
+    };
 
-// //   //   const startRecording = async () => {
-// //   //     try {
-// //   //       await Voice.start('en-GB');
-// //   //       console.log(result)
-// //   //     } catch (error) {
-// //   //       setError(error);
-// //   //       console.log(error)
-// //   //     }
-// //   //   };
+  const onSend = async (newMessages = []) => {
+    setMessages(previousMessages =>
+      GiftedChat.append(previousMessages, newMessages),
+    );
+    const messageText = newMessages[0].text;
+    try {
+      const response = await callApi('post', '/chat', data, {
+        text: response.message.data.content,
+      });
 
-// //   //   const stopRecording = async () => {
-// //   //     try {
-// //   //       await Voice.stop();
-// //   //     } catch (error) {
-// //   //         console.log(error)
-// //   //       setError(error);
-// //   //     }
-// //   //   };
+      // Handle the API response if needed
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
 
-// //   return (
-// //     <Background>
-// //     <View className="flex items-center justify-center mt-10">
-// //       <Logo />
-      
-// //     </View>
+  return (
+    <View style={styles.container}>
+      <GiftedChat
+        messages={messages}
+        onSend={newMessages => onSend(newMessages)}
+        user={{
+          _id: 1, // Your user ID
+          name: 'You', // Your username
+          // Add any other user properties you have
+        }}
+        // Customize the style of the chat bubble
+        renderBubble={props => (
+          <Bubble
+            {...props}
+            wrapperStyle={{
+              right: {
+                backgroundColor: '#007AFF', // Change the background color for your messages
+              },
+              left: {
+                backgroundColor: '#E5E5EA', // Change the background color for received messages
+              },
+            }}
+            textStyle={{
+              right: {
+                color: 'white', // Change the text color for your messages
+              },
+              left: {
+                color: 'black', // Change the text color for received messages
+              },
+            }}
+          />
+        )}
+        // Customize the style of the input toolbar (where you type messages)
+        renderInputToolbar={props => (
+          <InputToolbar
+            {...props}
+            containerStyle={{
+              backgroundColor: '#F4F4F4', // Change the background color of the input toolbar
+            }}
+          />
+        )}
+        // Customize the style of the send button
+        renderSend={props => (
+          <Send {...props}>
+            <View style={{marginRight: 10, marginBottom: 5}}>
+              <Text style={{color: '#007AFF'}}>Send</Text>
+            </View>
+          </Send>
+        )}
+      />
+    </View>
+  );
+}
 
-//             <View className="items-center space-y-2 flex-1">
-//               <Text className="text-white font-semibold ml-1" style={{fontSize: wp(5)}}>Assistant</Text>
-//             <View
-//             style={{height: wp(60)}}
-//             className="bg-[#323e38]"
-//             >
-                
-//             </View>
-
-
-
-// //               </View>
-
-          
-         
-        
-
-
-
-// //     </Background>
-// //   );
-// // }
-
-// // export default Chat;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

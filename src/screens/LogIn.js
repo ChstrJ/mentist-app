@@ -63,31 +63,26 @@ const LogIn = ({}) => {
   //   }
   // };
 
-  const handleLogin = async (data) => {
+  const handleLogin = (data) => {
     dispatch({ type: 'LOGIN_REQUEST' });
-
-    try {
-      // Perform your login API call here and handle success and failure cases
-      setLoading(true)
-      const response = await callApi('post', '/login', data);
-
-      // Dispatch LOGIN_SUCCESS and store user data if login is successful
-      dispatch({ type: 'LOGIN_SUCCESS', payload: response.data.user });
-      // Store user data if needed
-      const id = JSON.stringify(response.data.user.id)
-      storeData(response.data.token, response.data.user.first_name, id);
-
-      // Navigate to the dashboard or another screen upon successful login
-      navigation.push('Dashboard');
-    } catch (error) {
-      // Dispatch LOGIN_FAILURE with an error message if login fails
-      dispatch({ type: 'LOGIN_FAILURE', payload: error.message });
-      // Handle error display or logging here
-    } finally {
-      // Set loading state to false when the login process is complete
-      setLoading(false);
-    }
+    setLoading(true);
+  
+    callApi('post', '/login', data)
+      .then((response) => {
+        dispatch({ type: 'LOGIN_SUCCESS', payload: response.data.user });
+        const id = JSON.stringify(response.data.user.id);
+        console.log(id)
+        storeData(response.data.token, response.data.user.first_name, id);
+        navigation.push('Dashboard');
+      })
+      .catch((error) => {
+        dispatch({ type: 'LOGIN_FAILURE', payload: error.message });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
+  
 
   
   const togglePasswordVisibility = () => {

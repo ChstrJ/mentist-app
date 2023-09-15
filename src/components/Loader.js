@@ -6,7 +6,8 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 const Loader = () => {
   return (
     <View 
-    className="absolute justify-center items-center h-screen w-screen">
+    style={{height: hp(100)}}
+    className="flex justify-center items-center w-screen">
       <LottieView
         source={require('../assets/animations/loading.json')}
         autoPlay

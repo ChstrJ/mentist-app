@@ -89,8 +89,8 @@ function App() {
             gestureEnabled: true,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
-          name="Chat"
-          component={Chat}
+          name="Chatscreen"
+          component={Chatscreen}
         />
         <Stack.Screen
           screenOptions={{
