@@ -10,6 +10,8 @@ import styles from '../components/styles';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Stack} from '@react-native-material/core';
 import Btn from '../components/Btn';
+import { getData } from '../helper/auth';
+import callApi from '../helper/callApi';
 
 export default function Appointment() {
   const navigation = useNavigation();
@@ -21,6 +23,10 @@ export default function Appointment() {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
+  const Data = {
+    name: this.name, 
+    phone: this.phone,
+  }
   //create onchange
   const onChange = (e, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -33,6 +39,13 @@ export default function Appointment() {
     setShow(true);
   };
 
+  const handleAppointment = async (data) => {
+      const token = await getData()
+      const response = await callApi('post', '/appointment', token)
+      .then(response => {response.status === 200 ? console.log("Pakyu") : console.log("Hindi")})
+      .catch(e => console.log(e.response.data))
+  }
+  
   return (
     
       <Background>
@@ -52,9 +65,9 @@ export default function Appointment() {
               left={<TextInput.Icon icon={'account'} />}
               outlineColor="green"
               activeOutlineColor="green"
+              onChangeText={val => {setName(val)}}
             />
             
-
             <TextInput
               className="w-[300] mt-3 rounded-md"
               mode="focused"
@@ -64,6 +77,7 @@ export default function Appointment() {
               left={<TextInput.Icon icon={'phone'} />}
               outlineColor="green"
               activeOutlineColor="green"
+              onChangeText={val => {setPhone(val)}}
             />
 
             <View className="mt-5 w-[300]">
@@ -91,7 +105,7 @@ export default function Appointment() {
                 mode={mode}
                 is24Hour={false}
                 display="default"
-                onChange={onChange}
+                onChange={setDate}
               />
             )}
             <View className="flex items-center mt-5">
@@ -107,7 +121,7 @@ export default function Appointment() {
                 bgColor={styles.Colors.third}
                 textColor="white"
                 btnLabel="Confirm"
-                Press={() => navigation.navigate('Dashboard')}
+                Press={() => handleAppointment()}
               />
             </View>
           </View>
