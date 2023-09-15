@@ -16,6 +16,7 @@ import styles from '../components/styles';
 import callApi from '../helper/callApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { useDispatch } from "react-redux"
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
 import { getData, storeData } from '../helper/auth';
@@ -84,7 +85,7 @@ const LogIn = ({}) => {
             </Text>
 
             <TextInput
-              style={styles.fontField}
+              style={[{ width: wp(80) }, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-lg"
               label="Username"
               mode="outlined"
@@ -95,7 +96,7 @@ const LogIn = ({}) => {
 
             <TextInput
               className="flex w-4/5 mt-2 rounded-md"
-              style={styles.fontField}
+              style={[{ width: wp(80) }, styles.fontField]}
               mode="outlined"
               label="Password"
               activeOutlineColor="green"
@@ -118,7 +119,9 @@ const LogIn = ({}) => {
               }}>
 
               <Text style={[{color: 'white'}, styles.fontText]}>Don't have an account?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+              <TouchableOpacity 
+              
+              onPress={() => navigation.navigate('SignUp')}>
               <Text style={[{ color: 'blue', marginLeft: 5 }, styles.fontText]}>Signup here</Text>
 
               </TouchableOpacity>
@@ -133,11 +136,8 @@ const LogIn = ({}) => {
                   !username || !password
                  
                 }
-                style={[
-                  styles.submitBtn,
-                  {
-                    backgroundColor:
-                      !username || !password ? 'rgba(0, 0, 0, 0.2)' : '#6FF484', }
+                
+                style={[styles.submitBtn, {backgroundColor:!username || !password ? 'rgba(0, 0, 0, 0.2)' : '#6FF484', }
                 ]}>
                 <Text style={[styles.submitBtnTxt, styles.fontTitle]}>
                   Login

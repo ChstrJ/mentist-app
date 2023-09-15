@@ -1,5 +1,6 @@
 import theme from '../core/theme';
 import {StyleSheet, Dimensions} from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const styles = StyleSheet.create({
   CenterContainer: {
@@ -82,9 +83,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#6FF484',
     borderRadius: 10,
     justifyContent: 'center',
-    width: 350,
+    width: wp(80),
     paddingVertical: 10,
     marginVertical: 30,
+
     
     
   },

@@ -17,6 +17,7 @@ import Loader from '../components/Loader';
 import Logo from '../components/Logo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { storeData } from '../helper/auth';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -111,7 +112,7 @@ const SignUp = () => {
 
          
             <TextInput
-              style={styles.fontField}
+              style={[{ width: wp(80) }, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-xl"
               label="First Name"
               mode="outlined"
@@ -122,7 +123,7 @@ const SignUp = () => {
             {errorMessage && <Text>{errorMessage}</Text>}
 
             <TextInput
-              style={styles.fontField}
+              style={[{ width: wp(80) }, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-lg"
               label="Last Name"
               mode="outlined"
@@ -132,7 +133,7 @@ const SignUp = () => {
             />
 
             <TextInput
-              style={styles.fontField}
+              style={[{ width: wp(80) }, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-lg"
               label="Username"
               mode="outlined"
@@ -145,7 +146,7 @@ const SignUp = () => {
 
 
             <TextInput
-              style={styles.fontField}
+              style={[{ width: wp(80) }, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-lg"
               label="Email"
               mode="outlined"
@@ -155,7 +156,7 @@ const SignUp = () => {
             />
 
             <TextInput
-              style={styles.fontField}
+              style={[{ width: wp(80) }, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-lg"
               label="Password"
               mode="outlined"
@@ -172,7 +173,7 @@ const SignUp = () => {
             />
 
             <TextInput
-              style={styles.fontField}
+              style={[{ width: wp(80) }, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-lg"
               label="Confirm Password"
               mode="outlined"

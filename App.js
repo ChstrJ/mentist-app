@@ -9,6 +9,8 @@ import LogIn from './src/screens/LogIn';
 import IntroScreen from './src/screens/IntroScreen';
 import Dashboard from './src/screens/Dashboard';
 import MessageScreen from './src/screens/MessageScreen';
+import Chat from './src/components/Chat';
+import Chatscreen from './src/screens/Chatscreen';
 import {
   CardStyleInterpolators,
   TransitionPreset,
@@ -24,21 +26,7 @@ const Stack = createNativeStackNavigator();
 
 function App() {
 
-  // const checkIfLoggedin = async () => {
-  //   let loggedIn = getData(token);
-
-  //   if (loggedIn == null) {
-  //     // Navigate to dashboard
-  //     navigation.push('Dashboard');
-  //   } else {
-  //     // If no token, redirect to login
-  //     navigation.push('LogIn');
-  //   }
-  // };
  
-  // useEffect(() => {
-  //   checkIfLoggedin();
-  // }, []);
 
   return (
     // <Provider>
@@ -100,8 +88,8 @@ function App() {
             gestureEnabled: true,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
-          name="MessageScreen"
-          component={MessageScreen}
+          name="Chat"
+          component={Chat}
         />
         <Stack.Screen
           screenOptions={{

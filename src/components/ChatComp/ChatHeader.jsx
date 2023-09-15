@@ -3,7 +3,7 @@ import React from 'react'
 import theme from '../../core/theme'
 import Icon from 'react-native-vector-icons/FontAwesome6'
 
-export default function ChatHeader({ username, bio, picture, onlineStatus, onPress }) {
+export default function ChatHeader({}) {
   return (
     <View style={styles.container}>
         <TouchableOpacity style={styles.barsButton}>
@@ -11,9 +11,9 @@ export default function ChatHeader({ username, bio, picture, onlineStatus, onPre
         </TouchableOpacity>
         <View style={styles.profileOptions}>
             <TouchableOpacity style={styles.profile}>
-                <Image style={styles.image} source={picture} />
+                <Image style={styles.image} />
                 <View style={styles.usernameAndOnlineStatus}>
-                    <Text style={styles.username}>{username}</Text>
+                    <Text style={styles.username}></Text>
             
                 </View>
             </TouchableOpacity>

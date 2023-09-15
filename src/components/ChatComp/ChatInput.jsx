@@ -5,6 +5,7 @@ import theme from '../../core/theme'
 
 export default function ChatInput() {
   const [message, setMessage] = useState("")
+  
   return (
     <View style={styles.innerContainer}>
     <View style={styles.inputAndMicrophone}>
