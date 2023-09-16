@@ -33,14 +33,21 @@ const styles = StyleSheet.create({
   fontTitle: {
     fontFamily: 'Poppins Bold',
     fontSize: 25,
-    color: 'white'
+    color: '#333333'
+    
+  },
+
+  fontBtn: {
+    fontFamily: 'Poppins Bold',
+    fontSize: 22,
+    color: '#333333'
     
   },
 
   fontSub: {
     fontFamily: 'Poppins Regular',
     fontSize: 20,
-    color: 'white'
+    color: '#333333'
     
   },
 
@@ -50,15 +57,25 @@ const styles = StyleSheet.create({
     color: 'green'
     
   },
+
+  fontHomeSub: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 20,
+    color: '#333333'
+    
+  },
+
   fontText: {
-    fontFamily: 'Poppins Regular',
+    fontFamily: 'Poppins-SemiBold',
     fontSize: 18,
+    
+  
   },
 
   fontField: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 18,
-    color: 'white',
+
     
     
   },
@@ -75,16 +92,18 @@ const styles = StyleSheet.create({
   errorTxt: {
     fontFamily: 'Poppins Regular',
     fontSize: 10,
-    color: 'red'
+    color: 'red',
+  
   },
 
  
   submitBtn:{
     backgroundColor: '#6FF484',
-    borderRadius: 10,
+    borderRadius: 15,
     justifyContent: 'center',
     width: wp(80),
-    paddingVertical: 10,
+    height: hp(10),
+    
     marginVertical: 30,
 
     

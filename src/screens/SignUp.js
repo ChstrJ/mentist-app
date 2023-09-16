@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Background from './Background';
+import {useForm} from 'react-hook-form';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput, Text} from 'react-native-paper';
 import styles from '../components/styles';
@@ -15,17 +16,24 @@ import BackButton from '../components/BackButton';
 import callApi from '../helper/callApi';
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
-import { SIGNUP_REQUEST, SIGNUP_FAILURE, SIGNUP_SUCCESS } from '../actions/types/types';
-import { storeData } from '../helper/auth';
-import { useDispatch, useSelector } from 'react-redux';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {
+  SIGNUP_REQUEST,
+  SIGNUP_FAILURE,
+  SIGNUP_SUCCESS,
+} from '../actions/types/types';
+import {storeData} from '../helper/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const SignUp = () => {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
-  const isSigningUp = useSelector((state) => state.signup.isSigningUp);
-  const error = useSelector((state) => state.signup.error);
+  const isSigningUp = useSelector(state => state.signup.isSigningUp);
+  const error = useSelector(state => state.signup.error);
 
   const [username, setUsername] = useState();
   const [firstName, setFirstName] = useState();
@@ -43,7 +51,6 @@ const SignUp = () => {
     password: password,
   };
 
-
   // const handleSubmit = async data => {
   //   if (password === confirmPassword) {
   //     setLoading(true);
@@ -53,35 +60,30 @@ const SignUp = () => {
   //         setTimeout(() => {
   //           setLoading(false);
   //         }, 500);
-       
+
   //   } else {
   //     Alert.alert("Password doesn't match");
   //   }
   // };
-  
 
-  const handleSubmit = async (data) => {
-    if (password === confirmPassword) {
-      setLoading(true)
-      dispatch({ type: SIGNUP_REQUEST });
+  const handleSubmit = data => {
+    dispatch({type: 'SIGNUP_REQUEST'});
+    setLoading(true);
 
-      try {
-        const response = await callApi('post', '/register', data);
-        dispatch({ type: SIGNUP_SUCCESS, payload: response.data.user });
+    callApi('post', '/register', data)
+      .then(response => {
+        dispatch({type: SIGNUP_SUCCESS, payload: response.data.user});
         navigation.push('LogIn');
-      } catch (error) {
-        dispatch({ type: SIGNUP_FAILURE, payload: error.message });
-        // Handle error display or logging here
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      Alert.alert("Password doesn't match");
-    }
+      })
+      .catch(error => {
+        dispatch({type: SIGNUP_FAILURE, payload: error.message});
+        Alert.alert(error.message);
+      });
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   };
 
-
-  
   // for showing and hiding pass
   const [hidePass, setHidePass] = useState(true);
 
@@ -112,9 +114,8 @@ const SignUp = () => {
               Create an account
             </Text>
 
-         
             <TextInput
-              style={[{ width: wp(80) }, styles.fontField]}
+              style={[{width: wp(80)}, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-xl"
               label="First Name"
               mode="outlined"
@@ -122,10 +123,9 @@ const SignUp = () => {
               left={<TextInput.Icon icon={'account'} />}
               onChangeText={value => setFirstName(value)}
             />
-            {/* {errorMessage && <Text>{errorMessage}</Text>} */}
 
             <TextInput
-              style={[{ width: wp(80) }, styles.fontField]}
+              style={[{width: wp(80)}, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-lg"
               label="Last Name"
               mode="outlined"
@@ -135,20 +135,18 @@ const SignUp = () => {
             />
 
             <TextInput
-              style={[{ width: wp(80) }, styles.fontField]}
+              style={[{width: wp(80)}, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-lg"
               label="Username"
               mode="outlined"
               activeOutlineColor="green"
               left={<TextInput.Icon icon={'account'} />}
               onChangeText={values => setUsername(values)}
-
             />
-              {/* {errorMessage ? (<Text style={styles.errorTxt}>{errorMessage}</Text>) : null} */}
-
+            {/* {errorMessage ? (<Text style={styles.errorTxt}>{errorMessage}</Text>) : null} */}
 
             <TextInput
-              style={[{ width: wp(80) }, styles.fontField]}
+              style={[{width: wp(80)}, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-lg"
               label="Email"
               mode="outlined"
@@ -158,7 +156,7 @@ const SignUp = () => {
             />
 
             <TextInput
-              style={[{ width: wp(80) }, styles.fontField]}
+              style={[{width: wp(80)}, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-lg"
               label="Password"
               mode="outlined"
@@ -175,7 +173,7 @@ const SignUp = () => {
             />
 
             <TextInput
-              style={[{ width: wp(80) }, styles.fontField]}
+              style={[{width: wp(80)}, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-lg"
               label="Confirm Password"
               mode="outlined"
@@ -197,9 +195,7 @@ const SignUp = () => {
                 alignItems: 'center',
                 marginTop: 30,
               }}>
-              <Text style={[{color: 'white'}, styles.fontText]}>
-                Already have an account?
-              </Text>
+              <Text style={styles.fontText}>Already have an account?</Text>
               <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
                 <Text style={[{color: 'blue', marginLeft: 5}, styles.fontText]}>
                   Login here
@@ -210,29 +206,13 @@ const SignUp = () => {
             <View className="flex justify-center items-center">
               <TouchableOpacity
                 onPress={() => handleSubmit(Data)}
-                disabled={
-                  !username ||
-                  !firstName ||
-                  !lastName ||
-                  !email ||
-                  !password ||
-                  !confirmPassword
-                }
                 style={[
                   styles.submitBtn,
                   {
-                    backgroundColor:
-                      !username ||
-                      !firstName ||
-                      !lastName ||
-                      !email ||
-                      !password ||
-                      !confirmPassword
-                        ? 'rgba(0, 0, 0, 0.2)'
-                        : '#6FF484',
+                    backgroundColor: '#6FF484',
                   },
                 ]}>
-                <Text style={[styles.submitBtnTxt, styles.fontTitle]}>
+                <Text style={[styles.submitBtnTxt, styles.fontBtn]}>
                   Signup
                 </Text>
               </TouchableOpacity>

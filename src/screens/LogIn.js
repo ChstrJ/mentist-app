@@ -14,17 +14,19 @@ import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import styles from '../components/styles';
 import callApi from '../helper/callApi';
-import { useDispatch, useSelector } from 'react-redux';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
-import { storeData } from '../helper/auth';
+import {storeData} from '../helper/auth';
 
 const LogIn = ({}) => {
-  
   const dispatch = useDispatch();
-  const isLoggingIn = useSelector((state) => state.login.isLoggingIn);
-  const error = useSelector((state) => state.login.error);
+  const isLoggingIn = useSelector(state => state.login.isLoggingIn);
+  const error = useSelector(state => state.login.error);
 
   const [hidePass, setHidePass] = useState(true);
   const navigation = useNavigation();
@@ -35,8 +37,6 @@ const LogIn = ({}) => {
     password: password,
   };
   const [isloading, setLoading] = useState();
-
-
 
   // const handleLogin = async (data) => {
   //   if (username == data.username && password == data.password) {
@@ -63,28 +63,26 @@ const LogIn = ({}) => {
   //   }
   // };
 
-  const handleLogin = (data) => {
-    dispatch({ type: 'LOGIN_REQUEST' });
+  const handleLogin = data => {
+    dispatch({type: 'LOGIN_REQUEST'});
     setLoading(true);
-  
+
     callApi('post', '/login', data)
-      .then((response) => {
-        dispatch({ type: 'LOGIN_SUCCESS', payload: response.data.user });
+      .then(response => {
+        dispatch({type: 'LOGIN_SUCCESS', payload: response.data.user});
         const id = JSON.stringify(response.data.user.id);
-        console.log(id)
         storeData(response.data.token, response.data.user.first_name, id);
         navigation.push('Dashboard');
       })
-      .catch((error) => {
-        dispatch({ type: 'LOGIN_FAILURE', payload: error.message });
-      })
-      .finally(() => {
-        setLoading(false);
+      .catch(error => {
+        dispatch({type: 'LOGIN_FAILURE', payload: error.message});
+        Alert.alert("Invalid Credentials");
       });
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   };
-  
 
-  
   const togglePasswordVisibility = () => {
     setHidePass(!hidePass);
   };
@@ -97,9 +95,11 @@ const LogIn = ({}) => {
       ) : (
         <Background>
           <BackButton goBack={navigation.goBack} />
-          <View className="flex justify-center mt-10" style={styles.CenterContainer}>
-            <Logo/>
-         </View>
+          <View
+            className="flex justify-center mt-10"
+            style={styles.CenterContainer}>
+            <Logo />
+          </View>
 
           <View className="flex justify-center items-center mt-10">
             <Text className="text-white" style={styles.fontTitle}>
@@ -107,7 +107,7 @@ const LogIn = ({}) => {
             </Text>
 
             <TextInput
-              style={[{ width: wp(80) }, styles.fontField]}
+              style={[{width: wp(80)}, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-lg"
               label="Username"
               mode="outlined"
@@ -118,7 +118,7 @@ const LogIn = ({}) => {
 
             <TextInput
               className="flex w-4/5 mt-2 rounded-md"
-              style={[{ width: wp(80) }, styles.fontField]}
+              style={[{width: wp(80)}, styles.fontField]}
               mode="outlined"
               label="Password"
               activeOutlineColor="green"
@@ -139,31 +139,24 @@ const LogIn = ({}) => {
                 alignItems: 'center',
                 marginTop: 20,
               }}>
-
-              <Text style={[{color: 'white'}, styles.fontText]}>Don't have an account?</Text>
-              <TouchableOpacity 
-              
-              onPress={() => navigation.navigate('SignUp')}>
-              <Text style={[{ color: 'blue', marginLeft: 5 }, styles.fontText]}>Signup here</Text>
-
+              <Text style={styles.fontText}>Don't have an account?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                <Text style={[{color: 'blue', marginLeft: 5}, styles.fontText]}>
+                  Signup here
+                </Text>
               </TouchableOpacity>
             </View>
-
-            
 
             <View className="flex justify-center items-center">
               <TouchableOpacity
                 onPress={() => handleLogin(Data)}
-                disabled={
-                  !username || !password
-                 
-                }
-                
-                style={[styles.submitBtn, {backgroundColor:!username || !password ? 'rgba(0, 0, 0, 0.2)' : '#6FF484', }
+                style={[
+                  styles.submitBtn,
+                  {
+                    backgroundColor: '#6FF484',
+                  },
                 ]}>
-                <Text style={[styles.submitBtnTxt, styles.fontTitle]}>
-                  Login
-                </Text>
+                <Text style={[styles.submitBtnTxt, styles.fontBtn]}>Login</Text>
               </TouchableOpacity>
             </View>
           </View>

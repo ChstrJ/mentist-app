@@ -4,12 +4,15 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const Background = ({ children }) => {
   return (
-    <LinearGradient
-      colors={['#a9ecc0', '#5CA4A9']} // Define your gradient colors here
-      style={{ flex: 1, height:'100%'}}
-    >
-      {children}
-    </LinearGradient>
+    <View
+    style={{
+      flex: 1,
+      height: '100%',
+      backgroundColor: '#FFFFFF', // Set the background color to white
+    }}
+  >
+    {children}
+  </View>
   );
 };
 

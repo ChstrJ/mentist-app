@@ -41,7 +41,7 @@ export default function Chatscreen() {
     );
     const messageText = newMessages[0].text;
     try {
-      const response = await callApi('post', '/chat', data, {
+      const response = await callApi('post', '/chat/1', data, {
         text: response.message.data.content,
       });
 
