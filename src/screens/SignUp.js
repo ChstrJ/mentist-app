@@ -67,6 +67,7 @@ const SignUp = () => {
 
 
   const handleSubmit = async data => {
+    setLoading(true)
     if (password === confirmPassword) {
       setLoading(false);
       const response = await callApi('post', '/register', data)

@@ -11,10 +11,10 @@ import Logo from '../components/Logo';
 import { Text } from 'react-native-paper';
 
 
-
 const Dashboard = () => {
     const navigation = useNavigation()
     const [firstName, setFirstName] = useState('');
+    const [date, setDate] = useState(new Date())
 
 
     const handleLogout = async () => {
@@ -31,9 +31,25 @@ const Dashboard = () => {
         getUser()
       }, []);
     
+    const getAppoint = () => {
+      try {
+        AsyncStorage.getItem('Date')
+        .then(value => {
+          if (value != null){
+            setDate(value)
+            navigation.push('ConfAppoint')
+          }
+          else{
+            navigation.push('Appointment')
+          }
+        })
+      } catch (error) {
+        
+      }
+    }
+
     return (
         <Background>
-            
             <View className="mt-5" style={styles.CenterContainer}>
         <Logo/>
       <Text 
@@ -42,9 +58,23 @@ const Dashboard = () => {
       </View>
     
             <View className="mt-5" style={styles.CenterContainer}>
-                <Action actionLabel="Ask Question" source={require('../assets/Dashboard/Ask.png')} Press={() => navigation.push("Chat")}/>
-                <Action actionLabel="Create Appointment" source={require('../assets/Dashboard/Appointment.png')} Press={() => navigation.push('Appointment')}/>
-                <Action actionLabel="Check My Progress" source={require('../assets/Dashboard/Progress.png')} Press={() => navigation.push('Progress')}/>
+                <Action 
+                  actionLabel="Ask Question" 
+                  source={require('../assets/Dashboard/Ask.png')} 
+                  Press={() => navigation.push("Chat")}
+                />
+
+                <Action 
+                  actionLabel={"Check Appointment"} 
+                  source={require('../assets/Dashboard/Appointment.png')} 
+                  Press={() => getAppoint()}
+                />
+
+                <Action 
+                  actionLabel="Check My Progress" 
+                  source={require('../assets/Dashboard/Progress.png')} 
+                  Press={() => navigation.push('Progress')}
+                />
                 <Logout actionLabel="Log Out" Press={() => handleLogout()}/>
             </View>
         </Background>

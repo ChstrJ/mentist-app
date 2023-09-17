@@ -1,5 +1,5 @@
-import {View, Button, Pressable} from 'react-native';
-import React, {useState} from 'react';
+import {View, Button, Alert} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView, Platform} from 'react-native';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
@@ -10,8 +10,12 @@ import styles from '../components/styles';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Stack} from '@react-native-material/core';
 import Btn from '../components/Btn';
-import { getData } from '../helper/auth';
+import { getData, isValidPhone, isValidDate } from '../helper/auth';
 import callApi from '../helper/callApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ConfAppoint from './ConfAppoint';
+import Loader from '../components/Loader';
+
 
 export default function Appointment() {
   const navigation = useNavigation();
@@ -27,6 +31,9 @@ export default function Appointment() {
     name: this.name, 
     phone: this.phone,
   }
+  useEffect(() => {
+    getData()
+  }, )
   //create onchange
   const onChange = (e, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -39,13 +46,40 @@ export default function Appointment() {
     setShow(true);
   };
 
-  const handleAppointment = async (data) => {
-      const token = await getData()
-      const response = await callApi('post', '/appointment', token)
-      .then(response => {response.status === 200 ? console.log("Pakyu") : console.log("Hindi")})
-      .catch(e => console.log(e.response.data))
-  }
-  
+  const handleAppointment = async (date, phone) => {
+    if (!isValidPhone(phone) || !isValidDate(date)){
+      Alert.alert('Invalid Credential', 'Please provide a valid date and number!')
+    }
+    else{
+      const picked_date = date.toLocaleString(); // Convert to string
+      await AsyncStorage.setItem('Date', picked_date)
+        .then(() => {
+          setDate(date); // Update the state with the Date object
+          navigation.navigate('Dashboard')
+        })
+        .catch(error => {
+          console.log(error, "pakyu");
+        });
+    }
+  };
+
+  // const storeApp = async ({ data }) => {
+  //   try {
+  //     const token = await AsyncStorage.getItem('token')
+  //     const response = callApi('get', '/appointment', data)
+  //     .then(response => {
+  //       const date = response.data.token.date
+  //       handleAppointment(date)
+  //       console.log(date)
+  //       if (response.status === 200){
+  //         Alert.alert("Nice")
+  //       }
+  //     })
+  //     .catch(e => console.log(e, "Mammo")) 
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
   return (
     
       <Background>
@@ -58,7 +92,7 @@ export default function Appointment() {
           <View className="mt-2 flex items-center">
             <Text className="text-center flex text-xl">Create Appointment</Text>
            
-            <TextInput
+            {/* <TextInput
               className="w-[300] mt-3 rounded-md"
               mode="focused"
               label="Full Name"
@@ -67,7 +101,7 @@ export default function Appointment() {
               activeOutlineColor="green"
               onChangeText={val => {setName(val)}}
             />
-            
+             */}
             <TextInput
               className="w-[300] mt-3 rounded-md"
               mode="focused"
@@ -97,21 +131,23 @@ export default function Appointment() {
                 onPress={() => showMode('time')}
               />
             </View>
+  
+              {show && (
+                <DateTimePicker 
+                  testID='dateTimePicker'
+                  value={date}
+                  mode={mode}
+                  is24Hour={false}
+                  display='default'
+                  onChange={onChange}
+                />
+              )}
 
-            {show && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
-                is24Hour={false}
-                display="default"
-                onChange={setDate}
-              />
-            )}
+
             <View className="flex items-center mt-5">
               <Text className="mb-5 text-lg">Your Appointment Date is:</Text>
               <Text className="flex text-2xl w-100">
-                {date.toLocaleString()}
+                {date.toLocaleString('en-PH')}
               </Text>
             </View>
 
@@ -121,7 +157,7 @@ export default function Appointment() {
                 bgColor={styles.Colors.third}
                 textColor="white"
                 btnLabel="Confirm"
-                Press={() => handleAppointment()}
+                Press={() => handleAppointment(date, phone)}
               />
             </View>
           </View>

@@ -1,4 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import { View, Text } from 'react-native'
+import React from 'react'
+
+export default function Chatscreen() {
+  return (
+    <View>
+      <Text>Chatscreen</Text>
+    </View>
+  )
+}
+// import React, {useState, useEffect} from 'react';
 // import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 // import Voice from '@react-native-voice/voice';
 // import styles from './styles';
@@ -52,18 +62,18 @@ import React, {useState, useEffect} from 'react';
       
 //     </View>
 
-            <View className="items-center space-y-2 flex-1">
-              <Text className="text-white font-semibold ml-1" style={{fontSize: wp(5)}}>Assistant</Text>
-            <View
-            style={{height: wp(60)}}
-            className="bg-[#323e38]"
-            >
+//             <View className="items-center space-y-2 flex-1">
+//               <Text className="text-white font-semibold ml-1" style={{fontSize: wp(5)}}>Assistant</Text>
+//             <View
+//             style={{height: wp(60)}}
+//             className="bg-[#323e38]"
+//             >
                 
-            </View>
+//             </View>
 
 
 
-//               </View>
+// //               </View>
 
           
          

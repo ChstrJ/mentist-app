@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import {TextInput, Text} from 'react-native-paper';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
@@ -35,9 +35,12 @@ const LogIn = ({}) => {
   };
   const [isloading, setLoading] = useState();
 
-
+  // useEffect(() => {
+  //   getData()
+  // }, [])
 
   const handleLogin = async (data) => {
+    setLoading(true)
     if (username == data.username && password == data.password) {
       setLoading(false);
       const response = callApi('post', '/login', { username, password})
@@ -134,7 +137,6 @@ const LogIn = ({}) => {
                 onPress={() => handleLogin(Data)}
                 disabled={
                   !username || !password
-                 
                 }
                 
                 style={[styles.submitBtn, {backgroundColor:!username || !password ? 'rgba(0, 0, 0, 0.2)' : '#6FF484', }
