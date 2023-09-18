@@ -82,8 +82,7 @@ const SignUp = () => {
     setTimeout(() => {
       setLoading(false);
     }, 500);
-
-
+  };
 
   // for showing and hiding pass
   const [hidePass, setHidePass] = useState(true);
