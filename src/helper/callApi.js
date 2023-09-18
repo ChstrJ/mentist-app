@@ -1,41 +1,40 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Set up Axios defaults
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.post['Accept'] = 'application/json';
+axios.defaults.baseURL = 'https://mentist.onrender.com/api/v1/';
 
-//Axios Header
-axios.defaults.headers.post['Content-Type'] = 'application/json'
-axios.defaults.headers.post['Accept'] = 'application/json'
-// Axios URL
-axios.defaults.baseURL = 'https://mentist.onrender.com/api/v1/'
-
-//Axios Token Interceptor
+// Axios Token Interceptor
 // axios.interceptors.request.use(
-//     async config => {
-//         const token = await AsyncStorage.getItem('token')
-//         if (token) {
-//             config.headers.Authorization = "Bearer " + token
-//         }
-//         return config
-//     },
-//     error => {
-//         return Promise.reject(error)
+//   async config => {
+//     const token = await AsyncStorage.getItem('token');
+//     if (token) {
+      
+//       config.headers.Authorization = `Token ${token}`;
 //     }
-// )
+//     return config;
+//   },
+//   error => {
+//     return Promise.reject(error);
+//   }
+// );
 
 
-
-
-
-
-
-
-
-//Axios function API
 export const callApi = async (method, url, data) => {
-    return axios({
-        method, url, data
-    }) 
-}
+  const token = await AsyncStorage.getItem('token');
+  
+  const headers = {
+    'Authorization': `Token ${token}`,
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  };
 
-export default callApi
+  return axios({
+    method,
+    url,
+    data,
+    headers,
+  });
+};

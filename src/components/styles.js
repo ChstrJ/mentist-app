@@ -124,7 +124,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     opacity: 0.4,
     zIndex: 1,
-    backgroundColor: "#6FF484"
+    
+    
+  },
+
+  lottieSmall: {
+    height: hp(40),
+    width: 300,
+    alignSelf: 'center',
+    justifyContent: 'center',
     
     
   },

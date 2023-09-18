@@ -2,54 +2,105 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
 import {GiftedChat, InputToolbar, Send, Bubble} from 'react-native-gifted-chat';
 import callApi from '../helper/callApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // Import your API function
 
 export default function Chatscreen() {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
+  const [token, setToken] = useState('');
 
     useEffect(() => {
       // Load initial chat history
       chatHistory();
     }, []);
 
-    const chatHistory = () => {
-      // call api
-      callApi('get', '/chat', data)
-        .then(response => {
-          const historyMessages = response.data.messages.map(message => ({
-            _id: message.data.user.user_id,
-            text: message.data.user.content,
-            createdAt: new Date(message.data.message.timestamp),
-            user: {
-              role: response.data.messages.role,
-              content: response.data.messages.content,
-              // add
-            }
 
-          }));
-          setMessages(historyMessages);
-        })
-        .catch(error => {
-          console.error('error: ', error);
+
+    const chatHistory = async () => {
+      try {
+        // Get the token from AsyncStorage
+        const token = await AsyncStorage.getItem('token');
+        const id = await AsyncStorage.getItem('id');
+    
+        
+        // Make the GET request with the token in the headers
+        const response = await fetch(`https://mentist.onrender.com/api/v1/chat/${id}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Token ${token}`, // Header prefix with Token
+          },
         });
+    
+        const responseData = await response.json();
+    
+        // Assuming responseData structure matches your description
+        const historyMessages = responseData.messages.map(message => ({
+          _id: message.user,
+          text: message.content,
+          createdAt: new Date(message.timestamp),
+          user: {
+            role: message.role,
+            content: message.content,
+            // Add other user properties if needed
+          },
+        }));
+    
+        setMessages(historyMessages);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     };
+    
 
-  const onSend = async (newMessages = []) => {
-    setMessages(previousMessages =>
-      GiftedChat.append(previousMessages, newMessages),
-    );
-    const messageText = newMessages[0].text;
-    try {
-      const response = await callApi('post', '/chat/1', data, {
-        text: response.message.data.content,
-      });
-
-      // Handle the API response if needed
-    } catch (error) {
-      console.error('Error sending message:', error);
-    }
-  };
+    const onSend = async (newMessages = []) => {
+      setMessages(previousMessages =>
+        GiftedChat.append(previousMessages, newMessages),
+      );
+      
+      const messageText = newMessages[0].text;
+      
+      try {
+        // Get the token from AsyncStorage
+        const token = await AsyncStorage.getItem('token');
+        
+        // Check if the token is available
+        if (!token) {
+          console.error('Token not found in AsyncStorage');
+          return;
+        }
+    
+        // Create the data object to send in the request
+        const data = {
+          message: messageText,
+        };
+    
+        const id = await AsyncStorage.getItem('id');
+        // Make the POST request with the token in the headers
+        const response = await fetch(`https://mentist.onrender.com/api/v1/chat/${id}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Token ${token}`, // Header prefix with Token
+            'Content-Type': 'application/json', // Set content type if needed
+          },
+          body: JSON.stringify(data),
+        });
+    
+        if (!response.ok) {
+          console.error('Error:', response.status, response.statusText);
+          return;
+        }
+    
+        // Handle the API response if needed
+        const responseData = await response.json();
+        console.log('API Response:', responseData);
+    
+      } catch (error) {
+        console.error('Error sending message:', error);
+      }
+    };
+    
+    
 
   return (
     <View style={styles.container}>

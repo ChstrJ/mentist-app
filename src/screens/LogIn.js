@@ -22,6 +22,7 @@ import {
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
 import {storeData} from '../helper/auth';
+import LottieView from 'lottie-react-native';
 
 const LogIn = ({}) => {
   const dispatch = useDispatch();
@@ -76,7 +77,7 @@ const LogIn = ({}) => {
       })
       .catch(error => {
         dispatch({type: 'LOGIN_FAILURE', payload: error.message});
-        Alert.alert("Invalid Credentials");
+        Alert.alert('Invalid Credentials');
       });
     setTimeout(() => {
       setLoading(false);
@@ -95,13 +96,16 @@ const LogIn = ({}) => {
       ) : (
         <Background>
           <BackButton goBack={navigation.goBack} />
-          <View
-            className="flex justify-center mt-10"
-            style={styles.CenterContainer}>
-            <Logo />
-          </View>
 
-          <View className="flex justify-center items-center mt-10">
+          <LottieView
+            source={require('../assets/animations/login.json')}
+            autoPlay
+            loop
+            style={styles.lottieSmall}
+            speed={1}
+          />
+
+          <View className="flex justify-center items-center">
             <Text className="text-white" style={styles.fontTitle}>
               Login Account
             </Text>
@@ -137,7 +141,7 @@ const LogIn = ({}) => {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginTop: 20,
+                marginTop: 30,
               }}>
               <Text style={styles.fontText}>Don't have an account?</Text>
               <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
