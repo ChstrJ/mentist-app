@@ -141,6 +141,23 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     height: Dimensions.get('window').height,
+  }, 
+  appointDisp: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center', 
+    position: 'relative', 
+    bottom: 1
+  }, 
+  textAppoint: {
+    paddingTop: 100, 
+    justifyContent: 'center',
+    textAlign: 'center',
+    fontFamily: 'Poppins Bold', 
+    position: 'relative', 
+    bottom: 0, 
+    fontSize: 26,
+    color: 'black'
   }
 });
 

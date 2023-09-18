@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import {TextInput, Text} from 'react-native-paper';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
@@ -154,11 +154,12 @@ const LogIn = ({}) => {
             <View className="flex justify-center items-center">
               <TouchableOpacity
                 onPress={() => handleLogin(Data)}
-                style={[
-                  styles.submitBtn,
-                  {
-                    backgroundColor: '#6FF484',
-                  },
+                disabled={
+                  !username || !password
+                 
+                }
+                
+                style={[styles.submitBtn, {backgroundColor:!username || !password ? 'rgba(0, 0, 0, 0.2)' : '#6FF484', }
                 ]}>
                 <Text style={[styles.submitBtnTxt, styles.fontBtn]}>Login</Text>
               </TouchableOpacity>

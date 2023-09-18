@@ -19,6 +19,7 @@ const Action = ({ source, Press, actionLabel}) => {
             justifyContent: 'center', 
             marginTop: 20, 
             marginBottom: 20, 
+            padding: 10
           }}>
             
             <Image source={source} style={{marginRight: 5}}></Image>

@@ -20,7 +20,7 @@ import Appointment from './src/screens/Appointment';
 import Progress from './src/screens/Progress';
 import {getData} from './src/helper/auth';
 import Splashscreen from './src/components/Splashscreen';
-
+import ConfAppoint from './src/screens/ConfAppoint';
 const Stack = createNativeStackNavigator();
 
 
@@ -107,6 +107,14 @@ function App() {
           }}
           name="Progress"
           component={Progress}
+        />
+        <Stack.Screen
+          screenOptions={{
+            gestureEnabled: true,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+          name="ConfAppoint"
+          component={ConfAppoint}
         />
       </Stack.Navigator>
     </NavigationContainer>
