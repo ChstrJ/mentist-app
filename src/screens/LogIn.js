@@ -65,8 +65,8 @@ const LogIn = ({}) => {
   // };
 
   const handleLogin = data => {
-    if (username == data.username && password == data.password) {
-      dispatch({type: 'LOGIN_REQUEST'});
+    if (username != undefined || password != undefined) {
+      
       setLoading(true);
       const api = callApi('post', '/login', data)
       
@@ -74,7 +74,6 @@ const LogIn = ({}) => {
         navigation.push('Dashboard');
         dispatch({type: 'LOGIN_SUCCESS', payload: response.data.user});
         const id = JSON.stringify(response.data.user.id);
-        console.log(id)
         storeData(response.data.token, response.data.user.first_name, id);
         
         setTimeout(() => {
