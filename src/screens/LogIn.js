@@ -74,8 +74,8 @@ const LogIn = ({}) => {
         navigation.push('Dashboard');
         dispatch({type: 'LOGIN_SUCCESS', payload: response.data.user});
         const id = JSON.stringify(response.data.user.id);
-        const first_name = response.data.user.first_name
-        storeData(response.data.token, first_name, id);
+        console.log(id)
+        storeData(response.data.token, response.data.user.first_name, id);
         
         setTimeout(() => {
           setLoading(false);

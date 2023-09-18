@@ -29,9 +29,9 @@ const Dashboard = () => {
           const first_name = await AsyncStorage.getItem('first_name')
             setFirstName(first_name) 
       }
-      useEffect(() => {
+    
         getUser()
-      }, []);
+    
     
     const getAppoint = () => {
       try {

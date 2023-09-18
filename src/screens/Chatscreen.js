@@ -1,15 +1,19 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
 import {GiftedChat, InputToolbar, Send, Bubble} from 'react-native-gifted-chat';
-import callApi from '../helper/callApi';
+import {callApi} from '../helper/callApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 // Import your API function
 
 export default function Chatscreen() {
-  // const [messages, setMessages] = useState([]);
+
   // const [inputText, setInputText] = useState('');
-  // const [token, setToken] = useState('');
+
+  
+  
+  
+
 
   //   useEffect(() => {
   //     // Load initial chat history
@@ -54,53 +58,28 @@ export default function Chatscreen() {
   //   };
     
 
-  //   const onSend = async (newMessages = []) => {
-  //     setMessages(previousMessages =>
-  //       GiftedChat.append(previousMessages, newMessages),
-  //     );
+    const onSend = async (newMessages = []) => {
+      setMessages(previousMessages =>
+        GiftedChat.append(previousMessages, newMessages),
+      );
       
-  //     const messageText = newMessages[0].text;
-      
-  //     try {
-  //       // Get the token from AsyncStorage
-  //       const token = await AsyncStorage.getItem('token');
-        
-  //       // Check if the token is available
-  //       if (!token) {
-  //         console.error('Token not found in AsyncStorage');
-  //         return;
-  //       }
+      const messageText = newMessages[0].text;
+        const data = {
+          message: messageText,
+        };
+   
+        const id = await AsyncStorage.getItem('id');
+        callApi('post', `/chat/${id}`, data)
+          .then((response) => {
+            // Handle the API response if needed
+            const responseData = response.data;
+            console.log('API Response:', responseData);
+          })
+          .catch((error) => {
+            console.error('Error sending message:', error);
+          });
     
-  //       // Create the data object to send in the request
-  //       const data = {
-  //         message: messageText,
-  //       };
-    
-  //       const id = await AsyncStorage.getItem('id');
-  //       // Make the POST request with the token in the headers
-  //       const response = await fetch(`https://mentist.onrender.com/api/v1/chat/${id}`, {
-  //         method: 'POST',
-  //         headers: {
-  //           'Authorization': `Token ${token}`, // Header prefix with Token
-  //           'Content-Type': 'application/json', // Set content type if needed
-  //         },
-  //         body: JSON.stringify(data),
-  //       });
-    
-  //       if (!response.ok) {
-  //         console.error('Error:', response.status, response.statusText);
-  //         return;
-  //       }
-    
-  //       // Handle the API response if needed
-  //       const responseData = await response.json();
-  //       console.log('API Response:', responseData);
-    
-  //     } catch (error) {
-  //       console.error('Error sending message:', error);
-  //     }
-  //   };
-
+    };
   const [messages, setMessages] = useState([])
 
   useEffect(() => {
@@ -111,17 +90,11 @@ export default function Chatscreen() {
         createdAt: new Date(),
         user: {
           _id: 1,
-          name: 'React Native',
+          name: 'Assistant',
           avatar: 'https://facebook.github.io/react/img/logo_og.png',
         },
       },
     ])
-  }, [])
-
-  const onSend = useCallback((messages = []) => {
-    setMessages(previousMessages =>
-      GiftedChat.append(previousMessages, messages),
-    )
   }, [])
 
 
@@ -179,6 +152,7 @@ const scrollToBottomComponent = () => {
       alwaysShowSend
       renderSend={renderSend}
       scrollToBottom={true}
+  
     />
     
     </View>
