@@ -63,7 +63,7 @@ const Dashboard = () => {
       </View>
     
             <View className="mt-5" style={styles.CenterContainer}>
-                <Action actionLabel="Ask Question" source={require('../assets/Dashboard/Ask.png')} Press={() => navigation.push("Chat")}/>
+                <Action actionLabel="Ask Question" source={require('../assets/Dashboard/Ask.png')} Press={() => navigation.push("Chatscreen")}/>
                 <Action actionLabel="Create Appointment" source={require('../assets/Dashboard/Appointment.png')} Press={() => navigation.push('Appointment')}/>
                 <Action actionLabel="Check My Progress" source={require('../assets/Dashboard/Progress.png')} Press={() => navigation.push('Progress')}/>
                 <Logout actionLabel="Log Out" Press={() => handleLogout()}/>

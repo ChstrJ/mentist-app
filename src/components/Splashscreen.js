@@ -4,6 +4,7 @@ import Logo from './Logo';
 import styles from './styles';
 import Background from '../screens/Background';
 import {Alert, View} from 'react-native';
+import { heightPercentageToDP } from 'react-native-responsive-screen';
 
 const Splashscreen = ({navigation}) => {
   const getData = async () => {
@@ -29,8 +30,8 @@ const Splashscreen = ({navigation}) => {
   return (
     <Background>
       <View
-        className="flex justify-center items-center mt-64"
-        style={styles.CenterContainer}>
+      style={{height: heightPercentageToDP(90)}}
+        className="flex justify-center items-center">
         <Logo />
       </View>
     </Background>

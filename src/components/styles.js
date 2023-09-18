@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     width: 500,
     alignSelf: 'center',
     justifyContent: 'center',
-    opacity: 0.4,
+    opacity: 0.7,
     zIndex: 1,
     
     

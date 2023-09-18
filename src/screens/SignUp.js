@@ -13,7 +13,7 @@ import {useNavigation} from '@react-navigation/native';
 import {TextInput, Text} from 'react-native-paper';
 import styles from '../components/styles';
 import BackButton from '../components/BackButton';
-import callApi from '../helper/callApi';
+import {callApi} from '../helper/callApi';
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
 import {
@@ -67,21 +67,26 @@ const SignUp = () => {
   // };
 
   const handleSubmit = data => {
+    if (password === confirmPassword) {
     dispatch({type: 'SIGNUP_REQUEST'});
     setLoading(true);
-
-    callApi('post', '/register', data)
+    const api = callApi('post', '/register', data)
       .then(response => {
-        dispatch({type: SIGNUP_SUCCESS, payload: response.data.user});
         navigation.push('LogIn');
+        dispatch({type: SIGNUP_SUCCESS, payload: response.data.user});
+        Alert.alert("Registration Successful");
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
       })
       .catch(error => {
         dispatch({type: SIGNUP_FAILURE, payload: error.message});
         Alert.alert(error.message);
+        setLoading(false)
       });
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
+  } else {
+    Alert.alert("Password doesn't match");
+  }
   };
 
   // for showing and hiding pass

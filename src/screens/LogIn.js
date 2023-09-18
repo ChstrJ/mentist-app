@@ -13,7 +13,7 @@ import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import styles from '../components/styles';
-import callApi from '../helper/callApi';
+import {callApi} from '../helper/callApi';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   widthPercentageToDP as wp,
@@ -65,23 +65,32 @@ const LogIn = ({}) => {
   // };
 
   const handleLogin = data => {
-    dispatch({type: 'LOGIN_REQUEST'});
-    setLoading(true);
-
-    callApi('post', '/login', data)
+    if (username == data.username && password == data.password) {
+      dispatch({type: 'LOGIN_REQUEST'});
+      setLoading(true);
+      const api = callApi('post', '/login', data)
+      
       .then(response => {
+        navigation.push('Dashboard');
         dispatch({type: 'LOGIN_SUCCESS', payload: response.data.user});
         const id = JSON.stringify(response.data.user.id);
-        storeData(response.data.token, response.data.user.first_name, id);
-        navigation.push('Dashboard');
+        const first_name = response.data.user.first_name
+        storeData(response.data.token, first_name, id);
+        
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
       })
       .catch(error => {
         dispatch({type: 'LOGIN_FAILURE', payload: error.message});
-        Alert.alert('Invalid Credentials');
+        console.log(error.message)
+        setLoading(false);
+        
       });
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
+    
+  } else {
+    Alert.alert("Invalid Credentials")
+  }
   };
 
   const togglePasswordVisibility = () => {
