@@ -11,7 +11,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {Stack} from '@react-native-material/core';
 import Btn from '../components/Btn';
 import { getData, isValidPhone, isValidDate } from '../helper/auth';
-import callApi from '../helper/callApi';
+import { callApi } from '../helper/callApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ConfAppoint from './ConfAppoint';
 import Loader from '../components/Loader';
@@ -26,14 +26,47 @@ export default function Appointment() {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+  const [id, setId] = useState('')
 
-  const Data = {
-    name: this.name, 
-    phone: this.phone,
-  }
+  // useEffect( async() => {
+  //   try {
+  //     await AsyncStorage.getItem('id')
+  //     .then(value => {
+  //       setId(value)
+  //     })
+  //     .catch(e => console.log(e))
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // })
+
   useEffect(() => {
     getData()
+    try {
+      AsyncStorage.getItem('id')
+      .then(value => {
+        setId(value)
+        console.log(value)
+      })
+      .catch(e => console.log(e))
+    } catch (error) {
+      console.log(error)
+    }
   }, )
+  const Data = {
+    consultant_id: 1,
+    user_id: id, 
+    phone_number: phone,
+    date: date.toLocaleDateString('en-US', {
+      year: 'numeric', 
+      month: '2-digit', 
+      day: '2-digit',
+    }),
+    booking_time: date.toLocaleTimeString('en-US', {
+      hour: '2-digit', 
+      minute:'2-digit', 
+    })
+  }
   //create onchange
   const onChange = (e, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -46,40 +79,21 @@ export default function Appointment() {
     setShow(true);
   };
 
-  const handleAppointment = async (date, phone) => {
+  const handleAppointment = async (data) => {
     if (!isValidPhone(phone) || !isValidDate(date)){
       Alert.alert('Invalid Credential', 'Please provide a valid date and number!')
     }
     else{
-      const picked_date = date.toLocaleString(); // Convert to string
-      await AsyncStorage.setItem('Date', picked_date)
-        .then(() => {
-          setDate(date); // Update the state with the Date object
-          navigation.navigate('Dashboard')
-        })
-        .catch(error => {
-          console.log(error, "pakyu");
-        });
+      callApi('post', '/appointment', data)
+      .then(response => {
+        navigation.push('Dashboard')
+        Alert.alert('Schedule Sucess')
+      })
+      .catch(error => {console.log(error)})
     }
   };
 
-  // const storeApp = async ({ data }) => {
-  //   try {
-  //     const token = await AsyncStorage.getItem('token')
-  //     const response = callApi('get', '/appointment', data)
-  //     .then(response => {
-  //       const date = response.data.token.date
-  //       handleAppointment(date)
-  //       console.log(date)
-  //       if (response.status === 200){
-  //         Alert.alert("Nice")
-  //       }
-  //     })
-  //     .catch(e => console.log(e, "Mammo")) 
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
+
   return (
     
       <Background>
@@ -157,7 +171,7 @@ export default function Appointment() {
                 bgColor={styles.Colors.third}
                 textColor="white"
                 btnLabel="Confirm"
-                Press={() => handleAppointment(date, phone)}
+                Press={() => handleAppointment(JSON.stringify(Data))}
               />
             </View>
           </View>
