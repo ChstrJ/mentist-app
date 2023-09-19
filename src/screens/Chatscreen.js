@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {View, Text, TextInput, Button, StyleSheet, Image} from 'react-native';
+import {View, Text, TextInput, Button, StyleSheet, Image, FlatList,Alert} from 'react-native';
 import {GiftedChat, InputToolbar, Send, Bubble} from 'react-native-gifted-chat';
 import {callApi} from '../helper/callApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,8 +10,8 @@ import {useNavigation} from '@react-navigation/native';
 // Import your API function
 
 export default function Chatscreen() {
-  // const [inputText, setInputText] = useState('');
   const [firstName, setFirstName] = useState('');
+  const [messages, setMessages] = useState([]);
   const navigation = useNavigation();
 
   const getUser = async () => {
@@ -19,52 +19,32 @@ export default function Chatscreen() {
     setFirstName(first_name);
   };
 
-  //   useEffect(() => {
-  //     // Load initial chat history
-  //     chatHistory();
-  //   }, []);
 
-  //   const chatHistory = async () => {
-  //     try {
-  //       // Get the token from AsyncStorage
-  //       const token = await AsyncStorage.getItem('token');
-  //       const id = await AsyncStorage.getItem('id');
 
-  //       // Make the GET request with the token in the headers
-  //       const response = await fetch(`https://mentist.onrender.com/api/v1/chat/${id}`, {
-  //         method: 'GET',
-  //         headers: {
-  //           'Authorization': `Token ${token}`, // Header prefix with Token
-  //         },
-  //       });
+  const chatHistory = async () => {
+    const id = await AsyncStorage.getItem('id');
+    const response = await callApi('get', `/chat/${id}`);
+    const chatResponse = response.data;
 
-  //       const responseData = await response.json();
 
-  //       // Assuming responseData structure matches your description
-  //       const historyMessages = responseData.messages.map(message => ({
-  //         _id: message.user,
-  //         text: message.content,
-  //         createdAt: new Date(message.timestamp),
-  //         user: {
-  //           role: message.role,
-  //           content: message.content,
-  //           // Add other user properties if needed
-  //         },
-  //       }));
+    const historyMessages = chatResponse.messages.map(message => ({
+      _id: message.timestamp,
+      text: message.content,
+      createdAt: new Date(message.timestamp),
+      user: {
+        _id: message.role === 'user' ? '2' : '1',
+        name: message.role,
+      },
+    }));
 
-  //       setMessages(historyMessages);
-  //     } catch (error) {
-  //       console.error('Error:', error);
-  //     }
-  //   };
+    setMessages(historyMessages);
+  };
 
-  const [messages, setMessages] = useState([]);
 
+ 
+
+  // sending message
   const onSend = async (newMessages = []) => {
-    setMessages(previousMessages =>
-      GiftedChat.append(previousMessages, newMessages),
-    );
-
     const messageText = newMessages[0].text;
     const data = {
       message: messageText,
@@ -73,8 +53,13 @@ export default function Chatscreen() {
     const id = await AsyncStorage.getItem('id');
     callApi('post', `/chat/${id}`, data)
       .then(response => {
-        const responseData = response.data;
-        console.log('API Response:', responseData);
+        const responseData = JSON.stringify(response.data);
+        console.log(responseData);
+
+        // Update the state with the new message
+        setMessages(previousMessages =>
+          GiftedChat.append(previousMessages, newMessages),
+        );
       })
       .catch(e => {
         console.error('Error sending message:', e);
@@ -83,18 +68,7 @@ export default function Chatscreen() {
 
   useEffect(() => {
     getUser();
-    setMessages([
-      {
-        _id: 2,
-        text: 'Hi',
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: 'Assistant',
-          avatar: 'https://facebook.github.io/react/img/logo_og.png',
-        },
-      },
-    ]);
+    chatHistory();
   }, []);
 
   const renderBubble = props => {
@@ -114,6 +88,7 @@ export default function Chatscreen() {
       />
     );
   };
+
 
   const renderSend = props => {
     return (
@@ -135,23 +110,23 @@ export default function Chatscreen() {
       {/* Custom Header */}
       <View style={styles.header}>
         <BackButton goBack={navigation.goBack} />
-        <Image
-          source={require('../assets/bot.png')}
-          style={styles.image}
-        />
+        <Image source={require('../assets/bot.png')} style={styles.image} />
         <Text style={styles.headerText}>Hello, {firstName}</Text>
       </View>
 
       <GiftedChat
         messages={messages}
-        onSend={messages => onSend(messages)}
+        onSend={newMessages=>onSend(newMessages)}
         user={{
-          _id: 1,
+          _id: "2",
         }}
         renderBubble={renderBubble}
+        messagesContainerStyle={{ backgroundColor: 'white' }}
         alwaysShowSend
         renderSend={renderSend}
+        placeholder='Write a message...'
         scrollToBottom={true}
+        isTyping={true}
       />
     </View>
   );
@@ -174,11 +149,10 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: 'black',
     fontWeight: 'bold',
-    marginTop:7,
+    marginTop: 7,
     display: 'flex',
     flexDirection: 'row',
-    marginLeft: 5
-   
+    marginLeft: 5,
   },
 
   image: {
@@ -187,8 +161,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     borderRadius: 15,
-    
+
     marginRight: 10,
-    marginLeft: 60
+    marginLeft: 60,
   },
 });

@@ -65,11 +65,10 @@ const LogIn = ({}) => {
   // };
 
   const handleLogin = data => {
-    if (username != undefined || password != undefined) {
-      
-      setLoading(true);
-      const api = callApi('post', '/login', data)
-      
+    
+    setLoading(true);
+    if(username != undefined || password != undefined) {
+    const response = callApi('post', '/login', data)
       .then(response => {
         navigation.push('Dashboard');
         dispatch({type: 'LOGIN_SUCCESS', payload: response.data.user});
@@ -82,14 +81,14 @@ const LogIn = ({}) => {
       })
       .catch(error => {
         dispatch({type: 'LOGIN_FAILURE', payload: error.message});
-        console.log(error.message)
+        Alert.alert("Invalid Credentials", "Please try again later")
         setLoading(false);
-        
       });
-    
-  } else {
-    Alert.alert("Invalid Credentials")
-  }
+    } else {
+      Alert.alert("Invalid Credentials", "Please try again later")
+      setLoading(false);
+    }
+      
   };
 
   const togglePasswordVisibility = () => {
