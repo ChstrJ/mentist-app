@@ -40,19 +40,20 @@ export default function Appointment() {
   //   }
   // })
 
-  useEffect(() => {
-    getData()
-    try {
-      AsyncStorage.getItem('id')
-      .then(value => {
-        setId(value)
-        console.log(value)
-      })
-      .catch(e => console.log(e))
-    } catch (error) {
-      console.log(error)
-    }
-  }, )
+  // useEffect(() => {
+  //   getData()
+  //   try {
+  //     AsyncStorage.getItem('id')
+  //     .then(value => {
+  //       setId(value)
+  //       console.log(value)
+  //     })
+  //     .catch(e => console.log(e))
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }, )
+
   const Data = {
     consultant_id: 1,
     user_id: id, 

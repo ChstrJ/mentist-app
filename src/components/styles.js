@@ -102,24 +102,18 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'center',
     width: wp(80),
-    height: hp(10),
-    
-    marginVertical: 30,
-
-    
-    
+    height: hp(8),
+    marginVertical: 15,
   },
 
   submitBtnTxt:{
-    
     textAlign: 'center',
-    
-    
   },
 
   lottieLoader: {
-    height: 800,
-    width: 500,
+    height: 500,
+    width: 300,
+    position: 'absolute',
     alignSelf: 'center',
     justifyContent: 'center',
     opacity: 0.7,

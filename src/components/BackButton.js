@@ -8,7 +8,7 @@ export default function BackButton({ goBack }) {
       <Image
         style={style.image}
         source={require('../assets/arrow_back.png')}
-        tintColor={'green'}
+        tintColor={'black'}
       />
     </TouchableOpacity>
   )
@@ -17,8 +17,8 @@ export default function BackButton({ goBack }) {
 const style = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 5 + getStatusBarHeight(),
-    left: 10,
+    top: getStatusBarHeight(),
+    left: 13,
   },
   image: {
     width: 40,

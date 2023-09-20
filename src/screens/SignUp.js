@@ -13,6 +13,8 @@ import {useNavigation} from '@react-navigation/native';
 import {TextInput, Text} from 'react-native-paper';
 import styles from '../components/styles';
 import BackButton from '../components/BackButton';
+import { Formik, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import {callApi} from '../helper/callApi';
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
@@ -51,20 +53,16 @@ const SignUp = () => {
     password: password,
   };
 
-  // const handleSubmit = async data => {
-  //   if (password === confirmPassword) {
-  //     setLoading(true);
-  //     const response = await callApi('post', '/register', data)
-  //       .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'),)
-  //       .catch(e => console.log(e.response.data))
-  //         setTimeout(() => {
-  //           setLoading(false);
-  //         }, 500);
 
-  //   } else {
-  //     Alert.alert("Password doesn't match");
-  //   }
-  // };
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required('Username is required'),
+    password: Yup.string().required('Password is required'),
+    email: Yup.string()
+    .email('Invalid Email')
+    .required('This field is required')
+  });
+
+  
 
   const handleSubmit = data => {
     if (password === confirmPassword) {
