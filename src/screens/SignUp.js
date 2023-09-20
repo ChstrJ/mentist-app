@@ -67,6 +67,17 @@ const SignUp = () => {
   // };
 
   const handleSubmit = data => {
+    if (
+      !data.username ||
+      !data.first_name ||
+      !data.last_name ||
+      !data.email ||
+      !data.password
+    ) {
+      // At least one field is empty
+      Alert.alert('Error', 'Please fill in all fields');
+      return; // Exit the function
+    }
     if (password === confirmPassword) {
     dispatch({type: 'SIGNUP_REQUEST'});
     setLoading(true);
@@ -81,7 +92,8 @@ const SignUp = () => {
       })
       .catch(error => {
         dispatch({type: SIGNUP_FAILURE, payload: error.message});
-        Alert.alert(error.message);
+        // Alert.alert(error.message);
+        Alert.alert("Error", error.message)
         setLoading(false)
       });
   } else {
@@ -216,7 +228,9 @@ const SignUp = () => {
                   {
                     backgroundColor: '#6FF484',
                   },
-                ]}>
+                ]}
+
+                >
                 <Text style={[styles.submitBtnTxt, styles.fontBtn]}>
                   Signup
                 </Text>

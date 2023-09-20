@@ -46,7 +46,6 @@ export default function Appointment() {
       AsyncStorage.getItem('id')
       .then(value => {
         setId(value)
-        console.log(value)
       })
       .catch(e => console.log(e))
     } catch (error) {
@@ -57,16 +56,10 @@ export default function Appointment() {
     consultant_id: 1,
     user_id: id, 
     phone_number: phone,
-    date: date.toLocaleDateString('en-US', {
-      year: 'numeric', 
-      month: '2-digit', 
-      day: '2-digit',
-    }),
-    booking_time: date.toLocaleTimeString('en-US', {
-      hour: '2-digit', 
-      minute:'2-digit', 
-    })
+    date: date.toISOString().split('T')[0],
+    booking_time: date.toISOString().split('T')[1].split('.')[0],
   }
+
   //create onchange
   const onChange = (e, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -86,10 +79,27 @@ export default function Appointment() {
     else{
       callApi('post', '/appointment', data)
       .then(response => {
+        AsyncStorage.setItem('Date', date)
+        .then(value => {
+          setDate(value)
+        }).catch(e => {console.log(e)})
+        
         navigation.push('Dashboard')
-        Alert.alert('Schedule Sucess')
+        Alert.alert('Schedule Success', `Your session will be on ${Data.date}, ${Data.booking_time}`)
       })
-      .catch(error => {console.log(error)})
+      .catch(error => {
+        if (error.response) {
+          // The server responded with an error (status code 4xx or 5xx)
+          console.log('HTTP Status Code:', error.response.status);
+          console.log('Error Data:', error.response.data);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log('No response received from the server');
+        } else {
+          // Something else happened while setting up the request
+          console.log('Error:', error.message);
+        }
+      })
     }
   };
 
@@ -149,7 +159,7 @@ export default function Appointment() {
               {show && (
                 <DateTimePicker 
                   testID='dateTimePicker'
-                  value={date}
+                  value={new Date(date)}
                   mode={mode}
                   is24Hour={false}
                   display='default'
@@ -171,7 +181,7 @@ export default function Appointment() {
                 bgColor={styles.Colors.third}
                 textColor="white"
                 btnLabel="Confirm"
-                Press={() => handleAppointment(JSON.stringify(Data))}
+                Press={() => handleAppointment(Data)}
               />
             </View>
           </View>
