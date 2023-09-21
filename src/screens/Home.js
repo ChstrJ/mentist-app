@@ -9,7 +9,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Logo from '../components/Logo';
-import styles from '../components/styles';
+import { styles } from '../components/styles';
 
 const Home = props => {
   const navigation = useNavigation();

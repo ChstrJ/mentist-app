@@ -11,7 +11,7 @@ import Background from './Background';
 import {useForm} from 'react-hook-form';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput, Text} from 'react-native-paper';
-import styles from '../components/styles';
+import { styles } from '../components/styles';
 import BackButton from '../components/BackButton';
 import {callApi} from '../helper/callApi';
 import Loader from '../components/Loader';

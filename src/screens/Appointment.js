@@ -6,16 +6,16 @@ import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import {TextInput, Text} from 'react-native-paper';
 import Logo from '../components/Logo';
-import styles from '../components/styles';
+import { styles }  from '../components/styles';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Stack} from '@react-native-material/core';
 import Btn from '../components/Btn';
-import { getData, isValidPhone, isValidDate } from '../helper/auth';
+import { getData, isValidPhone, isValidDate, setAppoint } from '../helper/auth';
 import { callApi } from '../helper/callApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ConfAppoint from './ConfAppoint';
 import Loader from '../components/Loader';
-
+import Notif from '../components/Notif';
 
 export default function Appointment() {
   const navigation = useNavigation();
@@ -27,19 +27,11 @@ export default function Appointment() {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [id, setId] = useState('')
-
-  // useEffect( async() => {
-  //   try {
-  //     await AsyncStorage.getItem('id')
-  //     .then(value => {
-  //       setId(value)
-  //     })
-  //     .catch(e => console.log(e))
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // })
-
+  const [appId, setAppId] = useState('')
+  const [error, setError] = useState(false)
+  const [conName, setConName] = useState('')
+  const [time, setTime] = useState('')
+  
   useEffect(() => {
     getData()
     try {
@@ -79,19 +71,27 @@ export default function Appointment() {
     else{
       callApi('post', '/appointment', data)
       .then(response => {
-        AsyncStorage.setItem('Date', date)
+        AsyncStorage.setItem('Date', response.data.date)
         .then(value => {
           setDate(value)
         }).catch(e => {console.log(e)})
-        
+        const id = response.data.appointment_id
+        AsyncStorage.setItem('AppointID', id)
+        .then(res => {
+          setAppId(res)
+        })
         navigation.push('Dashboard')
-        Alert.alert('Schedule Success', `Your session will be on ${Data.date}, ${Data.booking_time}`)
+        // Alert.alert('Schedule Success', `Your session will be on ${response.data.date}, ${response.data.time}, with ${response.data.consultant.name}`)
+        setConName(response.data.consultant.name)
+        setTime(response.data.time)
+        setDate(response.data.date)
       })
       .catch(error => {
         if (error.response) {
           // The server responded with an error (status code 4xx or 5xx)
           console.log('HTTP Status Code:', error.response.status);
           console.log('Error Data:', error.response.data);
+          
         } else if (error.request) {
           // The request was made but no response was received
           console.log('No response received from the server');
@@ -116,16 +116,6 @@ export default function Appointment() {
           <View className="mt-2 flex items-center">
             <Text className="text-center flex text-xl">Create Appointment</Text>
            
-            {/* <TextInput
-              className="w-[300] mt-3 rounded-md"
-              mode="focused"
-              label="Full Name"
-              left={<TextInput.Icon icon={'account'} />}
-              outlineColor="green"
-              activeOutlineColor="green"
-              onChangeText={val => {setName(val)}}
-            />
-             */}
             <TextInput
               className="w-[300] mt-3 rounded-md"
               mode="focused"
@@ -174,7 +164,7 @@ export default function Appointment() {
                 {date.toLocaleString('en-PH')}
               </Text>
             </View>
-
+                
             <View className="flex items-center justify-center">
               <Btn
                 className="flex justify-center items-center"
@@ -183,6 +173,7 @@ export default function Appointment() {
                 btnLabel="Confirm"
                 Press={() => handleAppointment(Data)}
               />
+              
             </View>
           </View>
         </View>

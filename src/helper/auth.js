@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { callApi } from './callApi';
 
 // auth login
 export const storeData = async (token, first_name, id) => {
@@ -26,4 +27,9 @@ export const isValidPhone = (phoneNumber) => {
 
 export const isValidDate = (date) => {
   return date >= new Date()
+}
+
+
+export const setAppoint = async (id, uid, booking_time, date) => {
+  await AsyncStorage.setItem('ID', id);
 }

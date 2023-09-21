@@ -12,7 +12,7 @@ import React, {useState, useEffect} from 'react';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
-import styles from '../components/styles';
+import { styles } from '../components/styles';
 import {callApi} from '../helper/callApi';
 import {useDispatch, useSelector} from 'react-redux';
 import {
