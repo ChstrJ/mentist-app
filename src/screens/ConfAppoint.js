@@ -42,7 +42,7 @@ export default function ConfAppoint() {
     
     const cancelApp = async (appId) => {
 
-      await callApi('get', `/cancel${appId}`)
+      await callApi('put', `/cancel`, appId)
       .then(val => {
         AsyncStorage.removeItem('AppointID')
       }).catch(e => {

@@ -35,13 +35,13 @@ const SignUp = () => {
   const isSigningUp = useSelector(state => state.signup.isSigningUp);
   const error = useSelector(state => state.signup.error);
 
-  const [username, setUsername] = useState();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setlastName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
-  const [isLoading, setLoading] = useState();
+  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setlastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setLoading] = useState('');
 
   const Data = {
     username: username,
@@ -67,16 +67,29 @@ const SignUp = () => {
   // };
 
   const handleSubmit = data => {
-    if (
-      !data.username ||
-      !data.first_name ||
-      !data.last_name ||
-      !data.email ||
-      !data.password
-    ) {
-      // At least one field is empty
-      Alert.alert('Error', 'Please fill in all fields');
-      return; // Exit the function
+    if (firstName.length <= 0){
+       Alert.alert('Error', 'Invalid First Name!');
+       return 
+    }
+    if (lastName.length <= 0){
+      Alert.alert('Error', 'Invalid Last Name!');
+      return 
+   }
+    if (username.length > 8 || username.length <= 0) {
+      Alert.alert('Error', 'Invalid Username!');
+      return;
+    }
+    if (email.length <= 0) {
+      Alert.alert('Error', 'Invalid Email!');
+      return;
+    }
+    if (password.length <= 0){
+      Alert.alert('Error', 'Invalid Password!');
+      return
+    }
+    if (confirmPassword.length <= 0 || confirmPassword != password){
+      Alert.alert('Error', 'Invalid, Must be same with Password!');
+      return
     }
     if (password === confirmPassword) {
     dispatch({type: 'SIGNUP_REQUEST'});
