@@ -17,7 +17,7 @@ const Dashboard = () => {
     const [firstName, setFirstName] = useState('');
     const [date, setDate] = useState(new Date())
     const [appId, setAppId] = useState('')
-
+    
     const handleLogout = async () => {
         const removed = removeData()
         // console.log(token, first_name)

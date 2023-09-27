@@ -16,7 +16,7 @@ export const storeData = async (token, first_name, id) => {
 export const removeData = async () => {
     AsyncStorage.removeItem('token');
     AsyncStorage.removeItem('first_name');
-    AsyncStorage.removeItem('Date')
+    // AsyncStorage.removeItem('Date')
     return true; // Indicate successful removal
 }
 
