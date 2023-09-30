@@ -237,25 +237,17 @@ const SignUp = () => {
             <View className="flex justify-center items-center">
               <Btn
                 onPress={() => handleSubmit(Data)}
-<<<<<<< HEAD
+
                 style={[
                   styles.submitBtn,
                   {
                     backgroundColor: '#6FF484',
                   },
                 ]}
-
-                >
-                <Text style={[styles.submitBtnTxt, styles.fontBtn]}>
-                  Register
-                </Text>
-              </TouchableOpacity>
-=======
                 btnLabel="Register"
-               />
+              />
             
               
->>>>>>> e9045bed736ba5aff8ad6afb375195451fb11b0b
             </View>
           </View>
         </Background>

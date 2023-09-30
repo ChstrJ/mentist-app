@@ -30,9 +30,6 @@ export default function ConfAppoint() {
     useEffect(() => {
         AsyncStorage.getItem('Date')
         .then(val => {
-          if (!val){
-            navigation.navigate('Dashboard')
-          }
             if (val){
                 setDate(val)
             }
@@ -86,7 +83,7 @@ export default function ConfAppoint() {
               bgColor={theme.rightColors.primary} 
               btnLabel="Cancel Appointment" 
               textColor='white'
-              Press={() => { cancelApp(appId);  }}
+              Press={ cancelApp(appId)  }
             />
               <Notif 
                 visible={notif} 
