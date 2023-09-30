@@ -1,13 +1,13 @@
 import theme from '../core/theme';
 import {StyleSheet, Dimensions} from 'react-native';
+import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   CenterContainer: {
     width: Dimensions.get('window').width,
     display: 'flex',
     alignItems: 'center',
-    
   },
   CenterText: {
     width: Dimensions.get('window').width,
@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
     error: '#f13a59',
     black: '#140C10',
   },
-
   buttonWidths: {
     width: 250,
     display: 'flex',
@@ -29,57 +28,40 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     borderRadius: 20,
   },
-
   fontTitle: {
     fontFamily: 'Poppins Bold',
     fontSize: 25,
     color: '#333333'
-    
   },
-
   fontBtn: {
     fontFamily: 'Poppins Bold',
     fontSize: 22,
-    color: '#333333'
-    
+    color: '#333333'   
   },
-
   fontSub: {
     fontFamily: 'Poppins Regular',
     fontSize: 20,
-    color: '#333333'
-    
+    color: '#333333'    
   },
-
   fontHome: {
     fontFamily: 'Poppins Bold',
     fontSize: 40,
-    color: 'green'
-    
+    color: 'green'    
   },
 
   fontHomeSub: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 20,
     color: '#333333'
-    
   },
-
   fontText: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 18,
-    
-  
   },
-
   fontField: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 18,
-
-    
-    
   },
-
   button:{
         borderRadius: 20,
         alignItems: 'center',
@@ -88,28 +70,22 @@ const styles = StyleSheet.create({
         marginVertical: 30,
         elevation: 10
   },
-
   errorTxt: {
     fontFamily: 'Poppins Regular',
     fontSize: 10,
     color: 'red',
-  
   },
-
- 
   submitBtn:{
     backgroundColor: '#6FF484',
     borderRadius: 15,
     justifyContent: 'center',
     width: wp(80),
-    height: hp(8),
-    marginVertical: 15,
+    height: hp(10),  
+    marginVertical: 30,
   },
-
   submitBtnTxt:{
     textAlign: 'center',
   },
-
   lottieLoader: {
     height: 500,
     width: 300,
@@ -118,20 +94,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     opacity: 0.7,
     zIndex: 1,
-    
-    
   },
-
   lottieSmall: {
     height: hp(40),
     width: 300,
     alignSelf: 'center',
     justifyContent: 'center',
-    
-    
   },
   loaderContainer: {
-    
     display: 'flex',
     alignItems: 'center',
     height: Dimensions.get('window').height,
@@ -152,7 +122,50 @@ const styles = StyleSheet.create({
     bottom: 0, 
     fontSize: 26,
     color: 'black'
-  }
+  }, 
 });
 
-export default styles;
+export const modalStyle = StyleSheet.create({
+  centerView: {
+    flex: 1, 
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#00000099'
+  }, 
+  modalView: {
+    width: 300, 
+    height: 300, 
+    backgroundColor: 'white', 
+    color: 'black', 
+    borderWidth: 1, 
+    borderColor: '#000', 
+    borderRadius: 20, 
+  }, 
+  modalTitle: {
+    height: 50, 
+    justifyContent: 'center', 
+    alignContent: 'center', 
+    backgroundColor: 'white', 
+    borderTopLeftRadius: 20, 
+    borderTopRightRadius: 20,
+  }, 
+  modalBody: {
+    height: 200, 
+    justifyContent: 'center', 
+    alignItems: 'center'
+  }, 
+  modalTextTitle: {
+    color: '#000', 
+    fontSize: 20, 
+    fontWeight: 'bold', 
+    textAlign: 'center', 
+    alignItems: 'center'
+  }, 
+  modalTextBody: {
+    color: '#000', 
+    fontSize: 20, 
+    margin: 10, 
+    textAlign: 'center', 
+    alignItems: 'center'
+  }
+})

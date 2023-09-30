@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import Background from './Background';
 import { useNavigation } from '@react-navigation/native';
 import Logout from '../components/Logout';
-import styles from '../components/styles'
+import { styles } from '../components/styles'
 import Action from '../components/Action'
 import { getData, removeData } from '../helper/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,8 +16,8 @@ const Dashboard = () => {
     const navigation = useNavigation()
     const [firstName, setFirstName] = useState('');
     const [date, setDate] = useState(new Date())
-
-
+    const [appId, setAppId] = useState('')
+    
     const handleLogout = async () => {
         const removed = removeData()
         // console.log(token, first_name)
@@ -61,10 +61,9 @@ const Dashboard = () => {
       className="mt-5"
       style={styles.fontTitle}> Good to see you here, {firstName}</Text>
       </View>
-    
             <View className="mt-5" style={styles.CenterContainer}>
                 <Action actionLabel="Ask Question" source={require('../assets/Dashboard/Ask.png')} Press={() => navigation.push("Chatscreen")}/>
-                <Action actionLabel="Create Appointment" source={require('../assets/Dashboard/Appointment.png')} Press={() => navigation.push('Appointment')}/>
+                <Action actionLabel="Create Appointment" source={require('../assets/Dashboard/Appointment.png')} Press={() =>{date == null ? navigation.push('Appointment') : navigation.push('ConfAppoint')}}/>
                 <Action actionLabel="Check My Progress" source={require('../assets/Dashboard/Progress.png')} Press={() => navigation.push('Progress')}/>
                 <Logout actionLabel="Log Out" Press={() => handleLogout()}/>
             </View>

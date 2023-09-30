@@ -11,7 +11,7 @@ import Background from './Background';
 import {useForm} from 'react-hook-form';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput, Text} from 'react-native-paper';
-import styles from '../components/styles';
+import { styles } from '../components/styles';
 import BackButton from '../components/BackButton';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -37,13 +37,13 @@ const SignUp = () => {
   const isSigningUp = useSelector(state => state.signup.isSigningUp);
   const error = useSelector(state => state.signup.error);
 
-  const [username, setUsername] = useState();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setlastName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
-  const [isLoading, setLoading] = useState();
+  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setlastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setLoading] = useState('');
 
   const Data = {
     username: username,
@@ -65,6 +65,30 @@ const SignUp = () => {
   
 
   const handleSubmit = data => {
+    if (firstName.length <= 0){
+       Alert.alert('Error', 'Invalid First Name!');
+       return 
+    }
+    if (lastName.length <= 0){
+      Alert.alert('Error', 'Invalid Last Name!');
+      return 
+   }
+    if (username.length > 8 || username.length <= 0) {
+      Alert.alert('Error', 'Invalid Username!');
+      return;
+    }
+    if (email.length <= 0) {
+      Alert.alert('Error', 'Invalid Email!');
+      return;
+    }
+    if (password.length <= 0){
+      Alert.alert('Error', 'Invalid Password!');
+      return
+    }
+    if (confirmPassword.length <= 0 || confirmPassword != password){
+      Alert.alert('Error', 'Invalid, Must be same with Password!');
+      return
+    }
     if (password === confirmPassword) {
     dispatch({type: 'SIGNUP_REQUEST'});
     setLoading(true);
@@ -79,7 +103,8 @@ const SignUp = () => {
       })
       .catch(error => {
         dispatch({type: SIGNUP_FAILURE, payload: error.message});
-        Alert.alert(error.message);
+        // Alert.alert(error.message);
+        Alert.alert("Error", error.message)
         setLoading(false)
       });
   } else {
@@ -214,9 +239,11 @@ const SignUp = () => {
                   {
                     backgroundColor: '#6FF484',
                   },
-                ]}>
+                ]}
+
+                >
                 <Text style={[styles.submitBtnTxt, styles.fontBtn]}>
-                  Signup
+                  register
                 </Text>
               </TouchableOpacity>
             </View>
