@@ -22,7 +22,7 @@ const IntroScreen = () => {
         onSkip={handleDone}
         pages={[
           {
-            backgroundColor: '#8BFFAE',
+            backgroundColor: '#fff',
             image: (
               <View>
                 <LottieView
@@ -38,7 +38,7 @@ const IntroScreen = () => {
             subtitle: 'Compassion, Support, and Empowerment',
           },
           {
-            backgroundColor: '#8FFFF3',
+            backgroundColor: '#fff',
             image: (
               <View className="flex justify-center items-center mr-7">
                 <LottieView
@@ -54,7 +54,7 @@ const IntroScreen = () => {
             subtitle: 'Embracing Wellness and Nurturing Minds',
           },
           {
-            backgroundColor: '#7BFEAC',
+            backgroundColor: '#fff',
             image: (
               <View className="flex justify-center items-center ml-11">
                 <LottieView

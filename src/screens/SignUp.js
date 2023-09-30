@@ -29,6 +29,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Btn2 from '../components/Btn';
+import BtnOutline from '../components/BtnOutline';
+import Btn from '../components/Btn';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -221,7 +224,7 @@ const SignUp = () => {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginTop: 30,
+                marginTop: 20,
               }}>
               <Text style={styles.fontText}>Already have an account?</Text>
               <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
@@ -232,20 +235,12 @@ const SignUp = () => {
             </View>
 
             <View className="flex justify-center items-center">
-              <TouchableOpacity
+              <Btn
                 onPress={() => handleSubmit(Data)}
-                style={[
-                  styles.submitBtn,
-                  {
-                    backgroundColor: '#6FF484',
-                  },
-                ]}
-
-                >
-                <Text style={[styles.submitBtnTxt, styles.fontBtn]}>
-                  register
-                </Text>
-              </TouchableOpacity>
+                btnLabel="Register"
+               />
+            
+              
             </View>
           </View>
         </Background>

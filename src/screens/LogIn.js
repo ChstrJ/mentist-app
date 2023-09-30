@@ -25,6 +25,7 @@ import Loader from '../components/Loader';
 import Logo from '../components/Logo';
 import {storeData} from '../helper/auth';
 import LottieView from 'lottie-react-native';
+import Btn from '../components/Btn';
 
 const LogIn = ({}) => {
   const dispatch = useDispatch();
@@ -166,28 +167,22 @@ const LogIn = ({}) => {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginTop: 30,
+                marginTop: 20,
               }}>
               <Text style={styles.fontText}>Don't have an account?</Text>
               <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
                 <Text style={[{color: 'blue', marginLeft: 5}, styles.fontText]}>
-                  Signup here
+                  Register here
                 </Text>
               </TouchableOpacity>
             </View>
 
             <View className="flex justify-center items-center">
-              <TouchableOpacity
+              <Btn
                 onPress={() => handleLogin(Data)}
-                disabled={isButtonDisabled}
-                style={[
-                  styles.submitBtn,
-                  {
-                    backgroundColor: isButtonDisabled ? 'rgba(255, 0, 0, 0.2)' : '#6FF484',
-                  },
-                ]}>
-                <Text style={[styles.submitBtnTxt, styles.fontBtn]}>Login</Text>
-              </TouchableOpacity>
+                btnLabel="Login"
+               />
+
             </View>
           </View>
         </Background>
