@@ -245,7 +245,7 @@ const SignUp = () => {
 
                 >
                 <Text style={[styles.submitBtnTxt, styles.fontBtn]}>
-                  register
+                  Register
                 </Text>
               </TouchableOpacity>
             </View>
