@@ -13,6 +13,8 @@ import {useNavigation} from '@react-navigation/native';
 import {TextInput, Text} from 'react-native-paper';
 import { styles } from '../components/styles';
 import BackButton from '../components/BackButton';
+import { Formik, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import {callApi} from '../helper/callApi';
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
@@ -27,6 +29,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Btn2 from '../components/Btn';
+import BtnOutline from '../components/BtnOutline';
+import Btn from '../components/Btn';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -51,20 +56,16 @@ const SignUp = () => {
     password: password,
   };
 
-  // const handleSubmit = async data => {
-  //   if (password === confirmPassword) {
-  //     setLoading(true);
-  //     const response = await callApi('post', '/register', data)
-  //       .then(val => val.status == 200 ? navigation.push('LogIn') : navigation.push('SignUp'),)
-  //       .catch(e => console.log(e.response.data))
-  //         setTimeout(() => {
-  //           setLoading(false);
-  //         }, 500);
 
-  //   } else {
-  //     Alert.alert("Password doesn't match");
-  //   }
-  // };
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required('Username is required'),
+    password: Yup.string().required('Password is required'),
+    email: Yup.string()
+    .email('Invalid Email')
+    .required('This field is required')
+  });
+
+  
 
   const handleSubmit = data => {
     if (firstName.length <= 0){
@@ -223,7 +224,7 @@ const SignUp = () => {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginTop: 30,
+                marginTop: 20,
               }}>
               <Text style={styles.fontText}>Already have an account?</Text>
               <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
@@ -234,8 +235,9 @@ const SignUp = () => {
             </View>
 
             <View className="flex justify-center items-center">
-              <TouchableOpacity
+              <Btn
                 onPress={() => handleSubmit(Data)}
+<<<<<<< HEAD
                 style={[
                   styles.submitBtn,
                   {
@@ -248,6 +250,12 @@ const SignUp = () => {
                   Register
                 </Text>
               </TouchableOpacity>
+=======
+                btnLabel="Register"
+               />
+            
+              
+>>>>>>> e9045bed736ba5aff8ad6afb375195451fb11b0b
             </View>
           </View>
         </Background>

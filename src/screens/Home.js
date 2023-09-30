@@ -10,6 +10,8 @@ import {
 } from 'react-native-responsive-screen';
 import Logo from '../components/Logo';
 import { styles } from '../components/styles';
+import Btn2 from '../components/BtnOutline';
+import BtnOutline from '../components/BtnOutline';
 
 const Home = props => {
   const navigation = useNavigation();
@@ -17,7 +19,7 @@ const Home = props => {
   return (
     <Background>
       <View
-        style={{height: hp(10)}}
+        style={{height: hp(20)}}
         className="flex items-center justify-center mt-12">
         <Logo />
       </View>
@@ -33,14 +35,15 @@ const Home = props => {
         </Text>
       </View>
 
-      <View style={styles.CenterContainer}>
+      <View 
+      className="flex justify-center items-center"
+      style={{height: hp(40)}}>
         <Text style={styles.fontHomeSub} className="text-xl mt-10">
           Create an account?
         </Text>
-        <Btn
-          bgColor={'#6FF484'}
-          btnLabel="Signup"
-          Press={() => navigation.push('SignUp')}
+        <BtnOutline
+          btnLabel="Register"
+          onPress={() => navigation.push('SignUp')}
         />
 
         <Text
@@ -50,10 +53,13 @@ const Home = props => {
         </Text>
 
         <Btn
-          bgColor={'#6FF484'}
           btnLabel="Login"
-          Press={() => navigation.push('LogIn')}
+          onPress={() => navigation.push('LogIn')}
         />
+
+
+
+
       </View>
     </Background>
   );

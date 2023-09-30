@@ -46,13 +46,14 @@ export const styles = StyleSheet.create({
   fontHome: {
     fontFamily: 'Poppins Bold',
     fontSize: 40,
-    color: 'green'    
+    color: '#00A556'    
   },
 
   fontHomeSub: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 20,
     color: '#333333'
+
   },
   fontText: {
     fontFamily: 'Poppins-SemiBold',
@@ -76,19 +77,32 @@ export const styles = StyleSheet.create({
     color: 'red',
   },
   submitBtn:{
-    backgroundColor: '#6FF484',
+    backgroundColor: '#00A556',
     borderRadius: 15,
     justifyContent: 'center',
     width: wp(80),
     height: hp(10),  
     marginVertical: 30,
   },
+
+  Btn2:{
+    backgroundColor: '#fff',
+    borderWidth: '1',
+    borderColor: '#00A556',
+    borderRadius: 15,
+    justifyContent: 'center',
+    width: wp(80),
+    height: hp(10),  
+    marginVertical: 30,
+  },
+
   submitBtnTxt:{
     textAlign: 'center',
   },
   lottieLoader: {
-    height: 800,
-    width: 500,
+    height: 500,
+    width: 300,
+    position: 'absolute',
     alignSelf: 'center',
     justifyContent: 'center',
     opacity: 0.7,
