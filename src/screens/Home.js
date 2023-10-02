@@ -37,8 +37,8 @@ const Home = props => {
 
       <View 
       className="flex justify-center items-center"
-      style={{height: hp(40)}}>
-        <Text style={styles.fontHomeSub} className="text-xl mt-10">
+      style={{height: hp(50)}}>
+        <Text style={styles.fontHomeSub} className="mt-10">
           Create an account?
         </Text>
         <BtnOutline
@@ -54,7 +54,7 @@ const Home = props => {
 
         <Btn
           btnLabel="Login"
-          onPress={() => navigation.push('LogIn')}
+          onPress={() => navigation.push('Dashboard')}
         />
 
 

@@ -11,7 +11,6 @@ const Splashscreen = ({navigation}) => {
         const token = await AsyncStorage.getItem('token', token);
 
       if (token === null) {
-        
         navigation.push("IntroScreen")
       } else {
         navigation.push('Dashboard');

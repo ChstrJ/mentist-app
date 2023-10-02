@@ -1,12 +1,13 @@
 import React, {useState, useCallback, useEffect, PureComponent} from 'react';
-import {View, Text, TextInput, Button, StyleSheet, Image, FlatList, Alert} from 'react-native';
-import {GiftedChat, InputToolbar, Send, Bubble} from 'react-native-gifted-chat';
+import {View, Text, TextInput, Button, StyleSheet, Image, ImageBackground,  FlatList, Alert, TouchableOpacity} from 'react-native';
+import {GiftedChat, InputToolbar, Send, Bubble, Actions} from 'react-native-gifted-chat';
 import {callApi} from '../helper/callApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import BackButton from '../components/BackButton';
 import {useNavigation} from '@react-navigation/native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import LottieView from 'lottie-react-native';
 
 export default function Chatscreen() {
   const [firstName, setFirstName] = useState('');
@@ -14,6 +15,7 @@ export default function Chatscreen() {
   const[initialLoad, setInitialLoad] = useState(10)
   const navigation = useNavigation();
   const [typing, Istyping] = useState()
+  const [recording, setRecording] = useState(false)
 
   const getUser = async () => {
     const first_name = await AsyncStorage.getItem('first_name');
@@ -70,23 +72,32 @@ export default function Chatscreen() {
         Istyping(false);
       });
   };
+
+  const onMicPress = () => {
+    // Handle microphone button press here
+    setRecording(!recording)
+  
+  };
+  
+  
+
   //end of sending message
 
   //load this states
-  useEffect(() => {
-    getUser();
+  // useEffect(() => {
+  //   getUser();
 
-    chatHistory();
+  //   chatHistory();
 
-    const keepCalling = setInterval(() => {
-      chatHistory();
-    }, 500); // keep calling the function
+  //   const keepCalling = setInterval(() => {
+  //     chatHistory();
+  //   }, 500); // keep calling the function
 
-    return () => {
-      clearInterval(keepCalling);
-    };
+  //   return () => {
+  //     clearInterval(keepCalling);
+  //   };
 
-  }, []);
+  // }, []);
 
 // render messges
   // const renderMsg = () => {
@@ -107,7 +118,7 @@ export default function Chatscreen() {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#006A42',
+            backgroundColor: '#00A556',
           },
         }}
         textStyle={{
@@ -118,6 +129,8 @@ export default function Chatscreen() {
       />
     );
   };
+
+  // send button
   const renderSend = props => {
     return (
       <Send {...props}>
@@ -125,7 +138,7 @@ export default function Chatscreen() {
           <MaterialCommunityIcons
             name="send"
             size={38}
-            color="#006A42"
+            color="#00A556"
             style={{marginBottom: 5, marginRight: 5}}
           />
         </View>
@@ -133,6 +146,34 @@ export default function Chatscreen() {
     );
   };
 
+
+  
+
+  // mic button
+  const renderActions = (props) => {
+    return (
+      <Actions
+        {...props}
+        containerStyle={{
+          width: 33,
+          height: 33,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginLeft: 10,
+        }}
+        icon={() => (
+          <MaterialCommunityIcons
+            name="microphone"
+            size={30}
+            color="#00A556"
+          />
+        )}
+        onPressActionButton={onMicPress} // wip
+      />
+    );
+  };
+  
+ 
   //load earlier messages
   const loadMoreMsg = () => {
     const newLoadCount = initialLoad + 10
@@ -144,7 +185,7 @@ export default function Chatscreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <BackButton goBack={navigation.goBack} />
-        <Image source={require('../assets/bot2.png')} style={styles.image} />
+        <Image source={require('../assets/robot.png')} style={styles.image} />
         <Text style={styles.headerText}>Hello, {firstName}</Text>
       </View>
 
@@ -167,12 +208,20 @@ export default function Chatscreen() {
         scrollToBottom={true}
         loadEarlier={messages.length > initialLoad}
         onLoadEarlier={loadMoreMsg}
-        isTyping={typing}
+        // isTyping={typing}
         inverted={false}
+        renderActions={renderActions}
         
-        
-        
-      />
+      
+      />  
+
+
+       {recording && (
+        <LottieView
+          source={require('../assets/animations/record.json')}
+          style={styles.lottieSmall}
+        />
+      )}
     </View>
   );
 }
@@ -183,12 +232,11 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    backgroundColor: '#006A42',
+    backgroundColor: '#00A556',
     paddingTop: 10,
-    paddingBottom: 10,
     paddingLeft: 6,
     paddingRight: 6,
-    elevation: 15,
+    elevation: 20,
    
     
   },
@@ -196,18 +244,27 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: 'white',
     fontWeight: 'bold',
-    marginTop: 7,
+    marginTop: 8,
     display: 'flex',
     flexDirection: 'row',
     marginLeft: 5,
   },
 
   image: {
-    width: 50,
-    height: 50,
+    width: wp(12),
+    height: hp(6),
     display: 'flex',
     flexDirection: 'row',
     marginRight: 10,
+    marginBottom: 12,
     marginLeft: 60,
   },
+
+  lottieSmall: {
+    height: hp(40),
+    width: 300,
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+
 });

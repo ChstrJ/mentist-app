@@ -1,5 +1,6 @@
 import React from 'react'
 import { TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { heightPercentageToDP } from 'react-native-responsive-screen'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 
 export default function BackButton({ goBack }) {
@@ -17,7 +18,8 @@ export default function BackButton({ goBack }) {
 const style = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: getStatusBarHeight(),
+    height: heightPercentageToDP(25),
+    top: getStatusBarHeight() - 30,
     left: 13,
   },
   image: {

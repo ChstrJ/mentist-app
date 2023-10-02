@@ -11,7 +11,7 @@ export default function BtnOutline({btnLabel, onPress}) {
         backgroundColor: '#fff',
         borderColor:'#00A556',
         borderWidth: 2,
-        borderRadius: 20,
+        borderRadius: 15,
         alignItems: 'center',
         width: wp(80),
         paddingVertical: 10,

@@ -9,7 +9,7 @@ export default function Btn({btnLabel, onPress}) {
      onPress={onPress}
       style={{
         backgroundColor: '#00A556',
-        borderRadius: 20,
+        borderRadius: 15,
         alignItems: 'center',
         width: wp(80),
         paddingVertical: 10,

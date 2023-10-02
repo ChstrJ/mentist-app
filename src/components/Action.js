@@ -1,29 +1,27 @@
 import React from 'react'
 import { Text, Image, TouchableOpacity } from 'react-native'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import theme from '../core/theme'
 
-const Action = ({ source, Press, actionLabel}) => {
+const Action = ({source, Press, actionLabel}) => {
     return (
         <TouchableOpacity
         onPress={Press}
           style={{
-            backgroundColor: theme.rightColors.primary,
+            backgroundColor: '#fff',
             borderRadius: 20,
             alignItems: 'center',
-            width: 300,
-            paddingVertical: 15,
-            elevation: 10, 
-            display: 'flex',
-            flexDirection: 'row', 
-            paddingLeft: 12,
             justifyContent: 'center', 
-            marginTop: 20, 
-            marginBottom: 20, 
-            padding: 10
+            marginTop: 15, 
+            marginBottom: 15, 
           }}>
             
-            <Image source={source} style={{marginRight: 5}}></Image>
-            <Text style={{color: 'white', fontSize: 18, fontWeight: 900, flex: 1}}>
+            <Image 
+            className="flex justify-center items-center"
+            source={source} style={{width: 75, height: 75}}></Image>
+            <Text 
+            className="flex justify-center items-center"
+            style={{color: 'black', fontSize: 18, marginTop: 10, fontFamily: 'Poppins-SemiBold'}}>
             {actionLabel}
           </Text>
         </TouchableOpacity>

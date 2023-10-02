@@ -1,4 +1,4 @@
-import {View, Image, ScrollView} from 'react-native';
+import {View, Image, ScrollView, ImageBackground, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Background from './Background';
 import { useNavigation } from '@react-navigation/native';
@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from '../components/Logo';
 import { Text } from 'react-native-paper';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import BtnOutline from '../components/BtnOutline';
 
 
 const Dashboard = () => {
@@ -55,17 +56,20 @@ const Dashboard = () => {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{flexGrow: 1}}>
         <Background>
-            <View className="mt-5" style={styles.CenterContainer}>
+            <View className="flex items-center">
         <Logo/>
       <Text 
       className="mt-5"
       style={styles.fontTitle}> Good to see you here, {firstName}</Text>
       </View>
-            <View className="mt-5" style={styles.CenterContainer}>
-                <Action actionLabel="Ask Question" source={require('../assets/Dashboard/Ask.png')} Press={() => navigation.push("Chatscreen")}/>
-                <Action actionLabel="Create Appointment" source={require('../assets/Dashboard/Appointment.png')} Press={() =>{date == null ? navigation.push('Appointment') : navigation.push('ConfAppoint')}}/>
-                <Action actionLabel="Check My Progress" source={require('../assets/Dashboard/Progress.png')} Press={() => navigation.push('Progress')}/>
-                <Logout actionLabel="Log Out" Press={() => handleLogout()}/>
+            <View className="flex items-center" style={{height: hp(50)}}>
+                <Action actionLabel="Chatbot AI" source={require('../assets/chatbot.png')} Press={() => navigation.push("Chatscreen")}/>
+                <Action actionLabel="Create Appointment" source={require('../assets/appointment.png')} Press={() =>{date == null ? navigation.push('Appointment') : navigation.push('ConfAppoint')}}/>
+                <Action actionLabel="My Progress" source={require('../assets/development.png')} Press={() => navigation.push('Progress')}/>
+                <BtnOutline
+                  btnLabel='Logout'
+                  onPress={() => handleLogout()}
+                />
             </View>
         </Background>
         </ScrollView>
