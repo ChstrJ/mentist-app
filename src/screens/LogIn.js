@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  KeyboardAvoidingView,
   Alert,
 } from 'react-native';
 import {TextInput, Text} from 'react-native-paper';
@@ -123,6 +124,9 @@ const LogIn = ({}) => {
         <Background>
           <BackButton goBack={navigation.goBack} />
 
+
+
+          <View className="mt-10">
           <LottieView
             source={require('../assets/animations/login.json')}
             autoPlay
@@ -130,8 +134,10 @@ const LogIn = ({}) => {
             style={styles.lottieSmall}
             speed={1}
           />
-
-          <View className="flex justify-center items-center">
+          </View>
+          <View className="flex justify-center items-center"
+         
+          >
             <Text className="text-white" style={styles.fontTitle}>
               Login Account
             </Text>
@@ -185,8 +191,10 @@ const LogIn = ({}) => {
 
             </View>
           </View>
+          
         </Background>
       )}
+      
     </ScrollView>
   );
 };

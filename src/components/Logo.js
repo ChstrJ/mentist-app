@@ -12,8 +12,8 @@ export default Logo
 
 const styles = StyleSheet.create({
     image: {
-        width: 128,
-        height: 128,
+        width: 110,
+        height: 110,
         marginTop: 25,
     }
 

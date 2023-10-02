@@ -1,21 +1,43 @@
 import React, {useState, useCallback, useEffect, PureComponent} from 'react';
-import {View, Text, TextInput, Button, StyleSheet, Image, ImageBackground,  FlatList, Alert, TouchableOpacity} from 'react-native';
-import {GiftedChat, InputToolbar, Send, Bubble, Actions} from 'react-native-gifted-chat';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Image,
+  ImageBackground,
+  FlatList,
+  Alert,
+  TouchableOpacity,
+  Platform,
+  PermissionsAndroid
+} from 'react-native';
+import {
+  GiftedChat,
+  InputToolbar,
+  Send,
+  Bubble,
+  Actions,
+} from 'react-native-gifted-chat';
 import {callApi} from '../helper/callApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import BackButton from '../components/BackButton';
 import {useNavigation} from '@react-navigation/native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import LottieView from 'lottie-react-native';
 
 export default function Chatscreen() {
   const [firstName, setFirstName] = useState('');
   const [messages, setMessages] = useState([]);
-  const[initialLoad, setInitialLoad] = useState(10)
+  const [initialLoad, setInitialLoad] = useState(10);
   const navigation = useNavigation();
-  const [typing, Istyping] = useState()
-  const [recording, setRecording] = useState(false)
+  const [typing, Istyping] = useState();
+  const [recording, setRecording] = useState(false);
 
   const getUser = async () => {
     const first_name = await AsyncStorage.getItem('first_name');
@@ -23,7 +45,24 @@ export default function Chatscreen() {
   };
 
 
-// load the chat history messages
+  //GET PERMISSION TO ON MIC
+  const getPermission = async () => {
+    if (Platform.OS === 'android') {
+        let granted = await PermissionsAndroid.requestMultiple([
+            PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        ])
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+            granted = await PermissionsAndroid.requestMultiple([
+                PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+                PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            ])
+        }
+    }
+}
+  // load the chat history messages
   const chatHistory = async () => {
     const id = await AsyncStorage.getItem('id');
     const response = await callApi('get', `/chat/${id}`);
@@ -36,14 +75,13 @@ export default function Chatscreen() {
       user: {
         _id: message.role === 'user' ? '2' : '1', //if user gawing 2 ung id nya if not 1 (bot)
         name: message.role,
-        avatar: "https://randomuser.me/api/portraits/women/79.jpg"
+        avatar: 'https://randomuser.me/api/portraits/women/79.jpg',
       },
     }));
     // historyMessages.sort((a, b) => a.createdAt - b.createdAt)
-    
+
     setMessages(historyMessages);
   };
-
 
   // sending message
   const onSend = async (newMessages = []) => {
@@ -51,19 +89,19 @@ export default function Chatscreen() {
     const data = {
       message: messageText,
     };
-  
+
     Istyping(true);
-  
+
     const id = await AsyncStorage.getItem('id');
     callApi('post', `/chat/${id}`, data)
       .then(response => {
         const responseData = JSON.stringify(response.data);
         console.log(responseData);
-  
+
         // Update the state with the new message
         setMessages(previousMessages =>
           GiftedChat.append(previousMessages, newMessages),
-        )
+        );
         Istyping(false);
       })
       .catch(e => {
@@ -75,31 +113,27 @@ export default function Chatscreen() {
 
   const onMicPress = () => {
     // Handle microphone button press here
-    setRecording(!recording)
-  
+    setRecording(!recording);
   };
-  
-  
 
   //end of sending message
 
   //load this states
-  // useEffect(() => {
-  //   getUser();
+  useEffect(() => {
+    getUser();
+    getPermission();
+    chatHistory();
 
-  //   chatHistory();
+    const keepCalling = setInterval(() => {
+      chatHistory();
+    }, 500); // keep calling the function
 
-  //   const keepCalling = setInterval(() => {
-  //     chatHistory();
-  //   }, 500); // keep calling the function
+    return () => {
+      clearInterval(keepCalling);
+    };
+  }, []);
 
-  //   return () => {
-  //     clearInterval(keepCalling);
-  //   };
-
-  // }, []);
-
-// render messges
+  // render messges
   // const renderMsg = () => {
   //   return (
   //     <FlatList
@@ -109,7 +143,6 @@ export default function Chatscreen() {
   //     />
   //   );
   // };
-  
 
   // props for gifted chat
   const renderBubble = props => {
@@ -146,11 +179,8 @@ export default function Chatscreen() {
     );
   };
 
-
-  
-
   // mic button
-  const renderActions = (props) => {
+  const renderActions = props => {
     return (
       <Actions
         {...props}
@@ -162,25 +192,19 @@ export default function Chatscreen() {
           marginLeft: 10,
         }}
         icon={() => (
-          <MaterialCommunityIcons
-            name="microphone"
-            size={30}
-            color="#00A556"
-          />
+          <MaterialCommunityIcons name="microphone" size={30} color="#00A556" />
         )}
         onPressActionButton={onMicPress} // wip
       />
     );
   };
-  
- 
+
   //load earlier messages
   const loadMoreMsg = () => {
-    const newLoadCount = initialLoad + 10
-    setInitialLoad(newLoadCount)
-  }
+    const newLoadCount = initialLoad + 10;
+    setInitialLoad(newLoadCount);
+  };
 
-  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -189,36 +213,33 @@ export default function Chatscreen() {
         <Text style={styles.headerText}>Hello, {firstName}</Text>
       </View>
 
-     
-
-
       <GiftedChat
         messages={messages.slice(-initialLoad)}
-        onSend={newMessages=>onSend(newMessages)}
+        onSend={newMessages => onSend(newMessages)}
         user={{
-          _id: "2",
-          name: "user"
+          _id: '2',
+          name: 'user',
         }}
         renderBubble={renderBubble}
         // renderMessage={renderMsg}
-        messagesContainerStyle={{ backgroundColor: 'white' }}
+        messagesContainerStyle={{backgroundColor: 'white'}}
         alwaysShowSend
         renderSend={renderSend}
-        placeholder='Write a message...'
+        placeholder="Write a message..."
         scrollToBottom={true}
         loadEarlier={messages.length > initialLoad}
         onLoadEarlier={loadMoreMsg}
         // isTyping={typing}
         inverted={false}
         renderActions={renderActions}
-        
-      
-      />  
+      />
 
-
-       {recording && (
+      {recording && (
         <LottieView
-          source={require('../assets/animations/record.json')}
+          autoPlay
+          loop
+          speed={1}
+          source={require('../assets/animations/record2.json')}
           style={styles.lottieSmall}
         />
       )}
@@ -237,8 +258,6 @@ const styles = StyleSheet.create({
     paddingLeft: 6,
     paddingRight: 6,
     elevation: 20,
-   
-    
   },
   headerText: {
     fontSize: 25,
@@ -261,10 +280,10 @@ const styles = StyleSheet.create({
   },
 
   lottieSmall: {
-    height: hp(40),
-    width: 300,
-    alignSelf: 'center',
-    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 30,
+    left: 35,
+    width: 50,
+    height: 70,
   },
-
 });

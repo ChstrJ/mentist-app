@@ -52,17 +52,17 @@ const Dashboard = () => {
     }
 
     return (
-      <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{flexGrow: 1}}>
+     
         <Background>
             <View className="flex items-center">
-        <Logo/>
+       
+          <Logo/>
       <Text 
       className="mt-5"
-      style={styles.fontTitle}> Good to see you here, {firstName}</Text>
+      style={styles.fontHomeSub}> Good to see you here, {firstName}</Text>
+        
       </View>
-            <View className="flex items-center" style={{height: hp(50)}}>
+            <View className="flex items-center" style={{height: hp(80)}}>
                 <Action actionLabel="Chatbot AI" source={require('../assets/chatbot.png')} Press={() => navigation.push("Chatscreen")}/>
                 <Action actionLabel="Create Appointment" source={require('../assets/appointment.png')} Press={() =>{date == null ? navigation.push('Appointment') : navigation.push('ConfAppoint')}}/>
                 <Action actionLabel="My Progress" source={require('../assets/development.png')} Press={() => navigation.push('Progress')}/>
@@ -72,7 +72,7 @@ const Dashboard = () => {
                 />
             </View>
         </Background>
-        </ScrollView>
+       
     )
 }
 export default Dashboard;

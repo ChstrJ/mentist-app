@@ -109,8 +109,8 @@ export const styles = StyleSheet.create({
     zIndex: 1,
   },
   lottieSmall: {
-    height: hp(40),
-    width: 300,
+    height: hp(43),
+    width: 250,
     alignSelf: 'center',
     justifyContent: 'center',
   },
