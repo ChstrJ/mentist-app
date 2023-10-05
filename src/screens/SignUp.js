@@ -57,13 +57,13 @@ const SignUp = () => {
   };
 
 
-  const validationSchema = Yup.object().shape({
-    username: Yup.string().required('Username is required'),
-    password: Yup.string().required('Password is required'),
-    email: Yup.string()
-    .email('Invalid Email')
-    .required('This field is required')
-  });
+  // const validationSchema = Yup.object().shape({
+  //   username: Yup.string().required('Username is required'),
+  //   password: Yup.string().required('Password is required'),
+  //   email: Yup.string()
+  //   .email('Invalid Email')
+  //   .required('This field is required')
+  // });
 
   
 
@@ -76,7 +76,7 @@ const SignUp = () => {
       Alert.alert('Error', 'Invalid Last Name!');
       return 
    }
-    if (username.length > 8 || username.length <= 0) {
+    if (username > 8 || username <= 0) {
       Alert.alert('Error', 'Invalid Username!');
       return;
     }
@@ -135,8 +135,16 @@ const SignUp = () => {
           <View
             className="flex justify-center mt-10"
             style={styles.CenterContainer}>
-            <Logo />
+
+          <Image
+          style={{height: hp(35), width: hp(35)}}
+            source={require('../assets/account.png')}
+
+          />
+
           </View>
+
+
 
           <View className="flex justify-center items-center">
             <Text
