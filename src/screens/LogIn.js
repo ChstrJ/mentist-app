@@ -7,6 +7,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Alert,
+  ImageBackground
 } from 'react-native';
 import {TextInput, Text} from 'react-native-paper';
 import React, {useState, useEffect} from 'react';
@@ -126,11 +127,16 @@ const LogIn = ({}) => {
 
 
 
-          <View className="flex mt-10 items-center">
+          <View className=" flex items-center mt-10">
+          
           <Image
-              style={{height: hp(40), width: hp(40)}}
-              source={require('../assets/Login-bro.png')}
+          style={{height: hp(40), width: hp(40)}}
+            source={require('../assets/Login-bro.png')}
+
           />
+
+         
+
           </View>
           <View className="flex justify-center items-center"
          
@@ -174,7 +180,7 @@ const LogIn = ({}) => {
               }}>
               <Text style={styles.fontText}>Don't have an account?</Text>
               <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                <Text style={[{color: 'blue', marginLeft: 5}, styles.fontText]}>
+                <Text style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
                   Register here
                 </Text>
               </TouchableOpacity>
