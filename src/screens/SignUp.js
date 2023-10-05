@@ -133,9 +133,11 @@ const SignUp = () => {
         <Background>
           <BackButton goBack={navigation.goBack} />
           <View
-            className="flex justify-center mt-10"
-            style={styles.CenterContainer}>
-            <Logo />
+            className="flex items-center justify-center mt-10">
+            <Image
+              style={{height: hp(35), width: hp(35)}}
+              source={require('../assets/account.png')}
+          />
           </View>
 
           <View className="flex justify-center items-center">

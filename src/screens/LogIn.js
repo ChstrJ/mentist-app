@@ -126,13 +126,10 @@ const LogIn = ({}) => {
 
 
 
-          <View className="mt-10">
-          <LottieView
-            source={require('../assets/animations/login.json')}
-            autoPlay
-            loop
-            style={styles.lottieSmall}
-            speed={1}
+          <View className="flex mt-10 items-center">
+          <Image
+              style={{height: hp(40), width: hp(40)}}
+              source={require('../assets/Login-bro.png')}
           />
           </View>
           <View className="flex justify-center items-center"
