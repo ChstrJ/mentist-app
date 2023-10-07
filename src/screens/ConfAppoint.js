@@ -39,11 +39,11 @@ export default function ConfAppoint() {
           setAppId(val)
         })
         
-    }) 
+    }, []) 
     
     const cancelApp = async (appId) => {
-
-      await callApi('get', `/appointment/cancel`, appId)
+      if (appId != null){
+      await callApi('get', `/appointment/cancel${appId}`, appId)
       .then(val => {
         AsyncStorage.removeItem('Date')
         setNotif(true)
@@ -52,16 +52,19 @@ export default function ConfAppoint() {
         if (e.response){
           console.log("HTTP STATUS Code: ", e.response.status)
           console.log('Error Data: ', e.response.data)
+          console.log(appId)
         }
         else if (e.request){
           console.log('No response received from the server');
         } else {
           // Something else happened while setting up the request
           console.log('Error:', error.message);
-
         }
       
       })
+    } else{
+      console.log(appId + "null nga e")
+    }
     }
     const showMode = modeToShow => {
       setMode(modeToShow);
@@ -83,7 +86,7 @@ export default function ConfAppoint() {
               bgColor={theme.rightColors.primary} 
               btnLabel="Cancel Appointment" 
               textColor='white'
-              Press={ cancelApp(appId)  }
+              Press={cancelApp(appId)}
             />
               <Notif 
                 visible={notif} 
