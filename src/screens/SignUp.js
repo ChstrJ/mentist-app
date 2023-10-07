@@ -144,7 +144,7 @@ const SignUp = () => {
               className=" text-black text-xl mt-10">
               Create an account
             </Text>
-
+        
             <TextInput
               style={[{width: wp(80)}, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-xl"
@@ -219,7 +219,62 @@ const SignUp = () => {
               }
               onChangeText={value => setConfirmPassword(value)}
             />
+            {/* <Formik
+              initialValues={{ firstName: '', lastName: '', username: '', email: '', password: '', confirmPassword: ''}}
+              onSubmit={(val) =>{}}
 
+            >
+              {(props) => { 
+                <View> 
+                  <TextInput 
+                    style={[{width: wp(80)}, styles.fontField]}
+                    placeholder='First Name'
+                    onChangeText={ props.handleChange('firstName')}
+                    value={props.values.firstName}
+                  />
+                  <TextInput 
+                    style={[{width: wp(80)}, styles.fontField]}
+                    placeholder='Last Name'
+                    onChangeText={ props.handleChange('lastName')}
+                    value={props.values.lastName}
+                  />
+                  <TextInput 
+                    style={[{width: wp(80)}, styles.fontField]}
+                    placeholder='Username'
+                    onChangeText={ props.handleChange('username')}
+                    value={props.values.username}
+                  />
+                  <TextInput 
+                    style={[{width: wp(80)}, styles.fontField]}
+                    placeholder='First Name'
+                    onChangeText={ props.handleChange('email')}
+                    value={props.values.email}
+                  />
+                  <TextInput 
+                    style={[{width: wp(80)}, styles.fontField]}
+                    placeholder='First Name'
+                    onChangeText={ props.handleChange('password')}
+                    value={props.values.password}
+                  />
+                  <TextInput 
+                    style={[{width: wp(80)}, styles.fontField]}
+                    placeholder='First Name'
+                    onChangeText={ props.handleChange('confirmPassword')}
+                    value={props.values.confirmPassword}
+                  />
+                <Btn
+                onPress={() => handleSubmit(Data)}
+                style={[
+                  styles.submitBtn,
+                  {
+                    backgroundColor: '#6FF484',
+                  },
+                ]}
+                btnLabel="Register"
+              />
+                </View>
+              }}
+            </Formik> */}
             <View
               style={{
                 flexDirection: 'row',
