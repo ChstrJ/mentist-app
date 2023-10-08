@@ -28,6 +28,7 @@ import Logo from '../components/Logo';
 import {storeData} from '../helper/auth';
 import LottieView from 'lottie-react-native';
 import Btn from '../components/Btn';
+import Loginpic from '../assets/Login-broo.svg'
 
 const LogIn = ({}) => {
   const dispatch = useDispatch();
@@ -124,23 +125,12 @@ const LogIn = ({}) => {
       ) : (
         <Background>
           <BackButton goBack={navigation.goBack} />
-
-
-
           <View className=" flex items-center mt-10">
-          
-          <Image
-          style={{height: hp(40), width: hp(40)}}
-            source={require('../assets/Login-bro.png')}
-
-          />
-
-         
-
+            <Loginpic  width={300} height={300}/>
           </View>
-          <View className="flex justify-center items-center"
          
-          >
+        {/* form */}
+          <View className="flex justify-center items-center">
             <Text className="text-white" style={styles.fontTitle}>
               Login Account
             </Text>

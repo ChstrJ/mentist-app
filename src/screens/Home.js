@@ -11,10 +11,12 @@ import {
 import Logo from '../components/Logo';
 import { styles } from '../components/styles';
 import Btn2 from '../components/BtnOutline';
+import {useDispatch, useSelector} from 'react-redux';
 import BtnOutline from '../components/BtnOutline';
 
 const Home = props => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   return (
     <Background>
@@ -43,7 +45,8 @@ const Home = props => {
         </Text>
         <BtnOutline
           btnLabel="Register"
-          onPress={() => navigation.push('SignUp')}
+          onPress={() => 
+          navigation.push('SignUp')}
         />
 
         <Text
@@ -56,10 +59,6 @@ const Home = props => {
           btnLabel="Login"
           onPress={() => navigation.push('LogIn')}
         />
-
-
-
-
       </View>
     </Background>
   );
