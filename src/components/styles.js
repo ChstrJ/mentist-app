@@ -143,7 +143,8 @@ export const modalStyle = StyleSheet.create({
     flex: 1, 
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00000099'
+    backgroundColor: '#00000099',
+    
   }, 
   modalView: {
     width: 300, 
