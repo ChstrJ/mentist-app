@@ -25,8 +25,6 @@ export default function Appointment() {
   const navigation = useNavigation();
   //declare usestate
 
-  const [name, setName] = useState();
-  const [phone, setPhone] = useState();
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
@@ -88,7 +86,7 @@ export default function Appointment() {
 
   const handleAppointment = async data => {
     const id = 0;
-    if (!isValidPhone(phone) || !isValidDate(date)) {
+    if (!isValidPhone(phoneNumber) || !isValidDate(date)) {
       Alert.alert(
         'Invalid Credential',
         'Please provide a valid date and number!',
@@ -145,7 +143,7 @@ export default function Appointment() {
             style={[{width: wp(80)}, styles.fontField]}
             className="mt-5"
             mode="outlined"
-            disabled="true"
+            disabled={true}
             label="Name"
             value={firstName}
             left={<TextInput.Icon icon={'account'} />}
@@ -160,23 +158,23 @@ export default function Appointment() {
             value={phoneNumber}
             left={<TextInput.Icon icon={'phone'} />}
             onChangeText={phoneNumber => {
-              setPhone(phoneNumber);
+              setPhoneNumber(phoneNumber);
             }}
+            
           />
 
           <View style={[{width: wp(80)}, styles.fontField]} className="mt-5">
-            <Button
-              color={'#6FF484'}
-              activeOutlineColor="green"
-              title="Choose Date"
+            <Btn
+              btnLabel="Choose Date"
               onPress={() => showMode('date')}
             />
           </View>
 
-          <View style={[{width: wp(80)}, styles.fontField]} className="mt-5">
-            <Button
-              color={'#6FF484'}
-              title="Choose Time"
+          <View style={[{width: wp(80)}, styles.fontField]} >
+            <Btn
+              
+              
+              btnLabel="Choose Time"
               activeOutlineColor="green"
               onPress={() => showMode('time')}
             />
