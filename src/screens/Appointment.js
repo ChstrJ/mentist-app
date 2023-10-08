@@ -65,6 +65,7 @@ export default function Appointment() {
   };
 
   const handleAppointment = async (data) => {
+    const id = 0
     if (!isValidPhone(phone) || !isValidDate(date)){
       Alert.alert('Invalid Credential', 'Please provide a valid date and number!')
     }
@@ -75,7 +76,8 @@ export default function Appointment() {
         .then(value => {
           setDate(value)
         }).catch(e => {console.log(e)})
-        const id = response.data.appointment_id
+        id = response.data.appointment_id
+        console.log(id)
         AsyncStorage.setItem('AppointID', id)
         .then(res => {
           setAppId(res)
@@ -171,9 +173,9 @@ export default function Appointment() {
                 bgColor={styles.Colors.third}
                 textColor="white"
                 btnLabel="Confirm"
-                Press={() => handleAppointment(Data)}
+                onPress={() => handleAppointment(Data)}
               />
-              
+                
             </View>
           </View>
         </View>

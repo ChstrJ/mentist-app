@@ -41,6 +41,7 @@ const Dashboard = () => {
           if (value != null){
             setDate(value)
             navigation.push('ConfAppoint')
+            // navigation.push('Appointment')
           }
           else{
             navigation.push('Appointment')

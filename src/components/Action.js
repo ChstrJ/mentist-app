@@ -17,8 +17,9 @@ const Action = ({source, Press, actionLabel}) => {
           }}>
             
             <Image 
-            className="flex justify-center items-center"
-            source={source} style={{width: 70, height: 70}}></Image>
+              className="flex justify-center items-center"
+              source={source} style={{width: 70, height: 70}}>  
+            </Image>
             <Text 
             className="flex justify-center items-center"
             style={{color: 'black', fontSize: 18, marginTop: 10, fontFamily: 'Poppins-SemiBold'}}>

@@ -20,7 +20,7 @@ export default function ConfAppoint() {
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
-    const [appId, setAppId] = useState('')
+    const [appId, setAppId] = useState()
     const [notif, setNotif] = useState(false)
     const Data = {
       name: this.name, 
@@ -28,12 +28,12 @@ export default function ConfAppoint() {
     }
     //create onchange
     useEffect(() => {
-        AsyncStorage.getItem('Date')
-        .then(val => {
-            if (val){
-                setDate(val)
-            }
-        })
+        // AsyncStorage.getItem('Date')
+        // .then(val => {
+        //     if (val){
+        //         setDate(val)
+        //     }
+        // })
         AsyncStorage.getItem('AppointID')
         .then(val=> {
           setAppId(val)
@@ -42,29 +42,31 @@ export default function ConfAppoint() {
     }, []) 
     
     const cancelApp = async (appId) => {
-      if (appId != null){
-      await callApi('get', `/appointment/cancel${appId}`, appId)
-      .then(val => {
-        AsyncStorage.removeItem('Date')
-        setNotif(true)
-        console.log("Appointment canceled", val)
-      }).catch(e => {
-        if (e.response){
-          console.log("HTTP STATUS Code: ", e.response.status)
-          console.log('Error Data: ', e.response.data)
-          console.log(appId)
-        }
-        else if (e.request){
-          console.log('No response received from the server');
-        } else {
-          // Something else happened while setting up the request
-          console.log('Error:', error.message);
-        }
+      console.log(appId, "null nga ")
+      AsyncStorage.removeItem('Date')
+    //   if (appId){
+    //   await callApi('put', `/appointment/cancel${appId}`)
+    //   .then(val => {
+    //     AsyncStorage.removeItem('Date')
+    //     setNotif(true)
+    //     console.log("Appointment canceled", val)
+    //   }).catch(e => {
+    //     if (e.response){
+    //       console.log("HTTP STATUS Code: ", e.response.status)
+    //       console.log('Error Data: ', e.response.data)
+    //       console.log(appId)
+    //     }
+    //     else if (e.request){
+    //       console.log('No response received from the server');
+    //     } else {
+    //       // Something else happened while setting up the request
+    //       console.log('Error:', error.message);
+    //     }
       
-      })
-    } else{
-      console.log(appId + "null nga e")
-    }
+    //   })
+    // } else{
+    //   console.log(appId + " null nga e")
+    // }
     }
     const showMode = modeToShow => {
       setMode(modeToShow);
