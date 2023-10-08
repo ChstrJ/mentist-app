@@ -2,10 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { callApi } from './callApi';
 
 // auth login
-export const storeData = async (token, first_name, id) => {
+export const storeData = async (token, first_name, id, phone_no) => {
   AsyncStorage.setItem('token', token);
   AsyncStorage.setItem('first_name', first_name);
   AsyncStorage.setItem('id', id);
+  AsyncStorage.setItem('phone_no', phone_no);
   }
 
   export const getData = async () => {

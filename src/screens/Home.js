@@ -57,7 +57,9 @@ const Home = props => {
 
         <Btn
           btnLabel="Login"
-          onPress={() => navigation.push('LogIn')}
+          onPress={() => 
+          
+          navigation.push('LogIn')}
         />
       </View>
     </Background>

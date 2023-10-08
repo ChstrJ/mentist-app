@@ -16,11 +16,7 @@ import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import {callApi} from '../helper/callApi';
 import Loader from '../components/Loader';
-import {
-  SIGNUP_REQUEST,
-  SIGNUP_FAILURE,
-  SIGNUP_SUCCESS,
-} from '../actions/types/types';
+import { signupSucess, signupFailure } from '../actions/Action';
 import {storeData} from '../helper/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -95,15 +91,14 @@ const SignUp = () => {
     const api = callApi('post', '/register', data)
       .then(response => {
         navigation.push('LogIn');
-        dispatch({type: SIGNUP_SUCCESS, payload: response.data});
+        dispatch(signupSucess(response.data))
         Alert.alert("Registration Successful");
         setTimeout(() => {
           setLoading(false);
         }, 500);
       })
       .catch(error => {
-        dispatch({type: SIGNUP_FAILURE, payload: error.message});
-        // Alert.alert(error.message);
+        dispatch(signupSucess(error.message))
         Alert.alert("Error", error.message)
         setLoading(false)
       });

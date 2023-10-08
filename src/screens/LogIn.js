@@ -26,14 +26,14 @@ import {
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
 import {storeData} from '../helper/auth';
+import { loginSuccess, loginFailure } from '../actions/Action';
 import LottieView from 'lottie-react-native';
 import Btn from '../components/Btn';
 import Loginpic from '../assets/Login-broo.svg'
 
 const LogIn = ({}) => {
   const dispatch = useDispatch();
-  const isLoggingIn = useSelector(state => state.login.isLoggingIn);
-  const error = useSelector(state => state.login.error);
+  
 
   const [hidePass, setHidePass] = useState(true);
   const navigation = useNavigation();
@@ -55,16 +55,18 @@ const LogIn = ({}) => {
           // store token in var
           const token = response.data.token
           const first_name = response.data.user.first_name
+          const phone_no = response.data.user.phone_number
           const id = JSON.stringify(response.data.user.id);
           // store token
-          storeData(token, first_name, id)
-          console.log(token, first_name, id)
+          storeData(token, first_name, id, phone_no)
+          console.log(token, first_name, id, phone_no)
           if (response.status === 200) {
             navigation.push('Dashboard');
+            dispatch(loginSuccess(response.data))
           } else {
             navigation.push('LogIn');
+            dispatch(loginFailure(error.message))
           }
-
         })
         .catch((e) => console.log(e));
     } else {

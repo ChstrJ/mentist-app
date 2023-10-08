@@ -1,9 +1,17 @@
 // signupReducer.js
 
+
+
 const initialState = {
     isSigningUp: false, 
     error: null, 
-    user: null, 
+    first_name: null, 
+    last_name: null, 
+    password: null,
+    email: null,
+    username: null,
+    phone_no: null,
+
   };
   
 
