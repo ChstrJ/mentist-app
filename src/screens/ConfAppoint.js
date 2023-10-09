@@ -65,7 +65,7 @@ export default function ConfAppoint() {
           AsyncStorage.removeItem('AppID')
           .then(val => console.log(val))
           .catch(e => console.log(e))
-          navigation.navigate('Dashboard')
+          // navigation.navigate('Dashboard')
           setNotif(true)
         })
         .catch(e => {
@@ -120,12 +120,13 @@ export default function ConfAppoint() {
             <Logo />
             <Text style={styles.textAppoint}>
                 Your Appointment is on: {resdate.toLocaleString()}
+                {restime.toLocaleString()}
             </Text>
             <Btn 
               bgColor={theme.rightColors.primary} 
               btnLabel="Cancel Appointment" 
               textColor='white'
-              Press={cancelApp(appId)}
+              onPress={() => {cancelApp(appId), navigation.navigate('Dashboard')}}
             />
               <Notif 
                 visible={notif} 
