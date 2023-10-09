@@ -12,10 +12,7 @@ import {Stack} from '@react-native-material/core';
 import Btn from '../components/Btn';
 import {getData, isValidPhone, isValidDate, setAppoint} from '../helper/auth';
 import {callApi} from '../helper/callApi';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp, } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ConfAppoint from './ConfAppoint';
 import Loader from '../components/Loader';
@@ -64,19 +61,25 @@ export default function Appointment() {
       })
       .catch(e => console.log(e));
   }, []);
+
+
+  // const splitDate = date.toISOString()
+  
   const Data = {
     consultant_id: 1,
     user_id: id,
     phone_number: phoneNumber,
     date: date.toISOString().split('T')[0],
-    booking_time: date.toISOString().split('T')[1].split('.')[0],
+    booking_time: date.toISOString().split('T')[1].split('.')[0]
   };
 
   //create onchange
   const onChange = (e, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios' ? true : false);
+    
     setDate(currentDate);
+
   };
 
   const showMode = modeToShow => {
@@ -85,48 +88,82 @@ export default function Appointment() {
   };
 
   const handleAppointment = async data => {
-    const id = 0;
     if (!isValidPhone(phoneNumber) || !isValidDate(date)) {
       Alert.alert(
         'Invalid Credential',
         'Please provide a valid date and number!',
       );
     } else {
+      // console.log(Data.booking_time)
       callApi('post', '/appointment', data)
-        .then(response => {
-          AsyncStorage.setItem('Date', response.data.date)
-            .then(value => {
-              setDate(value);
-            })
-            .catch(e => {
-              console.log(e);
-            });
-          id = response.data.appointment_id;
-          console.log(id);
-          AsyncStorage.setItem('AppointID', id).then(res => {
-            setAppId(res);
-          });
-          navigation.push('Dashboard');
-          // Alert.alert('Schedule Success', `Your session will be on ${response.data.date}, ${response.data.time}, with ${response.data.consultant.name}`)
-          setConName(response.data.consultant.name);
-          setTime(response.data.time);
-          setDate(response.data.date);
-        })
-        .catch(error => {
-          if (error.response) {
-            // The server responded with an error (status code 4xx or 5xx)
+        .then(response =>{
+          const res = JSON.stringify(response)
+          const respo = JSON.stringify(response.data.appointment_id)
+          console.log(respo + " " + res)
+          AsyncStorage.setItem('AppID', respo)
+          AsyncStorage.getItem('AppID')
+          .then(val => console.log(val))
+          .catch(e => console.log(e))
+          navigation.navigate('Dashboard')
+          const resDate = response.data.date;
+          const resTime = response.data.booking_time;
+          Alert.alert('Schedule Success', `Your session will be on ${response.data.date}, ${response.data.booking_time}, with ${response.data.consultant.name}`)
+          AsyncStorage.setItem('resTime', resTime)  // need to put pass in async items
+          AsyncStorage.setItem('resDate', resDate)  // need to put pass in async items
+          // AsyncStorage.setItem('AppID', response.data.id)
+          // .then(value => { setAppId(value); console.log(value)})
+          // .catch(e => console.log(e))
+          // AsyncStorage.getItem('AppID')
+          // .then(value => console.log(value))
+          // .catch(e => console.log(e))
+          // console.log(response.appointment.id)
+        }).catch(error => {
+          if (error.response){
             console.log('HTTP Status Code:', error.response.status);
             console.log('Error Data:', error.response.data);
-          } else if (error.request) {
-            // The request was made but no response was received
-            console.log('No response received from the server');
-          } else {
-            // Something else happened while setting up the request
-            console.log('Error:', error.message);
           }
-        });
+        })
+      }
+      // callApi('post', '/appointment', data)
+      //   .then(response => {
+      //     AsyncStorage.setItem('Date', response.data.date)
+      //       .then(value => {
+      //         setDate(value);
+      //       })
+      //       .catch(e => {
+      //         console.log(e);
+      //       });
+      //       id = response.data.id;
+      //     AsyncStorage.setItem('AppointID', id)
+      //     .then(value => {
+      //       setAppId(value)
+            
+      //       console.log(value);
+      //     })
+      //     navigation.push('Dashboard');
+      //     Alert.alert('Schedule Success', `Your session will be on ${response.data.date}, ${response.data.time}, with ${response.data.consultant.name}`)
+      //     setConName(response.data.consultant.name);
+      //     setTime(response.data.time);
+      //     setDate(response.data.date);
+      //   })
+      //   .catch(error => {
+      //     if (error.response) {
+      //       // The server responded with an error (status code 4xx or 5xx)
+      //       console.log('HTTP Status Code:', error.response.status);
+      //       console.log('Error Data:', error.response.data);
+      //       Alert.alert('Invalid', JSON.stringify(error.response.data))
+      //     } else if (error.request) {
+      //       // The request was made but no response was received
+      //       console.log('No response received from the server');
+      //     } else {
+      //       // Something else happened while setting up the request
+      //       console.log('Error:', error.message);
+            
+      //     }
+      //   });
+      
     }
-  };
+  
 
   return (
     <Background>
@@ -172,8 +209,6 @@ export default function Appointment() {
 
           <View style={[{width: wp(80)}, styles.fontField]} >
             <Btn
-              
-              
               btnLabel="Choose Time"
               activeOutlineColor="green"
               onPress={() => showMode('time')}
@@ -183,7 +218,7 @@ export default function Appointment() {
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
-              value={new Date(date)}
+              value={date}
               mode={mode}
               is24Hour={false}
               display="default"

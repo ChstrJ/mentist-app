@@ -17,7 +17,8 @@ export default function ConfAppoint() {
   
     const [name, setName] = useState()
     const [phone, setPhone] = useState()
-    const [date, setDate] = useState(new Date());
+    const [resdate, setResDate] = useState(new Date());
+    const [restime, setresttime] = useState(new Date())
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [appId, setAppId] = useState()
@@ -28,22 +29,58 @@ export default function ConfAppoint() {
     }
     //create onchange
     useEffect(() => {
-        // AsyncStorage.getItem('Date')
-        // .then(val => {
-        //     if (val){
-        //         setDate(val)
-        //     }
-        // })
-        AsyncStorage.getItem('AppointID')
+        AsyncStorage.getItem('resDate')
+        .then(val => {
+            if (val){
+                setResDate(val)
+            }
+        })
+        AsyncStorage.getItem('resTime')
+        .then(val => {
+            if (val){
+                setresttime(val)
+            }
+        })
+        AsyncStorage.getItem('AppID')
         .then(val=> {
           setAppId(val)
         })
         
     }, []) 
     
-    const cancelApp = async (appId) => {
-      console.log(appId, "null nga ")
-      AsyncStorage.removeItem('Date')
+    const cancelApp = (appId) => {
+      // console.log(appId, "null nga ")
+      // AsyncStorage.removeItem('Date')
+      // navigation.navigate('Dashboard')
+      // if (appId){
+      //   await callApi('put', '/appointment/cancel', appId)
+      // }
+      // AsyncStorage.getItem
+      // AsyncStorage.getItem('AppID')
+      // .then(val => setAppId(val))
+      // .catch(e => console.log(e))
+      if (appId){
+        callApi('put', `/appointment/cancel/${appId}` )
+        .then(res => {
+          AsyncStorage.removeItem('AppID')
+          .then(val => console.log(val))
+          .catch(e => console.log(e))
+          navigation.navigate('Dashboard')
+          setNotif(true)
+        })
+        .catch(e => {
+          if (e.response){
+            console.log('HTTP Status Code:', e.response.status);
+            console.log('Error Data:', e.response.data);
+          }
+          else if(e.request){
+            console.log("HTTP STATUS Code: ", e.response.status)
+            console.log('Error Data: ', e.response.data)
+          }
+          console.log(e + " eto error"), 
+          console.log(appId)})
+            
+      }
     //   if (appId){
     //   await callApi('put', `/appointment/cancel${appId}`)
     //   .then(val => {
@@ -82,7 +119,7 @@ export default function ConfAppoint() {
             style={styles.CenterContainer}>
             <Logo />
             <Text style={styles.textAppoint}>
-                Your Appointment is on: {date.toLocaleString()}
+                Your Appointment is on: {resdate.toLocaleString()}
             </Text>
             <Btn 
               bgColor={theme.rightColors.primary} 
