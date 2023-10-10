@@ -1,6 +1,5 @@
-import theme from '../core/theme';
+
 import {StyleSheet, Dimensions} from 'react-native';
-import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({

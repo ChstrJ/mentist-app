@@ -11,7 +11,7 @@ import {
   Alert,
   TouchableOpacity,
   Platform,
-  PermissionsAndroid
+  PermissionsAndroid,
 } from 'react-native';
 import {
   GiftedChat,
@@ -30,6 +30,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import LottieView from 'lottie-react-native';
+import Voice from '@react-native-voice/voice';
 
 export default function Chatscreen() {
   const [firstName, setFirstName] = useState('');
@@ -38,30 +39,54 @@ export default function Chatscreen() {
   const navigation = useNavigation();
   const [typing, Istyping] = useState();
   const [recording, setRecording] = useState(false);
+  const [result, setResult] = useState('');
+  const [speaking, setSpeaking] = useState(false);
+
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const getUser = async () => {
     const first_name = await AsyncStorage.getItem('first_name');
     setFirstName(first_name);
   };
 
-
   //GET PERMISSION TO ON MIC
   const getPermission = async () => {
     if (Platform.OS === 'android') {
-        let granted = await PermissionsAndroid.requestMultiple([
-            PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        ])
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-            granted = await PermissionsAndroid.requestMultiple([
-                PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-                PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-            ])
-        }
+      let granted = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      ]);
+      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+        granted = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        ]);
+      }
     }
-}
+  };
+
+  const onSpeechStart = (e) => {
+    setSpeaking('√');
+  };
+
+  const onSpeechRecognized = (e) => {
+    setRecognized('√');
+  };
+
+  const onSpeechResults = (e) => {
+    setResult(e.value);
+  };
+
+  const startSpeechRecognition = async (e) => {
+    try {
+      await Voice.start('en-US');
+      console.log(e)
+    } catch (error) {
+      console.error(error);
+    }
+  };
   // load the chat history messages
   const chatHistory = async () => {
     const id = await AsyncStorage.getItem('id');
@@ -86,11 +111,21 @@ export default function Chatscreen() {
   // sending message
   const onSend = async (newMessages = []) => {
     const messageText = newMessages[0].text;
+    const resultText = newMessages[0].text;
     const data = {
       message: messageText,
+      resultText,
     };
 
-    Istyping(true);
+    try {
+      await Voice.stop(); // Stop recording if it's active
+      const recognitionResult = await Voice.start('en-GB'); // Start recognition
+      console.log('Recognition Result:', recognitionResult);
+    } catch (error) {
+      console.log('Error sending message:', error);
+      // Set typing back to false in case of an error
+      Istyping(false);
+    }
 
     const id = await AsyncStorage.getItem('id');
     callApi('post', `/chat/${id}`, data)
@@ -111,9 +146,24 @@ export default function Chatscreen() {
       });
   };
 
-  const onMicPress = () => {
-    // Handle microphone button press here
-    setRecording(!recording);
+  const onMicPress = async () => {
+    if (!recording) {
+      // Start recording
+      try {
+        await startRecording();
+        setRecording(true);
+      } catch (error) {
+        console.log('Error starting recording:', error);
+      }
+    } else {
+      // Stop recording
+      try {
+        await stopRecording();
+        setRecording(false);
+      } catch (error) {
+        console.log('Error stopping recording:', error);
+      }
+    }
   };
 
   //end of sending message
@@ -124,25 +174,20 @@ export default function Chatscreen() {
     getPermission();
     chatHistory();
 
+  
+    Voice.onSpeechStart = onSpeechStart;
+    Voice.onSpeechRecognized = onSpeechRecognized;
+    Voice.onSpeechResults = onSpeechResults;
+
     const keepCalling = setInterval(() => {
       chatHistory();
-    }, 500); // keep calling the function
+    }, 1000); // keep calling the function
 
     return () => {
       clearInterval(keepCalling);
+      Voice.destroy().then(Voice.removeAllListeners);
     };
   }, []);
-
-  // render messges
-  // const renderMsg = () => {
-  //   return (
-  //     <FlatList
-  //       data={messages}
-  //       keyExtractor={(item) => item._id.toString()}
-  //       renderItem={({ item }) => <MessageItem item={item} />}
-  //     />
-  //   );
-  // };
 
   // props for gifted chat
   const renderBubble = props => {
@@ -156,7 +201,7 @@ export default function Chatscreen() {
         }}
         textStyle={{
           right: {
-            color: '#fff',
+            color: '#333333',
           },
         }}
       />
@@ -212,6 +257,11 @@ export default function Chatscreen() {
         <Image source={require('../assets/robot.png')} style={styles.image} />
         <Text style={styles.headerText}>Hello, {firstName}</Text>
       </View>
+
+    
+
+      {/* Display the recognition result */}
+      {result !== '' && <Text>Recognition Result: {result}</Text>}
 
       <GiftedChat
         messages={messages.slice(-initialLoad)}

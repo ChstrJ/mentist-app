@@ -64,6 +64,7 @@ const Dashboard = () => {
         
       </View>
             <View className="flex items-center" style={{height: hp(80)}}>
+                <Action actionLabel="Chatbot AI" source={require('../assets/chatbot.png')} Press={() => navigation.push("Speech")}/>
                 <Action actionLabel="Chatbot AI" source={require('../assets/chatbot.png')} Press={() => navigation.push("Chatscreen")}/>
                 <Action actionLabel="Create Appointment" source={require('../assets/appointment.png')} Press={getAppoint}/>
                 <Action actionLabel="My Progress" source={require('../assets/development.png')} Press={() => navigation.push('Progress')}/>

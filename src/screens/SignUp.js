@@ -26,6 +26,7 @@ import {
 import Btn from '../components/Btn';
 import Registerpic from '../assets/register.svg'
 
+
 const SignUp = () => {
   const navigation = useNavigation();
 

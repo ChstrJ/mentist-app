@@ -7,4 +7,7 @@ includeBuild('../node_modules/@react-native/gradle-plugin')
 // include ':@react-native-voice_voice', ':app'
 // project(':@react-native-voice_voice').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-voice/voice/android')
 
+include ':@react-native-voice_voice', ':app'
+project(':@react-native-voice_voice').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-voice/voice/android')
+
 

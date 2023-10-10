@@ -46,7 +46,7 @@ const Home = props => {
         <BtnOutline
           btnLabel="Register"
           onPress={() => 
-          navigation.push('SignUp')}
+          navigation.push('Dashboard')}
         />
 
         <Text
