@@ -39,14 +39,14 @@ const Home = props => {
 
       <View 
       className="flex justify-center items-center"
-      style={{height: hp(50)}}>
+      style={{height: hp(55)}}>
         <Text style={styles.fontHomeSub} className="mt-10">
           Create an account?
         </Text>
         <BtnOutline
           btnLabel="Register"
           onPress={() => 
-          navigation.push('Dashboard')}
+          navigation.push('SignUp')}
         />
 
         <Text

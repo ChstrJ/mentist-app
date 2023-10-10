@@ -1,6 +1,6 @@
 import {View, Button, Alert} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, Platform} from 'react-native';
+import {SafeAreaView, Platform, ScrollView} from 'react-native';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
@@ -17,6 +17,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ConfAppoint from './ConfAppoint';
 import Loader from '../components/Loader';
 import Notif from '../components/Notif';
+import Appointpic from '../assets/Schedule-bro.svg';
+
+
+
 
 export default function Appointment() {
   const navigation = useNavigation();
@@ -28,6 +32,7 @@ export default function Appointment() {
   const [id, setId] = useState('');
   const [firstName, setFirstName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [isLoading, setLoading] = useState('');
 
   const [appId, setAppId] = useState('');
   const [error, setError] = useState(false);
@@ -97,6 +102,7 @@ export default function Appointment() {
       // console.log(Data.booking_time)
       callApi('post', '/appointment', data)
         .then(response =>{
+          setLoading(true)
           const res = JSON.stringify(response)
           const respo = JSON.stringify(response.data.appointment_id)
           console.log(respo + " " + res)
@@ -166,15 +172,26 @@ export default function Appointment() {
   
 
   return (
+    <ScrollView
+    showsVerticalScrollIndicator={false}
+    contentContainerStyle={{flexGrow: 1}}>
+     {isLoading ? (
+        <Loader />
+      ) : (
     <Background>
       <BackButton goBack={navigation.goBack} />
       <View
         className="flex items-center justify-center mt-10"
         style={styles.CenterContainer}>
-        <Logo />
+        
+        <View className=" flex items-center">
+            <Appointpic width={200} height={200} />
+          </View>
 
-        <View className="mt-2 flex items-center">
-          <Text className="text-center flex text-xl">Create Appointment</Text>
+          <View className="flex justify-center items-center">
+            <Text style={styles.fontHomeSub}>
+              Create Appointment
+            </Text>
 
           <TextInput
             style={[{width: wp(80)}, styles.fontField]}
@@ -238,6 +255,10 @@ export default function Appointment() {
           </View>
         </View>
       </View>
+     
     </Background>
+      )}
+    </ScrollView>
+    
   );
 }

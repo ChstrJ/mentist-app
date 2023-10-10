@@ -63,30 +63,30 @@ const SignUp = () => {
   
 
   const handleSubmit = data => {
-  //   if (firstName.length <= 0){
-  //      Alert.alert('Error', 'Invalid First Name!');
-  //      return 
-  //   }
-  //   if (lastName.length <= 0){
-  //     Alert.alert('Error', 'Invalid Last Name!');
-  //     return 
-  //  }
-  //   if (username.length > 8 || username.length <= 0) {
-  //     Alert.alert('Error', 'Invalid Username!');
-  //     return;
-  //   }
-  //   if (email.length <= 0) {
-  //     Alert.alert('Error', 'Invalid Email!');
-  //     return;
-  //   }
-  //   if (password.length <= 0){
-  //     Alert.alert('Error', 'Invalid Password!');
-  //     return
-  //   }
-  //   if (confirmPassword.length <= 0 || confirmPassword != password){
-  //     Alert.alert('Error', 'Invalid, Must be same with Password!');
-  //     return
-  //   }
+    if (firstName <= 0){
+       Alert.alert('Error', 'Invalid First Name!');
+       return 
+    }
+    if (lastName <= 0){
+      Alert.alert('Error', 'Invalid Last Name!');
+      return 
+   }
+    if (username > 8 || username <= 0) {
+      Alert.alert('Error', 'Invalid Username!');
+      return;
+    }
+    if (email <= 0) {
+      Alert.alert('Error', 'Invalid Email!');
+      return;
+    }
+    if (password <= 8){
+      Alert.alert('Error', 'Minimum 8 characters');
+      return
+    }
+    if (confirmPassword.length <= 0 || confirmPassword != password){
+      Alert.alert('Error', 'Invalid, Must be same with Password!');
+      return
+    }
     if (password === confirmPassword) {
     setLoading(true);
     const api = callApi('post', '/register', data)
@@ -94,14 +94,13 @@ const SignUp = () => {
         navigation.push('LogIn');
         dispatch(signupSucess(response.data))
         Alert.alert("Registration Successful");
-        setTimeout(() => {
-          setLoading(false);
-        }, 500);
+        
       })
       .catch(error => {
         dispatch(signupSucess(error.message))
         Alert.alert("Error", error.message)
-        setLoading(false)
+       
+        
       });
   } else {
     Alert.alert("Password doesn't match");
@@ -226,62 +225,7 @@ const SignUp = () => {
               }
               onChangeText={value => setConfirmPassword(value)}
             />
-            {/* <Formik
-              initialValues={{ firstName: '', lastName: '', username: '', email: '', password: '', confirmPassword: ''}}
-              onSubmit={(val) =>{}}
-
-            >
-              {(props) => { 
-                <View> 
-                  <TextInput 
-                    style={[{width: wp(80)}, styles.fontField]}
-                    placeholder='First Name'
-                    onChangeText={ props.handleChange('firstName')}
-                    value={props.values.firstName}
-                  />
-                  <TextInput 
-                    style={[{width: wp(80)}, styles.fontField]}
-                    placeholder='Last Name'
-                    onChangeText={ props.handleChange('lastName')}
-                    value={props.values.lastName}
-                  />
-                  <TextInput 
-                    style={[{width: wp(80)}, styles.fontField]}
-                    placeholder='Username'
-                    onChangeText={ props.handleChange('username')}
-                    value={props.values.username}
-                  />
-                  <TextInput 
-                    style={[{width: wp(80)}, styles.fontField]}
-                    placeholder='First Name'
-                    onChangeText={ props.handleChange('email')}
-                    value={props.values.email}
-                  />
-                  <TextInput 
-                    style={[{width: wp(80)}, styles.fontField]}
-                    placeholder='First Name'
-                    onChangeText={ props.handleChange('password')}
-                    value={props.values.password}
-                  />
-                  <TextInput 
-                    style={[{width: wp(80)}, styles.fontField]}
-                    placeholder='First Name'
-                    onChangeText={ props.handleChange('confirmPassword')}
-                    value={props.values.confirmPassword}
-                  />
-                <Btn
-                onPress={() => handleSubmit(Data)}
-                style={[
-                  styles.submitBtn,
-                  {
-                    backgroundColor: '#6FF484',
-                  },
-                ]}
-                btnLabel="Register"
-              />
-                </View>
-              }}
-            </Formik> */}
+          
             <View
               style={{
                 flexDirection: 'row',

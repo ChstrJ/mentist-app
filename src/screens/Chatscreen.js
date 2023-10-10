@@ -30,7 +30,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import LottieView from 'lottie-react-native';
-import Voice from '@react-native-voice/voice';
+import Voice from '@react-native-voice/voice'
+import { Header } from '@rneui/themed';
 
 export default function Chatscreen() {
   const [firstName, setFirstName] = useState('');
@@ -39,8 +40,10 @@ export default function Chatscreen() {
   const navigation = useNavigation();
   const [typing, Istyping] = useState();
   const [recording, setRecording] = useState(false);
-  const [result, setResult] = useState('');
-  const [speaking, setSpeaking] = useState(false);
+  const [recognized, setRecognized] = useState('');
+  const [started, setStarted] = useState('');
+  const [end, setEnd] = useState(false);
+  const [results, setResults] = useState([]);
 
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -67,22 +70,35 @@ export default function Chatscreen() {
     }
   };
 
-  const onSpeechStart = (e) => {
-    setSpeaking('√');
+  const onSpeechStart = e => {
+    console.log('Speech started');
+    setStarted(true);
   };
 
-  const onSpeechRecognized = (e) => {
+  const onSpeechEnd = e => {
+    console.log('Speech ended');
+    setEnd(true);
+
+    if (results.length > 0) {
+      const recognizedSpeech = results[0];
+      onSend([{text: recognizedSpeech}]);
+    }
+  };
+
+  const onSpeechRecognized = e => {
     setRecognized('√');
   };
 
-  const onSpeechResults = (e) => {
-    setResult(e.value);
+  const onSpeechResults = e => {
+    setResults(e.value);
+    const recognizedSpeech = e.value[0];
+    onSend([{text: recognizedSpeech}]);
   };
 
-  const startSpeechRecognition = async (e) => {
+  const startSpeechRecognition = async e => {
     try {
-      await Voice.start('en-US');
-      console.log(e)
+      await Voice.start('en-PH');
+      console.log(e);
     } catch (error) {
       console.error(error);
     }
@@ -111,28 +127,18 @@ export default function Chatscreen() {
   // sending message
   const onSend = async (newMessages = []) => {
     const messageText = newMessages[0].text;
-    const resultText = newMessages[0].text;
+
     const data = {
       message: messageText,
-      resultText,
     };
-
-    try {
-      await Voice.stop(); // Stop recording if it's active
-      const recognitionResult = await Voice.start('en-GB'); // Start recognition
-      console.log('Recognition Result:', recognitionResult);
-    } catch (error) {
-      console.log('Error sending message:', error);
-      // Set typing back to false in case of an error
-      Istyping(false);
-    }
+    // Set typing to true when sending a message
+    Istyping(true);
 
     const id = await AsyncStorage.getItem('id');
     callApi('post', `/chat/${id}`, data)
       .then(response => {
         const responseData = JSON.stringify(response.data);
         console.log(responseData);
-
         // Update the state with the new message
         setMessages(previousMessages =>
           GiftedChat.append(previousMessages, newMessages),
@@ -148,21 +154,13 @@ export default function Chatscreen() {
 
   const onMicPress = async () => {
     if (!recording) {
-      // Start recording
-      try {
-        await startRecording();
-        setRecording(true);
-      } catch (error) {
-        console.log('Error starting recording:', error);
-      }
+      // If not recording, start the speech recognition
+      startSpeechRecognition();
+      setRecording(true);
     } else {
-      // Stop recording
-      try {
-        await stopRecording();
-        setRecording(false);
-      } catch (error) {
-        console.log('Error stopping recording:', error);
-      }
+      // If recording, stop the speech recognition
+      await Voice.stop();
+      setRecording(false);
     }
   };
 
@@ -174,8 +172,8 @@ export default function Chatscreen() {
     getPermission();
     chatHistory();
 
-  
     Voice.onSpeechStart = onSpeechStart;
+    Voice.onSpeechEnd = onSpeechEnd;
     Voice.onSpeechRecognized = onSpeechRecognized;
     Voice.onSpeechResults = onSpeechResults;
 
@@ -201,7 +199,7 @@ export default function Chatscreen() {
         }}
         textStyle={{
           right: {
-            color: '#333333',
+            color: '#ffffff',
           },
         }}
       />
@@ -230,16 +228,21 @@ export default function Chatscreen() {
       <Actions
         {...props}
         containerStyle={{
-          width: 33,
-          height: 33,
           alignItems: 'center',
           justifyContent: 'center',
           marginLeft: 10,
         }}
         icon={() => (
-          <MaterialCommunityIcons name="microphone" size={30} color="#00A556" />
+          <Image
+            source={
+              recording
+                ? require('../assets/voiceLoading.gif')
+                : require('../assets/recordingIcon.png')
+            }
+            style={{width: 40, height: 40}}
+          />
         )}
-        onPressActionButton={onMicPress} // wip
+        onPressActionButton={onMicPress}
       />
     );
   };
@@ -254,14 +257,13 @@ export default function Chatscreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <BackButton goBack={navigation.goBack} />
-        <Image source={require('../assets/robot.png')} style={styles.image} />
+        <Image source={require('../assets/79.jpg')} style={styles.image} />
         <Text style={styles.headerText}>Hello, {firstName}</Text>
       </View>
 
     
-
-      {/* Display the recognition result */}
-      {result !== '' && <Text>Recognition Result: {result}</Text>}
+      
+    
 
       <GiftedChat
         messages={messages.slice(-initialLoad)}
@@ -279,20 +281,10 @@ export default function Chatscreen() {
         scrollToBottom={true}
         loadEarlier={messages.length > initialLoad}
         onLoadEarlier={loadMoreMsg}
-        // isTyping={typing}
+        isTyping={typing}
         inverted={false}
         renderActions={renderActions}
       />
-
-      {recording && (
-        <LottieView
-          autoPlay
-          loop
-          speed={1}
-          source={require('../assets/animations/record2.json')}
-          style={styles.lottieSmall}
-        />
-      )}
     </View>
   );
 }
@@ -302,31 +294,28 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
+    flexDirection: 'row', 
+    alignItems: 'center',
+    paddingHorizontal: wp(4), 
     backgroundColor: '#00A556',
-    paddingTop: 10,
-    paddingLeft: 6,
-    paddingRight: 6,
-    elevation: 20,
+    elevation: 4, 
   },
   headerText: {
-    fontSize: 25,
+    fontSize: wp(5), 
     color: 'white',
     fontWeight: 'bold',
-    marginTop: 8,
-    display: 'flex',
-    flexDirection: 'row',
-    marginLeft: 5,
+    
+    marginLeft: wp(1), 
   },
 
   image: {
-    width: wp(12),
-    height: hp(6),
-    display: 'flex',
-    flexDirection: 'row',
-    marginRight: 10,
-    marginBottom: 12,
-    marginLeft: 60,
+    width: wp(10),
+    height: hp(5),
+    marginRight: wp(2), 
+    marginTop: hp(1), 
+    marginBottom: hp(1),
+    marginLeft: wp(10), 
+    borderRadius: wp(10), 
   },
 
   lottieSmall: {

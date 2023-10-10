@@ -7,14 +7,14 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Alert,
-  ImageBackground
+  ImageBackground,
 } from 'react-native';
 import {TextInput, Text} from 'react-native-paper';
 import React, {useState, useEffect} from 'react';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
-import { styles } from '../components/styles';
+import {styles} from '../components/styles';
 import {callApi} from '../helper/callApi';
 import {Formik, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
@@ -26,15 +26,13 @@ import {
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
 import {storeData} from '../helper/auth';
-import { loginSuccess, loginFailure } from '../actions/Action';
+import {loginSuccess, loginFailure} from '../actions/Action';
 import LottieView from 'lottie-react-native';
 import Btn from '../components/Btn';
-import Loginpic from '../assets/Login-broo.svg'
-
+import Loginpic from '../assets/Login-broo.svg';
 
 const LogIn = ({}) => {
   const dispatch = useDispatch();
-  
 
   const [hidePass, setHidePass] = useState(true);
   const navigation = useNavigation();
@@ -48,58 +46,27 @@ const LogIn = ({}) => {
   };
   const [isloading, setLoading] = useState();
 
-  const handleLogin = async (data) => {
-    if (username == data.username && password == data.password) {
+  const handleLogin = async data => {
+    if (username != undefined && password != undefined) {
       setLoading(true);
-      const response = callApi('post', '/login', { username, password})
-        .then((response) => {
+      const response = callApi('post', '/login', {username, password})
+        .then(response => {
           // store token in var
-          const token = response.data.token
-          const first_name = response.data.user.first_name
-          const phone_no = response.data.user.phone_number
+          const token = response.data.token;
+          const first_name = response.data.user.first_name;
+          const phone_no = response.data.user.phone_number;
           const id = JSON.stringify(response.data.user.id);
-          // store token
-          storeData(token, first_name, id, phone_no)
-          console.log(token, first_name, id, phone_no)
-          if (response.status === 200) {
-            navigation.push('Dashboard');
-            dispatch(loginSuccess(response.data))
-          } else {
-            navigation.push('LogIn');
-            dispatch(loginFailure(error.message))
-          }
+          // store in async
+          storeData(token, first_name, id, phone_no);
+          const isSuccess = response.status === 200;
+          isSuccess ? (navigation.push('Dashboard'), dispatch(loginSuccess(response.data))) : (navigation.push('LogIn'), dispatch(loginFailure(error.message)));
         })
-        .catch((e) => console.log(e));
+        .catch(e => console.log(e));
     } else {
-      Alert.alert("Something went wrong");
+      Alert.alert('Invalid Credentials','Please try again later', setLoginAttempts(loginAttempts + 1),
+      );
     }
   };
-
-  // const handleLogin = data => {
-  //   setLoading(true);
-  //   if (username != undefined || password != undefined) {
-  //     const response = callApi('post', '/login', data)
-  //       .then(response => {
-  //         navigation.push('Dashboard');
-  //         dispatch({type: 'LOGIN_SUCCESS', payload: response.data.user});
-  //         const id = JSON.stringify(response.data.user.id);
-  //         storeData(response.data.token, response.data.user.first_name, id);
-  //         setLoginAttempts(loginAttempts);
-
-  //         setTimeout(() => {
-  //           setLoading(false);
-  //         }, 500);
-  //       })
-  //       .catch(error => {
-  //         dispatch({type: 'LOGIN_FAILURE', payload: error.message});
-  //         Alert.alert('Invalid Credentials', 'Please try again later', setLoginAttempts(loginAttempts + 1));
-  //         setLoading(false);
-  //       });
-  //   } else {
-  //     Alert.alert('Invalid Credentials', 'Please try again later', setLoginAttempts(loginAttempts + 1));
-  //     setLoading(false);
-  //   }
-  // };
 
   const togglePasswordVisibility = () => {
     setHidePass(!hidePass);
@@ -110,16 +77,17 @@ const LogIn = ({}) => {
       setButtonDisabled(true);
       Alert.alert('Exceeded Login Attempts', 'Try again 15s');
       const timeout = setTimeout(() => {
-        setLoginAttempts(0)
+        setLoginAttempts(0);
         setButtonDisabled(false);
       }, 15000); // 15 secs
       // reset it to 0
-      
-      return () => clearTimeout(timeout); 
+
+      return () => clearTimeout(timeout);
     }
   }, [loginAttempts]);
 
   return (
+    
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{flexGrow: 1}}>
@@ -129,10 +97,10 @@ const LogIn = ({}) => {
         <Background>
           <BackButton goBack={navigation.goBack} />
           <View className=" flex items-center mt-10">
-            <Loginpic  width={300} height={300}/>
+            <Loginpic width={300} height={300} />
           </View>
-         
-        {/* form */}
+
+          {/* form */}
           <View className="flex justify-center items-center">
             <Text className="text-white" style={styles.fontTitle}>
               Login Account
@@ -173,7 +141,8 @@ const LogIn = ({}) => {
               }}>
               <Text style={styles.fontText}>Don't have an account?</Text>
               <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                <Text style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
+                <Text
+                  style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
                   Register here
                 </Text>
               </TouchableOpacity>
@@ -182,16 +151,15 @@ const LogIn = ({}) => {
             <View className="flex justify-center items-center">
               <Btn
                 onPress={() => handleLogin(Data)}
-                btnLabel="Login"
-               />
-
+                disabled={isButtonDisabled}
+                btnLabel={'Login'}
+              />
             </View>
           </View>
-          
         </Background>
       )}
-      
     </ScrollView>
+   
   );
 };
 

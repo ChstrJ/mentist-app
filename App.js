@@ -47,7 +47,7 @@ function App() {
           name="IntroScreen"
           screenOptions={{
             gestureEnabled: true,
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,
           }}
           component={IntroScreen}
         />
@@ -55,7 +55,7 @@ function App() {
         <Stack.Screen
           screenOptions={{
             gestureEnabled: true,
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,
           }}
           name="Home"
           component={Home}
@@ -63,7 +63,7 @@ function App() {
         <Stack.Screen
           screenOptions={{
             gestureEnabled: true,
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,
           }}
           name="SignUp"
           component={SignUp}
@@ -71,7 +71,7 @@ function App() {
         <Stack.Screen
           screenOptions={{
             gestureEnabled: true,
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,
           }}
           name="LogIn"
           component={LogIn}
@@ -79,7 +79,7 @@ function App() {
         <Stack.Screen
           screenOptions={{
             gestureEnabled: true,
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,
           }}
           name="Dashboard"
           component={Dashboard}
@@ -87,15 +87,15 @@ function App() {
         <Stack.Screen
           screenOptions={{
             gestureEnabled: true,
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,
           }}
           name="Speech"
           component={Speech}
         />
         <Stack.Screen
           screenOptions={{
+            cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,
             gestureEnabled: true,
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
           name="Chatscreen"
           component={Chatscreen}
@@ -103,7 +103,7 @@ function App() {
         <Stack.Screen
           screenOptions={{
             gestureEnabled: true,
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,
           }}
           name="Appointment"
           component={Appointment}
@@ -111,7 +111,7 @@ function App() {
         <Stack.Screen
           screenOptions={{
             gestureEnabled: true,
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,
           }}
           name="Progress"
           component={Progress}
@@ -119,7 +119,7 @@ function App() {
         <Stack.Screen
           screenOptions={{
             gestureEnabled: true,
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,
           }}
           name="ConfAppoint"
           component={ConfAppoint}
