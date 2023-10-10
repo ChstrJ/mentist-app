@@ -36,15 +36,17 @@ const Dashboard = () => {
     
     const getAppoint = () => {
       try {
-        AsyncStorage.getItem('Date')
+        // AsyncStorage.removeItem('Date')
+        // AsyncStorage.removeItem('AppID')
+        AsyncStorage.getItem('AppID')
         .then(value => {
-          if (value != null){
-            setDate(value)
-            navigation.push('ConfAppoint')
+          if (value == null){
+            // setDate(value)
+            navigation.navigate('Appointment')
             // navigation.push('Appointment')
           }
           else{
-            navigation.push('Appointment')
+            navigation.navigate('ConfAppoint')
           }
         })
       } catch (error) {
