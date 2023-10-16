@@ -272,7 +272,7 @@ export default function Chatscreen() {
         }}
         renderBubble={renderBubble}
         // renderMessage={renderMsg}
-        messagesContainerStyle={{backgroundColor: 'white'}}
+        messagesContainerStyle={{backgroundColor: 'gray'}}
         alwaysShowSend
         renderSend={renderSend}
         placeholder="Write a message..."
