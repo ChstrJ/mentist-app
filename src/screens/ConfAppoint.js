@@ -49,16 +49,7 @@ export default function ConfAppoint() {
     }, []) 
     
     const cancelApp = (appId) => {
-      // console.log(appId, "null nga ")
-      // AsyncStorage.removeItem('Date')
-      // navigation.navigate('Dashboard')
-      // if (appId){
-      //   await callApi('put', '/appointment/cancel', appId)
-      // }
-      // AsyncStorage.getItem
-      // AsyncStorage.getItem('AppID')
-      // .then(val => setAppId(val))
-      // .catch(e => console.log(e))
+
       if (appId){
         callApi('put', `/appointment/cancel/${appId}` )
         .then(res => {
@@ -81,30 +72,7 @@ export default function ConfAppoint() {
           console.log(appId)})
             
       }
-    //   if (appId){
-    //   await callApi('put', `/appointment/cancel${appId}`)
-    //   .then(val => {
-    //     AsyncStorage.removeItem('Date')
-    //     setNotif(true)
-    //     console.log("Appointment canceled", val)
-    //   }).catch(e => {
-    //     if (e.response){
-    //       console.log("HTTP STATUS Code: ", e.response.status)
-    //       console.log('Error Data: ', e.response.data)
-    //       console.log(appId)
-    //     }
-    //     else if (e.request){
-    //       console.log('No response received from the server');
-    //     } else {
-    //       // Something else happened while setting up the request
-    //       console.log('Error:', error.message);
-    //     }
-      
-    //   })
-    // } else{
-    //   console.log(appId + " null nga e")
-    // }
-    }
+   
     const showMode = modeToShow => {
       setMode(modeToShow);
       setShow(true);
