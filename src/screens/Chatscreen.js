@@ -263,8 +263,6 @@ export default function Chatscreen() {
 
     
       
-    
-
       <GiftedChat
         messages={messages.slice(-initialLoad)}
         onSend={newMessages => onSend(newMessages)}

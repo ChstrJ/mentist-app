@@ -51,17 +51,7 @@ const SignUp = () => {
     password: password,
   };
 
-
-  // const validationSchema = Yup.object().shape({
-  //   username: Yup.string().required('Username is required'),
-  //   password: Yup.string().required('Password is required'),
-  //   email: Yup.string()
-  //   .email('Invalid Email')
-  //   .required('This field is required')
-  // });
-
   
-
   const handleSubmit = data => {
     if (firstName <= 0){
        Alert.alert('Error', 'Invalid First Name!');
@@ -90,15 +80,14 @@ const SignUp = () => {
     if (password === confirmPassword) {
     setLoading(true);
     const api = callApi('post', '/register', data)
-      .then(response => {
+      .then(response => { 
         navigation.push('LogIn');
         dispatch(signupSucess(response.data))
         Alert.alert("Registration Successful");
         
       })
-      .catch(error => {
-        dispatch(signupSucess(error.message))
-        Alert.alert("Error", error.message)
+      .catch(error => {dispatch(signupSucess(error.message))
+       Alert.alert("Error", error.message)
        
         
       });

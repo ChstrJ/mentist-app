@@ -147,7 +147,7 @@ const LogIn = ({}) => {
                 </Text>
               </TouchableOpacity>
             </View>
-
+            
             <View className="flex justify-center items-center">
               <Btn
                 onPress={() => handleLogin(Data)}
