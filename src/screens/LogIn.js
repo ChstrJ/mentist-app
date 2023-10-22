@@ -16,8 +16,6 @@ import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import {styles} from '../components/styles';
 import {callApi} from '../helper/callApi';
-import {Formik, Field, ErrorMessage} from 'formik';
-import * as Yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   widthPercentageToDP as wp,

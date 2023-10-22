@@ -81,15 +81,12 @@ const SignUp = () => {
     setLoading(true);
     const api = callApi('post', '/register', data)
       .then(response => { 
-        navigation.push('LogIn');
-        dispatch(signupSucess(response.data))
-        Alert.alert("Registration Successful");
-        
+        const isSucess = response.status === 200;
+        isSucess ? (navigation.push("LogIn"), dispatch(signupSucess(response.data)), Alert.alert("Registration Successful"))
+        : (navigate.push("SignUp"))
       })
       .catch(error => {dispatch(signupSucess(error.message))
        Alert.alert("Error", error.message)
-       
-        
       });
   } else {
     Alert.alert("Password doesn't match");
