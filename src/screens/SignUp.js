@@ -83,7 +83,7 @@ const SignUp = () => {
       .then(response => { 
         const isSucess = response.status === 200;
         isSucess ? (navigation.push("LogIn"), dispatch(signupSucess(response.data)), Alert.alert("Registration Successful"))
-        : (navigate.push("SignUp"))
+        : (navigate.push("SignUp"), Alert.alert("Registration Failed"))
       })
       .catch(error => {dispatch(signupSucess(error.message))
        Alert.alert("Error", error.message)
