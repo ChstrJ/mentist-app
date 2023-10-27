@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
   View,
   Image,
@@ -5,6 +6,9 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
+=======
+import {View, Image, ScrollView, ImageBackground, TouchableOpacity, Alert} from 'react-native';
+>>>>>>> c7337b1f291c16eb02ad0d95750f5935fd17c183
 import React, {useState, useEffect} from 'react';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
@@ -27,12 +31,43 @@ const Dashboard = () => {
   const [date, setDate] = useState(new Date());
   const [appId, setAppId] = useState('');
 
+<<<<<<< HEAD
   
   const handleLogout = async () => {
     const removed = removeData();
     // console.log(token, first_name)
     removed ? navigation.navigate('Home') : console.log('Error logging out');
   };
+=======
+   
+    const getUser = async () => {
+          const first_name = await AsyncStorage.getItem('first_name')
+            setFirstName(first_name) 
+      }
+    
+        getUser()
+    
+    
+    const getAppoint = () => {
+      try {
+        // AsyncStorage.removeItem('Date')
+        // AsyncStorage.removeItem('AppID')
+        AsyncStorage.getItem('AppID')
+        .then(value => {
+          if (value == null){
+            // setDate(value)
+            navigation.navigate('Appointment')
+            // navigation.push('Appointment')
+          }
+          else{ 
+            navigation.navigate('ConfAppoint')
+          }
+        })
+      } catch (error) {
+        Alert.alert("Tanga error")
+      }
+    }
+>>>>>>> c7337b1f291c16eb02ad0d95750f5935fd17c183
 
   const getUser = async () => {
     const first_name = await AsyncStorage.getItem('first_name');
@@ -64,6 +99,7 @@ const Dashboard = () => {
         <Text className="mt-5" style={styles.fontHomeSub}> Good to see you here, {firstName}
         </Text>
       </View>
+<<<<<<< HEAD
       <View className="flex items-center mt-10" style={{height: hp('80%')}}>
         {/* <Action actionLabel="Chatbot AI" source={require('../assets/chatbot.png')} Press={() => navigation.push("Speech")}/> */}
         <Action
@@ -89,3 +125,19 @@ const Dashboard = () => {
   );
 };
 export default Dashboard;
+=======
+            <View className="flex items-center" style={{height: hp(80)}}>
+                <Action actionLabel="Chatbot AI" source={require('../assets/chatbot.png')} Press={() => navigation.push("Chatscreen")}/>
+                <Action actionLabel="Create Appointment" source={require('../assets/appointment.png')} Press={getAppoint} /*Press={() => navigation.navigate("Appointment")}*//>
+                <Action actionLabel="My Progress" source={require('../assets/development.png')} Press={() => navigation.push('Progress')}/>
+                <BtnOutline
+                  btnLabel='Logout'
+                  onPress={() => handleLogout()}
+                />
+            </View>
+        </Background>
+       
+    )
+}
+export default Dashboard;
+>>>>>>> c7337b1f291c16eb02ad0d95750f5935fd17c183
