@@ -51,7 +51,14 @@ export default function Chatscreen() {
   const [endChat, setEndChat] = useState();
   const [isModalVisible, setModalVisible] = useState(false)
   const [rating, setRating] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [botResponse, setBotResponse] = useState('')
+
+
+  const clearChat = () => {
+    setMessages([])
+    setBotResponse('')
+    toggleModal()
+  }
 
   const getUser = async () => {
     const first_name = await AsyncStorage.getItem('first_name');
@@ -92,11 +99,9 @@ export default function Chatscreen() {
     console.log('Speech started');
     setStarted(true);
   };
-
   const onSpeechEnd = e => {
     console.log('Speech ended');
     setEnd(true);
-
     if (results.length > 0) {
       const recognizedSpeech = results[0];
       onSend([{text: recognizedSpeech}]);
@@ -127,48 +132,60 @@ export default function Chatscreen() {
     const response = await callApi('get', `/chat/${id}`);
     const chatResponse = response.data;
     //map the data messages
-    const historyMessages = chatResponse.messages.map(message => ({
-      _id: message.timestamp, //unique identifier to kaya timestamp
+    const newMessages = chatResponse.messages.filter((message) => {
+      return !messages.some((existingMessage) => existingMessage._id === message.timestamp);
+    }).map(message => ({
+      _id: message.timestamp,
       text: message.content,
       createdAt: new Date(message.timestamp),
       user: {
-        _id: message.role === 'user' ? '2' : '1', //if user gawing 2 ung id nya if not 1 (bot)
+        _id: message.role === 'user' ? '2' : '1',
         name: message.role,
         avatar: 'https://randomuser.me/api/portraits/women/79.jpg',
       },
     }));
-    // historyMessages.sort((a, b) => a.createdAt - b.createdAt)
 
-    setMessages(historyMessages);
+    if (newMessages.length > 0) {
+      setMessages((previousMessages) => [...previousMessages, ...newMessages]);
+    }
+  
   };
 
   // sending message
+  // Sending a message and updating the chat history
   const onSend = async (newMessages = []) => {
     const messageText = newMessages[0].text;
 
     const data = {
       message: messageText,
     };
-    // Set typing to true when sending a message
+
     Istyping(true);
 
     const id = await AsyncStorage.getItem('id');
     callApi('post', `/chat/${id}`, data)
       .then(response => {
         const responseData = JSON.stringify(response.data);
+
+        if (responseData.role !== 'user') {
+          setBotResponse('')
+        }
         console.log(responseData);
         // Update the state with the new message
         setMessages(previousMessages =>
           GiftedChat.append(previousMessages, newMessages),
         );
         Istyping(false);
+        
+        // Load chat history after sending a new message
+        chatHistory();
       })
       .catch(e => {
         console.error('Error sending message:', e);
-        // Set typing back to false in case of an error
         Istyping(false);
       });
   };
+
 
   const onMicPress = async () => {
     if (!recording) {
@@ -195,12 +212,9 @@ export default function Chatscreen() {
     Voice.onSpeechRecognized = onSpeechRecognized;
     Voice.onSpeechResults = onSpeechResults;
 
-    const keepCalling = setInterval(() => {
-      chatHistory();
-    }, 1000); // keep calling the function
+
 
     return () => {
-      clearInterval(keepCalling);
       Voice.destroy().then(Voice.removeAllListeners);
     };
   }, []);
@@ -278,29 +292,29 @@ export default function Chatscreen() {
         <Image source={require('../assets/79.jpg')} style={styles.image} />
         <Text style={styles.headerText}>Hello, {firstName}</Text>
 
-        <View 
-       
+        <View  
         style={{marginLeft: wp(25)}}>
           <TouchableOpacity
             style={{
               backgroundColor: '#00A556',
               borderColor: '#fff',
-              borderWidth: 1,
+              borderWidth: 2,
               borderRadius: 15,
               alignItems: 'center',
               width: wp(20),
               paddingVertical: 5,
-              marginVertical: 5,
+              
+              
             }}
-            onPress={toggleModal}
+            onPress={clearChat}
             >
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 14,
                 fontFamily: 'Poppins-SemiBold',
                 color: 'white',
               }}>
-              Rate
+              End Chat
             </Text>
           </TouchableOpacity>
         </View>
@@ -311,7 +325,8 @@ export default function Chatscreen() {
           header="Rate the response of the AI"
           body={
           <View className="flex justify-center items-center">
-          <Image 
+          <Image
+          style={{marginBottom: 20}} 
           source={require('../assets/rating.png')}/>
           <StarRating
             rating={rating}
@@ -319,8 +334,7 @@ export default function Chatscreen() {
             maxStars={5}
             starSize={45}
             enableHalfStar={false}
-            enableSwiping={true}
-          >
+            enableSwiping={true}>
           </StarRating>
           </View>}
           press={() => toggleModal(false)}
@@ -370,6 +384,7 @@ const styles = StyleSheet.create({
     fontSize: wp(5),
     color: 'white',
     fontWeight: 'bold',
+    fontFamily: 'Poppins-SemiBold',
     marginLeft: wp(1),
   },
 
