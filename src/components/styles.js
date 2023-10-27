@@ -149,10 +149,8 @@ export const modalStyle = StyleSheet.create({
     width: 300, 
     height: 300, 
     backgroundColor: 'white', 
-    color: 'black', 
-    borderWidth: 1, 
-    borderColor: '#000', 
     borderRadius: 20, 
+    elevation: 20,
   }, 
   modalTitle: {
     height: 50, 
@@ -169,16 +167,21 @@ export const modalStyle = StyleSheet.create({
   }, 
   modalTextTitle: {
     color: '#000', 
-    fontSize: 20, 
-    fontWeight: 'bold', 
+    fontSize: 18, 
+    fontFamily: 'Poppins-SemiBold',
     textAlign: 'center', 
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 5,
+    padding: 10,
+    
   }, 
   modalTextBody: {
     color: '#000', 
     fontSize: 20, 
     margin: 10, 
     textAlign: 'center', 
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 10
+    
   }
 })

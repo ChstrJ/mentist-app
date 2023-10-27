@@ -83,10 +83,12 @@ const SignUp = () => {
       .then(response => { 
         const isSucess = response.status === 200;
         isSucess ? (navigation.push("LogIn"), dispatch(signupSucess(response.data)), Alert.alert("Registration Successful"))
-        : (navigate.push("SignUp"), Alert.alert("Registration Failed"))
+        : (navigate.push("SignUp"), Alert.alert("Registration Failed"), setLoading(false))
       })
       .catch(error => {dispatch(signupSucess(error.message))
        Alert.alert("Error", error.message)
+       setLoading(false)
+
       });
   } else {
     Alert.alert("Password doesn't match");
@@ -173,6 +175,8 @@ const SignUp = () => {
               className="flex w-4/5 mt-5 rounded-lg"
               label="Phone No."
               mode="outlined"
+              maxLength={11}
+              keyboardType={'numeric'}
               activeOutlineColor="green"
               left={<TextInput.Icon icon={'phone'} />}
               onChangeText={values => setPhone_no(values)}

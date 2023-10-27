@@ -162,9 +162,12 @@ export default function Appointment() {
             style={[{width: wp(80)}, styles.fontField]}
             className="mt-5"
             mode="outlined"
-            disabled={true}
+           
             label="Phone No."
             value={phoneNumber}
+            disabled={true}
+            keyboardType='numeric'
+            maxLength={11}
             left={<TextInput.Icon icon={'phone'} />}
             onChangeText={phoneNumber => {
               setPhoneNumber(phoneNumber);

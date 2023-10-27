@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   Platform,
   PermissionsAndroid,
+  Modal,
 } from 'react-native';
 import {
   GiftedChat,
@@ -21,6 +22,7 @@ import {
   Actions,
 } from 'react-native-gifted-chat';
 import {callApi} from '../helper/callApi';
+import StarRating from 'react-native-star-rating-widget';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import BackButton from '../components/BackButton';
@@ -30,8 +32,10 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import LottieView from 'lottie-react-native';
-import Voice from '@react-native-voice/voice'
-import { Header } from '@rneui/themed';
+import Voice from '@react-native-voice/voice';
+import {Header} from '@rneui/themed';
+import Notif from '../components/Notif';
+
 
 export default function Chatscreen() {
   const [firstName, setFirstName] = useState('');
@@ -44,7 +48,9 @@ export default function Chatscreen() {
   const [started, setStarted] = useState('');
   const [end, setEnd] = useState(false);
   const [results, setResults] = useState([]);
-
+  const [endChat, setEndChat] = useState();
+  const [isModalVisible, setModalVisible] = useState(false)
+  const [rating, setRating] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false);
 
   const getUser = async () => {
@@ -69,6 +75,18 @@ export default function Chatscreen() {
       }
     }
   };
+
+
+  const sendRating = () => {
+    const rating = 0
+
+  }
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible)
+    
+  }
+
 
   const onSpeechStart = e => {
     console.log('Speech started');
@@ -259,10 +277,58 @@ export default function Chatscreen() {
         <BackButton goBack={navigation.goBack} />
         <Image source={require('../assets/79.jpg')} style={styles.image} />
         <Text style={styles.headerText}>Hello, {firstName}</Text>
+
+        <View style={{marginRight: wp(50)}}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#00A556',
+              borderColor: '#fff',
+              borderWidth: 1,
+              borderRadius: 15,
+              alignItems: 'center',
+              width: wp(20),
+              paddingVertical: 5,
+              marginVertical: 5,
+            }}
+            onPress={toggleModal}
+            >
+            <Text
+              style={{
+                fontSize: 12,
+                fontFamily: 'Poppins-SemiBold',
+                color: 'white',
+              }}>
+              Rate
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <Notif
+          visible={isModalVisible}
+          label="Done"
+          header="Rate the response of the AI"
+          body={
+          <View className="flex justify-center items-center">
+          <Image 
+          source={require('../assets/rating.png')}/>
+          <StarRating
+            rating={rating}
+            onChange={setRating}
+            maxStars={5}
+            starSize={45}
+            enableHalfStar={false}
+            enableSwiping={true}
+          >
+          </StarRating>
+          </View>}
+          press={() => toggleModal(false)}
+
+        />
+
+        
+    
       </View>
 
-    
-      
       <GiftedChat
         messages={messages.slice(-initialLoad)}
         onSend={newMessages => onSend(newMessages)}
@@ -272,7 +338,7 @@ export default function Chatscreen() {
         }}
         renderBubble={renderBubble}
         // renderMessage={renderMsg}
-        messagesContainerStyle={{backgroundColor: 'gray'}}
+        messagesContainerStyle={{backgroundColor: 'white'}}
         alwaysShowSend
         renderSend={renderSend}
         placeholder="Write a message..."
@@ -292,28 +358,27 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: wp(4), 
+    paddingHorizontal: wp(4),
     backgroundColor: '#00A556',
-    elevation: 4, 
+    elevation: 4,
   },
   headerText: {
-    fontSize: wp(5), 
+    fontSize: wp(5),
     color: 'white',
     fontWeight: 'bold',
-    
-    marginLeft: wp(1), 
+    marginLeft: wp(1),
   },
 
   image: {
     width: wp(10),
     height: hp(5),
-    marginRight: wp(2), 
-    marginTop: hp(1), 
+    marginRight: wp(2),
+    marginTop: hp(1),
     marginBottom: hp(1),
-    marginLeft: wp(10), 
-    borderRadius: wp(10), 
+    marginLeft: wp(10),
+    borderRadius: wp(10),
   },
 
   lottieSmall: {
