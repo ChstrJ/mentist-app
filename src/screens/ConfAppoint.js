@@ -11,7 +11,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import theme from '../core/theme';
 import { callApi } from '../helper/callApi'
 import Notif from '../components/Notif';
-export default function ConfAppoint() {
+
+
+function ConfAppoint() {
     const navigation = useNavigation();
     //declare usestate
   
@@ -23,6 +25,7 @@ export default function ConfAppoint() {
     const [show, setShow] = useState(false);
     const [appId, setAppId] = useState()
     const [notif, setNotif] = useState(false)
+    const [consultant, setConsultant] = useState('');
     const Data = {
       name: this.name, 
       phone: this.phone,
@@ -68,18 +71,15 @@ export default function ConfAppoint() {
             console.log("HTTP STATUS Code: ", e.response.status)
             console.log('Error Data: ', e.response.data)
           }
-          console.log(e + " eto error"), 
+          console.log(e + " eto error"),
           console.log(appId)})
-            
       }
-   
     const showMode = modeToShow => {
       setMode(modeToShow);
       setShow(true);
     };
-    
+  }
     return (
-      
         <Background>
           <BackButton goBack={navigation.goBack} />
           <View
@@ -106,6 +106,6 @@ export default function ConfAppoint() {
               />
           </View>
           </Background>
-      
     );
 }
+export default ConfAppoint;

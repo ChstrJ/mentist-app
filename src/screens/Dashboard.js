@@ -1,4 +1,4 @@
-import {View, Image, ScrollView, ImageBackground, TouchableOpacity} from 'react-native';
+import {View, Image, ScrollView, ImageBackground, TouchableOpacity, Alert} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Background from './Background';
 import { useNavigation } from '@react-navigation/native';
@@ -45,12 +45,12 @@ const Dashboard = () => {
             navigation.navigate('Appointment')
             // navigation.push('Appointment')
           }
-          else{
+          else{ 
             navigation.navigate('ConfAppoint')
           }
         })
       } catch (error) {
-        
+        Alert.alert("Tanga error")
       }
     }
 
@@ -67,7 +67,7 @@ const Dashboard = () => {
       </View>
             <View className="flex items-center" style={{height: hp(80)}}>
                 <Action actionLabel="Chatbot AI" source={require('../assets/chatbot.png')} Press={() => navigation.push("Chatscreen")}/>
-                <Action actionLabel="Create Appointment" source={require('../assets/appointment.png')} Press={getAppoint}/>
+                <Action actionLabel="Create Appointment" source={require('../assets/appointment.png')} Press={getAppoint} /*Press={() => navigation.navigate("Appointment")}*//>
                 <Action actionLabel="My Progress" source={require('../assets/development.png')} Press={() => navigation.push('Progress')}/>
                 <BtnOutline
                   btnLabel='Logout'

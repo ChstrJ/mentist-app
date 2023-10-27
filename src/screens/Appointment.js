@@ -119,7 +119,6 @@ export default function Appointment() {
       }
       
     }
-  
   return (
     <Background>
       <BackButton goBack={navigation.goBack} />
@@ -180,14 +179,12 @@ export default function Appointment() {
               onChange={onChange}
             />
           )}
-
           <View className="flex items-center mt-5">
             <Text className="mb-5 text-lg">Your Appointment Date is:</Text>
             <Text className="flex text-2xl w-100">
               {date.toLocaleString('en-PH')}
             </Text>
           </View>
-
           <View className="flex items-center justify-center">
             <Btn onPress={() => handleAppointment(Data)} btnLabel="Confirm" />
           </View>
