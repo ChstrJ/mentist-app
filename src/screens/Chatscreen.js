@@ -189,7 +189,7 @@ export default function Chatscreen() {
     getUser();
     getPermission();
     chatHistory();
-
+    
     Voice.onSpeechStart = onSpeechStart;
     Voice.onSpeechEnd = onSpeechEnd;
     Voice.onSpeechRecognized = onSpeechRecognized;
@@ -278,7 +278,9 @@ export default function Chatscreen() {
         <Image source={require('../assets/79.jpg')} style={styles.image} />
         <Text style={styles.headerText}>Hello, {firstName}</Text>
 
-        <View style={{marginRight: wp(50)}}>
+        <View 
+       
+        style={{marginLeft: wp(25)}}>
           <TouchableOpacity
             style={{
               backgroundColor: '#00A556',
