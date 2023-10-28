@@ -6,11 +6,11 @@ import BackButton from '../components/BackButton';
 import { styles } from '../components/styles';
 import Logo from '../components/Logo';
 import Btn from '../components/Btn';
-import { getData } from '../helper/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import theme from '../core/theme';
 import { callApi } from '../helper/callApi'
 import Notif from '../components/Notif';
+import { getData } from '../helper/auth';
 
 
 function ConfAppoint() {
@@ -19,61 +19,72 @@ function ConfAppoint() {
   
     const [name, setName] = useState()
     const [phone, setPhone] = useState()
-    const [resdate, setResDate] = useState(new Date());
-    const [restime, setresttime] = useState(new Date())
+    const [resdate, setResDate] = useState('')
+    // const [resdate, setResDate] = useState(new Date());
+    const [restime, setresttime] = useState('')
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [appId, setAppId] = useState()
     const [notif, setNotif] = useState(false)
     const [consultant, setConsultant] = useState('');
+    const [error, setError] = useState('');
+    const [uid, setUID] = useState('')
+
     const Data = {
       name: this.name, 
       phone: this.phone,
     }
     //create onchange
     useEffect(() => {
-        AsyncStorage.getItem('resDate')
-        .then(val => {
-            if (val){
-                setResDate(val)
-            }
+        // getData()
+        // for date gathering
+        AsyncStorage.getItem('date')
+        .then(response => {
+          setResDate(response)
+          console.log(response)
         })
-        AsyncStorage.getItem('resTime')
-        .then(val => {
-            if (val){
-                setresttime(val)
-            }
+        .catch(error => {
+          console.log(error)
         })
+        // for time gathering
+        AsyncStorage.getItem('time')
+        .then(response => {
+          setresttime(response)
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        // for appointment id
         AsyncStorage.getItem('AppID')
-        .then(val=> {
-          setAppId(val)
+        .then(response => {
+          setAppId(response)
         })
-        
+        .catch(error => {
+          console.log(error)
+        })
     }, []) 
     
     const cancelApp = (appId) => {
-
-      if (appId){
-        callApi('put', `/appointment/cancel/${appId}` )
-        .then(res => {
-          AsyncStorage.removeItem('AppID')
-          .then(val => console.log(val))
-          .catch(e => console.log(e))
-          // navigation.navigate('Dashboard')
-          setNotif(true)
-        })
-        .catch(e => {
-          if (e.response){
-            console.log('HTTP Status Code:', e.response.status);
-            console.log('Error Data:', e.response.data);
-          }
-          else if(e.request){
-            console.log("HTTP STATUS Code: ", e.response.status)
-            console.log('Error Data: ', e.response.data)
-          }
-          console.log(e + " eto error"),
-          console.log(appId)})
-      }
+      callApi('post', `appointment/cancel/${appId}`, appId)
+      .then(reponse => {
+        AsyncStorage.removeItem('AppID')
+        navigation.navigate('Dashboard')
+      })
+      .catch(e => {
+        if (e.response){
+          console.log('HTTP Status Code:', e.response.status);
+          console.log('Error Data:', e.response.data);
+        }
+        else if (e.request){
+          console.log("HTTP STATUS Code: ", e.response.status)
+          console.log('Error Data: ', e.response.data)
+          Alert.alert('Error', e.response.data)
+        }
+        else{
+          console.log(e, "Eto yun baket? ")
+        }
+      })
     const showMode = modeToShow => {
       setMode(modeToShow);
       setShow(true);
@@ -87,14 +98,16 @@ function ConfAppoint() {
             style={styles.CenterContainer}>
             <Logo />
             <Text style={styles.textAppoint}>
-                Your Appointment is on: {resdate.toLocaleString()}
-                {restime.toLocaleString()}
+                Your Appointment is on: {resdate + " "}
+                <Text>
+                {restime}
+                </Text>
             </Text>
             <Btn 
               bgColor={theme.rightColors.primary} 
               btnLabel="Cancel Appointment" 
               textColor='white'
-              onPress={() => {cancelApp(appId), navigation.navigate('Dashboard')}}
+              onPress={() => cancelApp(appId)}
             />
               <Notif 
                 visible={notif} 

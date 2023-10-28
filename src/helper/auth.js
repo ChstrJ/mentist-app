@@ -2,11 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { callApi } from './callApi';
 
 // auth login
-export const storeData = async (token, first_name, id, phone_no) => {
+export const storeData = async (token, first_name, id, phone_no, user_name) => {
   AsyncStorage.setItem('token', token);
   AsyncStorage.setItem('first_name', first_name);
   AsyncStorage.setItem('id', id);
   AsyncStorage.setItem('phone_no', phone_no);
+  AsyncStorage.setItem('UserName', user_name)
   }
 
   export const getData = async () => {
@@ -17,7 +18,11 @@ export const storeData = async (token, first_name, id, phone_no) => {
 export const removeData = async () => {
     AsyncStorage.removeItem('token');
     AsyncStorage.removeItem('first_name');
-    // AsyncStorage.removeItem('Date')
+    AsyncStorage.removeItem('UserName')
+    AsyncStorage.removeItem('uid')
+    AsyncStorage.removeItem('date')
+    AsyncStorage.removeItem('time')
+    AsyncStorage.removeItem('AppID')
     return true; // Indicate successful removal
 }
 

@@ -18,7 +18,7 @@ import ConfAppoint from './ConfAppoint';
 import Loader from '../components/Loader';
 import Notif from '../components/Notif';
 import Appointpic from '../assets/Schedule-bro.svg';
-
+import { SelectList } from 'react-native-dropdown-select-list'
 
 
 
@@ -33,9 +33,10 @@ export default function Appointment() {
   const [firstName, setFirstName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setLoading] = useState('');
+  const [notif, setNotif] = useState(false);
 
   const [appId, setAppId] = useState('');
-  const [error, setError] = useState(false);
+  const [Error, setError] = useState('');
   const [conName, setConName] = useState('');
   const [time, setTime] = useState('');
 
@@ -71,7 +72,7 @@ export default function Appointment() {
   // const splitDate = date.toISOString()
   
   const Data = {
-    consultant_id: 1,
+    consultant_id: 2,
     user_id: id,
     phone_number: phoneNumber,
     date: date.toISOString().split('T')[0],
@@ -93,12 +94,12 @@ export default function Appointment() {
   };
 
   const handleAppointment = async data => {
-    if (!isValidPhone(phoneNumber) || !isValidDate(date)) {
-      Alert.alert(
-        'Invalid Credential',
-        'Please provide a valid date and number!',
-      );
-    } else {
+    // if (!isValidPhone(phoneNumber) || !isValidDate(date)) {
+    //   Alert.alert(
+    //     'Invalid Credential',
+    //     'Please provide a valid date and number!',
+    //   );
+    // } else {
       // console.log(Data.booking_time)
       callApi('post', '/appointment', data)
         .then(response =>{
@@ -106,25 +107,32 @@ export default function Appointment() {
           const res = JSON.stringify(response)
           const respo = JSON.stringify(response.data.appointment_id)
           console.log(respo + " " + res)
-          AsyncStorage.setItem('AppID', respo)
-          AsyncStorage.getItem('AppID')
-          .then(val => console.log(val))
-          .catch(e => console.log(e))
+          // AsyncStorage.setItem('AppID', respo)
+          // AsyncStorage.getItem('AppID')
+          // .then(val => console.log(val))
+          // .catch(e => console.log(e))
           navigation.navigate('Dashboard')
           const resDate = response.data.date;
           const resTime = response.data.booking_time;
+          setNotif(true)
           Alert.alert('Schedule Success', `Your session will be on ${response.data.date}, ${response.data.booking_time}, with ${response.data.consultant.name}`)
+
           AsyncStorage.setItem('resTime', resTime)  // need to put pass in async items
           AsyncStorage.setItem('resDate', resDate)  // need to put pass in async items
         }).catch(error => {
           if (error.response){
             console.log('HTTP Status Code:', error.response.status);
             console.log('Error Data:', error.response.data);
+   
           }
         })
-      }
+      // }
       
     }
+    const data = [
+      {key:'1', value:'Rendon Labador'},
+      {key:'2', value:'Ma\'am nigga'},
+  ]
   return (
     <ScrollView
     showsVerticalScrollIndicator={false}
@@ -156,7 +164,13 @@ export default function Appointment() {
             value={firstName}
             left={<TextInput.Icon icon={'account'} />}
           />
-
+          <Notif 
+            visible={notif}
+            onRequestClose={true}
+            header="Success"
+            body="Noice"
+            label="OK"
+          />
           <TextInput
             style={[{width: wp(80)}, styles.fontField]}
             className="mt-5"
@@ -171,7 +185,6 @@ export default function Appointment() {
             onChangeText={phoneNumber => {
               setPhoneNumber(phoneNumber);
             }}
-            
           />
 
           <View style={[{width: wp(80)}, styles.fontField]} className="mt-5">
@@ -188,7 +201,15 @@ export default function Appointment() {
               onPress={() => showMode('time')}
             />
           </View>
-
+          <View>
+            <SelectList 
+                  placeholder='Choose Consultant'
+                  data={data}
+                  save='value'
+                  setSelected={(val) => setConName(val)}
+                  style={{zIndex: 200, flex: 1}}
+                />
+          </View>
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
@@ -209,6 +230,7 @@ export default function Appointment() {
             <Btn onPress={() => handleAppointment(Data)} btnLabel="Confirm" />
           </View>
         </View>
+ 
       </View>
      
     </Background>
