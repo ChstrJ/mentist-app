@@ -48,15 +48,12 @@ export default function Chatscreen() {
   const [started, setStarted] = useState('');
   const [end, setEnd] = useState(false);
   const [results, setResults] = useState([]);
-  const [endChat, setEndChat] = useState();
   const [isModalVisible, setModalVisible] = useState(false)
   const [rating, setRating] = useState(0)
-  const [botResponse, setBotResponse] = useState('')
+ 
 
 
   const clearChat = () => {
-    setMessages([])
-    setBotResponse('')
     toggleModal()
   }
 
@@ -84,10 +81,19 @@ export default function Chatscreen() {
   };
 
 
-  const sendRating = () => {
-    const rating = 0
-
-  }
+  const sendRating = async () => {
+    const rating = {
+      rating: rating
+    }
+    callApi('post', '/chat/rate', rating)
+    .then(response => {
+      console.log('Rating::', response);
+      toggleModal(false);
+    })
+    .catch(error => {
+      console.error('Error sending rating:', error);
+    });
+};
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible)
@@ -132,10 +138,8 @@ export default function Chatscreen() {
     const response = await callApi('get', `/chat/${id}`);
     const chatResponse = response.data;
     //map the data messages
-    const newMessages = chatResponse.messages.filter((message) => {
-      return !messages.some((existingMessage) => existingMessage._id === message.timestamp);
-    }).map(message => ({
-      _id: message.timestamp,
+    const historyMessages = chatResponse.messages.map((message, index) => ({
+      _id: `${message.timestamp}_${index}`, // Combine timestamp with index for a unique key
       text: message.content,
       createdAt: new Date(message.timestamp),
       user: {
@@ -144,12 +148,11 @@ export default function Chatscreen() {
         avatar: 'https://randomuser.me/api/portraits/women/79.jpg',
       },
     }));
-
-    if (newMessages.length > 0) {
-      setMessages((previousMessages) => [...previousMessages, ...newMessages]);
-    }
-  
+    
+    setMessages(historyMessages);
   };
+  
+  
 
   // sending message
   // Sending a message and updating the chat history
@@ -167,9 +170,7 @@ export default function Chatscreen() {
       .then(response => {
         const responseData = JSON.stringify(response.data);
 
-        if (responseData.role !== 'user') {
-          setBotResponse('')
-        }
+       
         console.log(responseData);
         // Update the state with the new message
         setMessages(previousMessages =>
@@ -313,9 +314,7 @@ export default function Chatscreen() {
                 fontSize: 14,
                 fontFamily: 'Poppins-SemiBold',
                 color: 'white',
-              }}>
-              End Chat
-            </Text>
+              }}>Rate</Text>
           </TouchableOpacity>
         </View>
 
@@ -337,12 +336,11 @@ export default function Chatscreen() {
             enableSwiping={true}>
           </StarRating>
           </View>}
-          press={() => toggleModal(false)}
-
+          press={() => {
+            sendRating()
+            
+          }}
         />
-
-        
-    
       </View>
 
       <GiftedChat

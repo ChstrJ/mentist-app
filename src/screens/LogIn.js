@@ -51,6 +51,7 @@ const LogIn = ({}) => {
         .then(response => {
           // store token in var
           const token = response.data.token;
+          console.log(token)
           const first_name = response.data.user.first_name;
           const phone_no = response.data.user.phone_number;
           const id = JSON.stringify(response.data.user.id);
