@@ -55,10 +55,13 @@ const LogIn = ({}) => {
           const first_name = response.data.user.first_name;
           const phone_no = response.data.user.phone_number;
           const id = JSON.stringify(response.data.user.id);
+          const uname = response.data.user.username; 
           // store in async
-          storeData(token, first_name, id, phone_no);
+          storeData(token, first_name, id, phone_no, uname);
+          console.log(uname)
           const isSuccess = response.status === 200;
           isSuccess ? (navigation.push('Dashboard'), dispatch(loginSuccess(response.data))) : (navigation.push('LogIn'), dispatch(loginFailure(error.message)));
+          console.log(token)
         })
         .catch(e => console.log(e));
     } else {

@@ -21,16 +21,21 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import BtnOutline from '../components/BtnOutline';
+import { callApi } from '../helper/callApi';
 
 const Dashboard = () => {
   const navigation = useNavigation();
   const [firstName, setFirstName] = useState('');
-  const [date, setDate] = useState(new Date());
+  // const [date, setDate] = useState(new Date());
   const [appId, setAppId] = useState('');
+  const [uid, setUID] = useState('')
 
+  
   const getUser = async () => {
     const first_name = await AsyncStorage.getItem('first_name');
     setFirstName(first_name);
+    const user_id = await AsyncStorage.getItem('id');
+    setUID(user_id);
   };
 
   const handleLogout = async () => {
@@ -39,27 +44,51 @@ const Dashboard = () => {
     removed ? navigation.navigate('Home') : console.log('Error logging out');
   };
 
-  const getAppoint = () => {
-    try {
-      // AsyncStorage.removeItem('Date')
-      // AsyncStorage.removeItem('AppID')
-      AsyncStorage.getItem('AppID').then(value => {
-        if (value == null) {
-          // setDate(value)
-          navigation.navigate('Appointment');
-          // navigation.push('Appointment')
-        } else {
-          navigation.navigate('ConfAppoint');
-        }
-      });
-    } catch (error) {
-      Alert.alert('Tanga error');
-    }
-  };
-
   useEffect(() => {
     getUser();
   }, []);
+
+  const getAppoint = () => {
+    
+    callApi('get', `/appointment/${uid}`, uid)
+    .then(response => {
+      const res = JSON.stringify(response.data.appointments)
+      console.log(res)
+
+      if (res == "[]"){
+        navigation.navigate('Appointment')
+      }
+      else{
+        const time = response.data.appointments[0].booking_time
+        const date = response.data.appointments[0].date
+        const appId = response.data.appointments[0].appointment_id
+        console.log(res)
+        console.log(time, date)
+        AsyncStorage.setItem('uid', uid)
+        AsyncStorage.setItem('time', time)
+        AsyncStorage.setItem('date', date)
+        AsyncStorage.setItem('AppID', appId)
+        navigation.navigate('ConfAppoint')
+      }
+    })
+    .catch(e => {
+
+      if (e.response){
+        console.log('HTTP Status Code:', e.response.status);
+        console.log('Error Data:', e.response.data);
+      }
+      else if (e.request){
+        console.log("HTTP STATUS Code: ", e.response.status)
+        console.log('Error Data: ', e.response.data)
+        Alert.alert('Error', e.response.data)
+      }
+      else{
+        console.log(e, "Eto yun baket? ")
+      }
+    })
+  };
+
+
 
   return (
     <Background>
@@ -81,7 +110,7 @@ const Dashboard = () => {
           source={require('../assets/appointment.png')}
           Press={
             getAppoint
-          } /*Press={() => navigation.navigate("Appointment")}*/
+          } 
         />
         <Action
           actionLabel="My Progress"
