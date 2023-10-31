@@ -22,6 +22,12 @@ import {
   Actions,
 } from 'react-native-gifted-chat';
 import {callApi} from '../helper/callApi';
+import {
+  ALERT_TYPE,
+  Dialog,
+  AlertNotificationRoot,
+  AlertNotificationDialog,
+} from 'react-native-alert-notification';
 import StarRating from 'react-native-star-rating-widget';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -36,7 +42,6 @@ import Voice from '@react-native-voice/voice';
 import {Header} from '@rneui/themed';
 import Notif from '../components/Notif';
 
-
 export default function Chatscreen() {
   const [firstName, setFirstName] = useState('');
   const [messages, setMessages] = useState([]);
@@ -48,14 +53,12 @@ export default function Chatscreen() {
   const [started, setStarted] = useState('');
   const [end, setEnd] = useState(false);
   const [results, setResults] = useState([]);
-  const [isModalVisible, setModalVisible] = useState(false)
-  const [rating, setRating] = useState(0)
- 
-
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [rating, setRating] = useState();
 
   const clearChat = () => {
-    toggleModal()
-  }
+    toggleModal();
+  };
 
   const getUser = async () => {
     const first_name = await AsyncStorage.getItem('first_name');
@@ -80,26 +83,29 @@ export default function Chatscreen() {
     }
   };
 
-
   const sendRating = async () => {
-    const rating = {
-      rating: rating
-    }
-    callApi('post', '/chat/rate', rating)
-    .then(response => {
-      console.log('Rating::', response);
-      toggleModal(false);
-    })
-    .catch(error => {
-      console.error('Error sending rating:', error);
-    });
-};
-
+    const rate = {
+      rate: rating,
+    };
+  
+    callApi('post', '/chat/rate', rate)
+      .then(response => {
+        const message = response.data.message;
+        const isSuccess = response.status === 200;
+  
+        if (isSuccess) {
+          Alert.alert(message)
+        } else {
+          Alert.alert("Error Rating")
+        }
+      })
+      .catch(e => console.log(e));
+    toggleModal(false);
+  };
+  
   const toggleModal = () => {
-    setModalVisible(!isModalVisible)
-    
-  }
-
+    setModalVisible(!isModalVisible);
+  };
 
   const onSpeechStart = e => {
     console.log('Speech started');
@@ -148,11 +154,9 @@ export default function Chatscreen() {
         avatar: 'https://randomuser.me/api/portraits/women/79.jpg',
       },
     }));
-    
+
     setMessages(historyMessages);
   };
-  
-  
 
   // sending message
   // Sending a message and updating the chat history
@@ -170,14 +174,13 @@ export default function Chatscreen() {
       .then(response => {
         const responseData = JSON.stringify(response.data);
 
-       
         console.log(responseData);
         // Update the state with the new message
         setMessages(previousMessages =>
           GiftedChat.append(previousMessages, newMessages),
         );
         Istyping(false);
-        
+
         // Load chat history after sending a new message
         chatHistory();
       })
@@ -186,7 +189,6 @@ export default function Chatscreen() {
         Istyping(false);
       });
   };
-
 
   const onMicPress = async () => {
     if (!recording) {
@@ -207,13 +209,11 @@ export default function Chatscreen() {
     getUser();
     getPermission();
     chatHistory();
-    
+
     Voice.onSpeechStart = onSpeechStart;
     Voice.onSpeechEnd = onSpeechEnd;
     Voice.onSpeechRecognized = onSpeechRecognized;
     Voice.onSpeechResults = onSpeechResults;
-
-
 
     return () => {
       Voice.destroy().then(Voice.removeAllListeners);
@@ -293,8 +293,7 @@ export default function Chatscreen() {
         <Image source={require('../assets/79.jpg')} style={styles.image} />
         <Text style={styles.headerText}>Hello, {firstName}</Text>
 
-        <View  
-        style={{marginLeft: wp(25)}}>
+        <View style={{marginLeft: wp(25)}}>
           <TouchableOpacity
             style={{
               backgroundColor: '#00A556',
@@ -304,17 +303,16 @@ export default function Chatscreen() {
               alignItems: 'center',
               width: wp(20),
               paddingVertical: 5,
-              
-              
             }}
-            onPress={clearChat}
-            >
+            onPress={clearChat}>
             <Text
               style={{
                 fontSize: 14,
                 fontFamily: 'Poppins-SemiBold',
                 color: 'white',
-              }}>Rate</Text>
+              }}>
+              Rate
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -323,22 +321,22 @@ export default function Chatscreen() {
           label="Done"
           header="Rate the response of the AI"
           body={
-          <View className="flex justify-center items-center">
-          <Image
-          style={{marginBottom: 20}} 
-          source={require('../assets/rating.png')}/>
-          <StarRating
-            rating={rating}
-            onChange={setRating}
-            maxStars={5}
-            starSize={45}
-            enableHalfStar={false}
-            enableSwiping={true}>
-          </StarRating>
-          </View>}
+            <View className="flex justify-center items-center">
+              <Image
+                style={{marginBottom: 20}}
+                source={require('../assets/rating.png')}
+              />
+              <StarRating
+                rating={rating}
+                onChange={setRating}
+                maxStars={5}
+                starSize={45}
+                enableHalfStar={false}
+                enableSwiping={true}></StarRating>
+            </View>
+          }
           press={() => {
-            sendRating()
-            
+            sendRating();
           }}
         />
       </View>

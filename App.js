@@ -10,7 +10,7 @@ import IntroScreen from './src/screens/IntroScreen';
 import Dashboard from './src/screens/Dashboard';
 import store from './src/store/store';
 import Chatscreen from './src/screens/Chatscreen';
-import test from './src/screens/Speech';
+
 import {
   CardStyleInterpolators,
   TransitionPreset,
@@ -20,7 +20,7 @@ import Progress from './src/screens/Progress';
 import {getData} from './src/helper/auth';
 import Splashscreen from './src/components/Splashscreen';
 import ConfAppoint from './src/screens/ConfAppoint';
-import Speech from './src/screens/Speech';
+
 const Stack = createNativeStackNavigator();
 
 
@@ -84,14 +84,7 @@ function App() {
           name="Dashboard"
           component={Dashboard}
         />
-        <Stack.Screen
-          screenOptions={{
-            gestureEnabled: true,
-            cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,
-          }}
-          name="Speech"
-          component={Speech}
-        />
+        
         <Stack.Screen
           screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,

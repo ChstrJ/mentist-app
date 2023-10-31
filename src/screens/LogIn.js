@@ -61,9 +61,17 @@ const LogIn = ({}) => {
           console.log(uname)
           const isSuccess = response.status === 200;
           isSuccess ? (navigation.push('Dashboard'), dispatch(loginSuccess(response.data))) : (navigation.push('LogIn'), dispatch(loginFailure(error.message)));
-          console.log(token)
+         
+          
         })
-        .catch(e => console.log(e));
+        .catch(error => {
+          console.log(error);
+          navigation.push('LogIn');
+          Alert.alert('Invalid Credentials','Please try again later')
+        });
+        
+        
+        
     } else {
       Alert.alert('Invalid Credentials','Please try again later', setLoginAttempts(loginAttempts + 1),
       );
