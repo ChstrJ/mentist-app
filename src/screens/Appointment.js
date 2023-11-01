@@ -76,7 +76,13 @@ export default function Appointment() {
     date: date.toISOString().split('T')[0],
     booking_time: date.toISOString().split('T')[1].split('.')[0],
   };
-
+  const getConsultant = async () => {
+    callApi('get', '/consultant')
+    .then(response => {
+      const res = response.consultants
+    })
+    .catch(e => console.log(e))
+  }
   //create onchange
   const onChange = (e, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -181,7 +187,7 @@ export default function Appointment() {
               <View style={[{width: wp(80)}]} className="flex mt-5">
                 <SelectList
                   placeholder="Choose Consultant"
-                  data={() => resData}
+                  // data={() => resData}
                   save="value"
                   setSelected={val => setConName(val)}
                   style={{zIndex: 200, flex: 1}}
