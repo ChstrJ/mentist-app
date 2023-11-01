@@ -11,7 +11,7 @@ import theme from '../core/theme';
 import { callApi } from '../helper/callApi'
 import Notif from '../components/Notif';
 import { getData } from '../helper/auth';
-
+import Modals from '../components/Modals';
 
 function ConfAppoint() {
     const navigation = useNavigation();
@@ -71,6 +71,7 @@ function ConfAppoint() {
       .then(reponse => {
         AsyncStorage.removeItem('AppID')
         navigation.navigate('Dashboard')
+        
       })
       .catch(e => {
         if (e.response){
@@ -90,6 +91,7 @@ function ConfAppoint() {
     //   setMode(modeToShow);
     //   setShow(true);
     // };
+    setNotif(true)
   }
     return (
         <Background>
@@ -110,13 +112,14 @@ function ConfAppoint() {
               textColor='white'
               onPress={() => cancelApp(appId)}
             />
-              <Notif 
-                visible={notif} 
-                onRequestClose={() => setNotif(false)}
-                header="Success!"
-                body="Cancel Success!"
-                press={() => setNotif(false)}
-                label="OK"
+
+              
+              <Modals 
+                visible={notif}
+                ModalLabel="Success"
+                src={require('../assets/checked.png')}
+                Message="Cancel Success"
+                Press={() => setNotif(false)}
               />
           </View>
           </Background>
