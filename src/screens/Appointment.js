@@ -48,10 +48,12 @@ export default function Appointment() {
 
     const getConsultants = async () => {
       const response = await callApi('get', '/consultant')
-      const consultants = response.data.consultants 
+      const consultants = response.data.consultants
       const listData = consultants.map((item) => {
-        return {key: item.id, 
-          value: `${item.name}    |    ${item.available_time}  |     ${item.date}     |    ${item.profession}`}
+        return {
+          key: item.id, 
+          value: `${item.name}    |    ${item.available_time}  |     ${item.date}     |    ${item.profession}`,
+        }
       })
         setConsultant(listData)
     }

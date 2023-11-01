@@ -1,40 +1,26 @@
-import { StyleSheet, Text, View, Button } from 'react-native'
-import React from 'react'
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { ALERT_TYPE, Dialog, AlertNotificationRoot } from 'react-native-alert-notification';
 
-const testingBtn = () => {
+const TestingBtn = () => {
+  useEffect(() => {
+    Dialog.show({
+      type: ALERT_TYPE.SUCCESS,
+      title: 'Success',
+      textBody: 'Congrats! this is dialog box success',
+      button: 'Close',
+    });
+  }, []);
+
   return (
-    
     <AlertNotificationRoot>
       <View>
-       
-        <Button
-          title={'dialog box'}
-          onPress={() =>
-            Dialog.show({
-              type: ALERT_TYPE.SUCCESS,
-              title: 'Success',
-              textBody: 'Congrats! this is dialog box success',
-              button: 'close',
-            })
-          }
-        />
-      
-        <Button
-          title={'toast notification'}
-          onPress={() =>
-            Toast.show({
-              type: ALERT_TYPE.SUCCESS,
-              title: 'Success',
-              textBody: 'Congrats! this is toast notification success',
-            })
-          }
-        />
+        {/* Your component content */}
       </View>
     </AlertNotificationRoot>
-  )
+  );
 }
 
-export default testingBtn
+export default TestingBtn;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

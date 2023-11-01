@@ -41,8 +41,10 @@ import LottieView from 'lottie-react-native';
 import Voice from '@react-native-voice/voice';
 import {Header} from '@rneui/themed';
 import Notif from '../components/Notif';
+import TestingBtn from './TestingBtn';
 
 export default function Chatscreen() {
+
   const [firstName, setFirstName] = useState('');
   const [messages, setMessages] = useState([]);
   const [initialLoad, setInitialLoad] = useState(10);
@@ -59,6 +61,8 @@ export default function Chatscreen() {
   const clearChat = () => {
     toggleModal();
   };
+
+  
 
   const getUser = async () => {
     const first_name = await AsyncStorage.getItem('first_name');
@@ -87,17 +91,9 @@ export default function Chatscreen() {
     const rate = {
       rate: rating,
     };
-  
-    callApi('post', '/chat/rate', rate)
+    await callApi('post', '/chat/rate', rate)
       .then(response => {
-        const message = response.data.message;
-        const isSuccess = response.status === 200;
-  
-        if (isSuccess) {
-          Alert.alert(message)
-        } else {
-          Alert.alert("Error Rating")
-        }
+        response.status === 200 ? Alert.alert("Success Rating") : Alert.alert("Error Rating")  
       })
       .catch(e => console.log(e));
     toggleModal(false);
@@ -292,7 +288,7 @@ export default function Chatscreen() {
         <BackButton goBack={navigation.goBack} />
         <Image source={require('../assets/79.jpg')} style={styles.image} />
         <Text style={styles.headerText}>Hello, {firstName}</Text>
-
+    
         <View style={{marginLeft: wp(25)}}>
           <TouchableOpacity
             style={{
