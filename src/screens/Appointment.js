@@ -36,7 +36,7 @@ export default function Appointment() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setLoading] = useState('');
   const [notif, setNotif] = useState(false);
-
+  const [consultant, setConsultant] = useState([])
   const [appId, setAppId] = useState('');
   const [Error, setError] = useState('');
   const [conName, setConName] = useState('');
@@ -44,6 +44,21 @@ export default function Appointment() {
 
   useEffect(() => {
     getData();
+
+    const getConsultants = async () => {
+      const response = await callApi('get', '/consultant')
+      const consultants = response.data.consultants 
+      const listData = consultants.map((item) => {
+        return {key: item.id, 
+          value: `${item.name}    |    ${item.available_time}  |     ${item.date}     |    ${item.profession}`}
+      })
+        setConsultant(listData)
+    }
+    getConsultants()
+   
+
+
+
     try {
       AsyncStorage.getItem('id')
         .then(value => {
@@ -93,7 +108,7 @@ export default function Appointment() {
     setShow(true);
   };
 
-  const handleAppointment = async data => {
+  const handleAppointment = data => {
     // if (!isValidPhone(phoneNumber) || !isValidDate(date)) {
     //   Alert.alert(
     //     'Invalid Credential',
@@ -101,7 +116,7 @@ export default function Appointment() {
     //   );
     // } else {
     // console.log(Data.booking_time)
-    callApi('post', '/appointment', data)
+   callApi('post', '/appointment', data)
       .then(response => {
         setLoading(true);
         const res = JSON.stringify(response);
@@ -131,10 +146,11 @@ export default function Appointment() {
       });
     // }
   };
-  const data = [
-    {key: '1', value: 'Rendon Labador'},
-    {key: '2', value: "Ma'am nigga"},
-  ];
+
+  
+ 
+
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -188,7 +204,7 @@ export default function Appointment() {
               <View style={[{width: wp(80)}]} className="flex mt-5">
                 <SelectList
                   placeholder="Choose Consultant"
-                  data={data}
+                  data={consultant}
                   save="value"
                   setSelected={val => setConName(val)}
                   style={{zIndex: 200, flex: 1}}
