@@ -17,13 +17,13 @@ function ConfAppoint() {
     const navigation = useNavigation();
     //declare usestate
   
-    const [name, setName] = useState()
-    const [phone, setPhone] = useState()
+    // const [name, setName] = useState()
+    // const [phone, setPhone] = useState()
     const [resdate, setResDate] = useState('')
     // const [resdate, setResDate] = useState(new Date());
     const [restime, setresttime] = useState('')
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
+    // const [mode, setMode] = useState('date');
+    // const [show, setShow] = useState(false);
     const [appId, setAppId] = useState()
     const [notif, setNotif] = useState(false)
     const [consultant, setConsultant] = useState('');
@@ -113,7 +113,6 @@ function ConfAppoint() {
               onPress={() => cancelApp(appId)}
             />
 
-              
               <Modals 
                 visible={notif}
                 ModalLabel="Success"

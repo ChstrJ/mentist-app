@@ -37,7 +37,9 @@ export default function Appointment() {
   const [isLoading, setLoading] = useState('');
   const [notif, setNotif] = useState(false);
   const [consult, setConsultant] = useState('');
+  const [day, setDay] = useState('');
   const [conName, setConName] = useState('');
+  const [selConst, setSelConst] = useState(null);
   useEffect(() => {
     getData();
     getConsultant();
@@ -71,7 +73,7 @@ export default function Appointment() {
   // const splitDate = date.toISOString()
 
   const Data = {
-    consultant_id: 2,
+    consultant_id: selConst,
     user_id: id,
     phone_number: phoneNumber,
     date: date.toISOString().split('T')[0],
@@ -81,12 +83,22 @@ export default function Appointment() {
     callApi('get', '/consultant')
     .then(response => {
       const res = response.data.consultants
-      const listData = res.map(item=> {
+      const listCont = res.map(item=> {
         return {key: item.id, value: `${item.name}`}
       })
-      setConsultant(listData)
+      setConsultant(listCont)
+      console.log(consult + "const and listCont " + listCont);
+
     })
+
     .catch(e => console.log(e))
+  }
+  const handleConsult = (selectedValue) => {
+    const selectedConsultant = consult.find(item => item.value === selectedValue)
+    if (selectedConsultant){
+      setSelConst(selectedConsultant.key)
+      console.log(selectedConsultant.key)
+    }
   }
   //create onchange
   const onChange = (e, selectedDate) => {
@@ -135,7 +147,7 @@ export default function Appointment() {
       });
     // }
   };
-  let data = []
+
   
 
   return (
@@ -189,26 +201,19 @@ export default function Appointment() {
                 }}
               />
 
-              <View style={[{ width: wp(40), display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 8 }]} className="flex mt-5">
-                <View style={{ width: wp(50), flex: 1 }}>
+              <View style={[{ width: wp(80), display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }]} className="flex mt-5">
+                <View style={{ width: wp(80), flex: 1 }}>
                   <SelectList
-                    placeholder="Consultant"
+                    placeholder="Choose Consultant"
                     data={consult}
                     save="value"
-                    setSelected={val => setConName(val)}
+                    setSelected={val => {
+                      setConName(val);
+                      handleConsult(val)
+                      console.log(val)
+                    }}
                     style={{ zIndex: 200, width: '100%' }} // Use width: '100%' to maintain the size
                     searchPlaceholder="Choose Consultant"
-                    searchicon={false}
-                  />
-                </View>
-                <View style={{ width: wp(50), flex: 1 }}>
-                  <SelectList
-                    placeholder="Available Time"
-                    data={consult}
-                    save="value"
-                    setSelected={val => setConName(val)}
-                    style={{ zIndex: 200, width: '100%' }} // Use width: '100%' to maintain the size
-                    searchPlaceholder="Available Time"
                     searchicon={false}
                   />
                 </View>
@@ -247,6 +252,7 @@ export default function Appointment() {
                 <Btn
                   onPress={() => handleAppointment(Data)}
                   btnLabel="Confirm"
+                  style={{zIndex: 0}}
                 />
               </View>
             </View>
