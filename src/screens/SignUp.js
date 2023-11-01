@@ -17,7 +17,7 @@ import * as Yup from 'yup';
 import {callApi} from '../helper/callApi';
 import Loader from '../components/Loader';
 import { signupSucess, signupFailure } from '../actions/Action';
-import {storeData} from '../helper/auth';
+import {isValidPhone, storeData} from '../helper/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   widthPercentageToDP as wp,
@@ -179,7 +179,14 @@ const SignUp = () => {
               keyboardType={'numeric'}
               activeOutlineColor="green"
               left={<TextInput.Icon icon={'phone'} />}
-              onChangeText={values => setPhone_no(values)}
+              onChangeText={values => {
+                if (!isValidPhone(values)){
+                setPhone_no(values)
+                }
+                else{
+                  console.log("Invalid phone!")
+                }
+              }}
             />
 
             <TextInput
