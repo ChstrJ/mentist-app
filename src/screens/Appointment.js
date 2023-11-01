@@ -42,6 +42,7 @@ export default function Appointment() {
   const [conName, setConName] = useState('');
   const [time, setTime] = useState('');
 
+
   useEffect(() => {
     getData();
 
@@ -83,6 +84,7 @@ export default function Appointment() {
         }
       })
       .catch(e => console.log(e));
+      
   }, []);
 
   // const splitDate = date.toISOString()
@@ -94,7 +96,13 @@ export default function Appointment() {
     date: date.toISOString().split('T')[0],
     booking_time: date.toISOString().split('T')[1].split('.')[0],
   };
-
+  const getConsultant = async () => {
+    callApi('get', '/consultant')
+    .then(response => {
+      const res = response.consultants
+    })
+    .catch(e => console.log(e))
+  }
   //create onchange
   const onChange = (e, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -122,10 +130,7 @@ export default function Appointment() {
         const res = JSON.stringify(response);
         const respo = JSON.stringify(response.data.appointment_id);
         console.log(respo + ' ' + res);
-        // AsyncStorage.setItem('AppID', respo)
-        // AsyncStorage.getItem('AppID')
-        // .then(val => console.log(val))
-        // .catch(e => console.log(e))
+
         navigation.navigate('Dashboard');
         const resDate = response.data.date;
         const resTime = response.data.booking_time;
@@ -134,7 +139,6 @@ export default function Appointment() {
           'Schedule Success',
           `Your session will be on ${response.data.date}, ${response.data.booking_time}, with ${response.data.consultant.name}`,
         );
-
         AsyncStorage.setItem('resTime', resTime); // need to put pass in async items
         AsyncStorage.setItem('resDate', resDate); // need to put pass in async items
       })
@@ -146,10 +150,8 @@ export default function Appointment() {
       });
     // }
   };
-
+  let data = []
   
- 
-
 
   return (
     <ScrollView
@@ -185,6 +187,7 @@ export default function Appointment() {
                 header="Success"
                 body="Noice"
                 label="OK"
+                
               />
               <TextInput
                 style={[{width: wp(80)}, styles.fontField]}
@@ -208,6 +211,8 @@ export default function Appointment() {
                   save="value"
                   setSelected={val => setConName(val)}
                   style={{zIndex: 200, flex: 1}}
+                  searchPlaceholder='Choose Consultant'
+                  searchicon={false}
                 />
               </View>
 

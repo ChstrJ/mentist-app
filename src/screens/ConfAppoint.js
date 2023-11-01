@@ -59,6 +59,7 @@ function ConfAppoint() {
         AsyncStorage.getItem('AppID')
         .then(response => {
           setAppId(response)
+          console.log(response)
         })
         .catch(error => {
           console.log(error)
@@ -66,7 +67,7 @@ function ConfAppoint() {
     }, []) 
     
     const cancelApp = (appId) => {
-      callApi('post', `appointment/cancel/${appId}`, appId)
+      callApi('put', `/appointment/cancel/${appId}`, appId)
       .then(reponse => {
         AsyncStorage.removeItem('AppID')
         navigation.navigate('Dashboard')
@@ -85,10 +86,10 @@ function ConfAppoint() {
           console.log(e, "Eto yun baket? ")
         }
       })
-    const showMode = modeToShow => {
-      setMode(modeToShow);
-      setShow(true);
-    };
+    // const showMode = modeToShow => {
+    //   setMode(modeToShow);
+    //   setShow(true);
+    // };
   }
     return (
         <Background>

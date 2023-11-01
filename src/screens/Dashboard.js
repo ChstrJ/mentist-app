@@ -61,13 +61,16 @@ const Dashboard = () => {
       else{
         const time = response.data.appointments[0].booking_time
         const date = response.data.appointments[0].date
-        const appId = response.data.appointments[0].appointment_id
+        const appId = JSON.stringify(response.data.appointments[0].appointment_id)
         console.log(res)
         console.log(time, date)
         AsyncStorage.setItem('uid', uid)
         AsyncStorage.setItem('time', time)
         AsyncStorage.setItem('date', date)
         AsyncStorage.setItem('AppID', appId)
+        AsyncStorage.getItem('AppID')
+        .then(res => {console.log(res)})
+        .catch(e => {console.log(e)})
         navigation.navigate('ConfAppoint')
       }
     })
