@@ -66,10 +66,11 @@ function ConfAppoint() {
     }, []) 
     
     const cancelApp = (appId) => {
-      callApi('post', `appointment/cancel/${appId}`, appId)
+      callApi('put', `appointment/cancel/${appId}`, appId)
       .then(reponse => {
         AsyncStorage.removeItem('AppID')
         navigation.navigate('Dashboard')
+        setNotif(true);
       })
       .catch(e => {
         if (e.response){

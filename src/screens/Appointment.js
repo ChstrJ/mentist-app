@@ -37,10 +37,6 @@ export default function Appointment() {
   const [isLoading, setLoading] = useState('');
   const [notif, setNotif] = useState(false);
 
-  const [appId, setAppId] = useState('');
-  const [Error, setError] = useState('');
-  const [conName, setConName] = useState('');
-  const [time, setTime] = useState('');
 
   useEffect(() => {
     getData();
@@ -68,6 +64,7 @@ export default function Appointment() {
         }
       })
       .catch(e => console.log(e));
+      
   }, []);
 
   // const splitDate = date.toISOString()
@@ -107,10 +104,7 @@ export default function Appointment() {
         const res = JSON.stringify(response);
         const respo = JSON.stringify(response.data.appointment_id);
         console.log(respo + ' ' + res);
-        // AsyncStorage.setItem('AppID', respo)
-        // AsyncStorage.getItem('AppID')
-        // .then(val => console.log(val))
-        // .catch(e => console.log(e))
+
         navigation.navigate('Dashboard');
         const resDate = response.data.date;
         const resTime = response.data.booking_time;
@@ -119,7 +113,6 @@ export default function Appointment() {
           'Schedule Success',
           `Your session will be on ${response.data.date}, ${response.data.booking_time}, with ${response.data.consultant.name}`,
         );
-
         AsyncStorage.setItem('resTime', resTime); // need to put pass in async items
         AsyncStorage.setItem('resDate', resDate); // need to put pass in async items
       })
@@ -131,10 +124,9 @@ export default function Appointment() {
       });
     // }
   };
-  const data = [
-    {key: '1', value: 'Rendon Labador'},
-    {key: '2', value: "Ma'am nigga"},
-  ];
+  let data = []
+  
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -169,6 +161,7 @@ export default function Appointment() {
                 header="Success"
                 body="Noice"
                 label="OK"
+                
               />
               <TextInput
                 style={[{width: wp(80)}, styles.fontField]}
@@ -188,10 +181,12 @@ export default function Appointment() {
               <View style={[{width: wp(80)}]} className="flex mt-5">
                 <SelectList
                   placeholder="Choose Consultant"
-                  data={data}
+                  data={() => resData}
                   save="value"
                   setSelected={val => setConName(val)}
                   style={{zIndex: 200, flex: 1}}
+                  searchPlaceholder='Choose Consultant'
+                  searchicon={false}
                 />
               </View>
 

@@ -53,10 +53,9 @@ const Dashboard = () => {
     callApi('get', `/appointment/${uid}`, uid)
     .then(response => {
       const res = JSON.stringify(response.data.appointments)
-      console.log(res)
-
       if (res == "[]"){
         navigation.navigate('Appointment')
+
       }
       else{
         const time = response.data.appointments[0].booking_time
@@ -87,8 +86,6 @@ const Dashboard = () => {
       }
     })
   };
-
-
 
   return (
     <Background>
