@@ -54,7 +54,7 @@ const Dashboard = () => {
     .then(response => {
       const res = JSON.stringify(response.data.appointments)
       console.log(res)
-
+      
       if (res == "[]"){
         navigation.navigate('Appointment')
       }

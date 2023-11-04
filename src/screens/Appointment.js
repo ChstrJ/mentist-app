@@ -36,32 +36,12 @@ export default function Appointment() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setLoading] = useState('');
   const [notif, setNotif] = useState(false);
-  const [consultant, setConsultant] = useState([])
-  const [appId, setAppId] = useState('');
-  const [Error, setError] = useState('');
+  const [consult, setConsultant] = useState('');
+  const [day, setDay] = useState('');
   const [conName, setConName] = useState('');
-  const [time, setTime] = useState('');
-
-
+  const [selConst, setSelConst] = useState(null);
   useEffect(() => {
     getData();
-
-    const getConsultants = async () => {
-      const response = await callApi('get', '/consultant')
-      const consultants = response.data.consultants
-      const listData = consultants.map((item) => {
-        return {
-          key: item.id, 
-          value: `${item.name}    |    ${item.available_time}  |     ${item.date}     |    ${item.profession}`,
-        }
-      })
-        setConsultant(listData)
-    }
-    getConsultants()
-   
-
-
-
     try {
       AsyncStorage.getItem('id')
         .then(value => {
@@ -92,7 +72,7 @@ export default function Appointment() {
   // const splitDate = date.toISOString()
 
   const Data = {
-    consultant_id: 2,
+    consultant_id: selConst,
     user_id: id,
     phone_number: phoneNumber,
     date: date.toISOString().split('T')[0],
@@ -101,9 +81,23 @@ export default function Appointment() {
   const getConsultant = async () => {
     callApi('get', '/consultant')
     .then(response => {
-      const res = response.consultants
+      const res = response.data.consultants
+      const listCont = res.map(item=> {
+        return {key: item.id, value: `${item.name}`}
+      })
+      setConsultant(listCont)
+      console.log(consult + "const and listCont " + listCont);
+
     })
+
     .catch(e => console.log(e))
+  }
+  const handleConsult = (selectedValue) => {
+    const selectedConsultant = consult.find(item => item.value === selectedValue)
+    if (selectedConsultant){
+      setSelConst(selectedConsultant.key)
+      console.log(selectedConsultant.key)
+    }
   }
   //create onchange
   const onChange = (e, selectedDate) => {
@@ -152,7 +146,7 @@ export default function Appointment() {
       });
     // }
   };
-  let data = []
+
   
 
   return (
@@ -209,7 +203,7 @@ export default function Appointment() {
               <View style={[{width: wp(80)}]} className="flex mt-5">
                 <SelectList
                   placeholder="Choose Consultant"
-                  data={consultant}
+                  // data={() => resData}
                   save="value"
                   setSelected={val => setConName(val)}
                   style={{zIndex: 200, flex: 1}}
@@ -217,6 +211,7 @@ export default function Appointment() {
                   searchicon={false}
                 />
               </View>
+
 
               <View
                 style={[{width: wp(80)}, styles.fontField]}
@@ -250,6 +245,7 @@ export default function Appointment() {
                 <Btn
                   onPress={() => handleAppointment(Data)}
                   btnLabel="Confirm"
+                  style={{zIndex: 0}}
                 />
               </View>
             </View>
