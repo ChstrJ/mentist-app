@@ -39,16 +39,23 @@ const LogIn = ({}) => {
   const [password, setPassword] = useState();
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [isButtonDisabled, setButtonDisabled] = useState();
+  const [success, setSuccess] = useState(false)
+
   const Data = {
     username: username,
     password: password,
   };
   const [isloading, setLoading] = useState();
 
-  const showModal = () => {
-    return(
-      <TestingBtn/>
-    )
+  const handleSuccess = () => { 
+    setSuccess(true)
+    navigation.push('Dashboard')
+  }
+
+
+  const handleError = () => { 
+    navigation.push('LogIn')
+    Alert.alert('Something went wrong')
   }
 
   const handleLogin = async () => {
@@ -66,7 +73,7 @@ const LogIn = ({}) => {
           // store in async
           storeData(token, first_name, id, phone_no, uname);
           console.log(uname)
-          response.status === 200 ? (navigation.push('Dashboard'), dispatch(loginSuccess(response.data))) : (navigation.push('LogIn'), dispatch(loginFailure(error.message)));
+          response.status === 200 ? handleSuccess() : handleError();
          
         })
         .catch(error => {
@@ -94,7 +101,6 @@ const LogIn = ({}) => {
         setButtonDisabled(false);
       }, 15000); // 15 secs
       // reset it to 0
-
       return () => clearTimeout(timeout);
     }
   }, [loginAttempts]);
@@ -108,6 +114,7 @@ const LogIn = ({}) => {
         <Loader />
       ) : (
         <Background>
+       
           <BackButton goBack={navigation.goBack} />
           <View className=" flex items-center mt-10">
             <Loginpic width={300} height={300} />
@@ -165,8 +172,10 @@ const LogIn = ({}) => {
               />
             </View>
           </View>
+          {success && <TestingBtn />}
         </Background>
       )}
+    
     </ScrollView>
    
   );

@@ -147,7 +147,7 @@ export const modalStyle = StyleSheet.create({
   }, 
   modalView: {
     width: 300, 
-    height: 300, 
+    height: 310, 
     backgroundColor: 'white', 
     borderRadius: 20, 
     elevation: 20,

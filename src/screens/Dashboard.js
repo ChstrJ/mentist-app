@@ -16,12 +16,15 @@ import {getData, removeData} from '../helper/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from '../components/Logo';
 import {Text} from 'react-native-paper';
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import BtnOutline from '../components/BtnOutline';
 import { callApi } from '../helper/callApi';
+import PopupSuccess from '../components/PopupSuccess';
+import TestingBtn from './TestingBtn';
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -29,8 +32,10 @@ const Dashboard = () => {
   // const [date, setDate] = useState(new Date());
   const [appId, setAppId] = useState('');
   const [uid, setUID] = useState('')
+  const [isPopupVisible, setPopupVisibility] = useState(false);
 
-  
+
+
   const getUser = async () => {
     const first_name = await AsyncStorage.getItem('first_name');
     setFirstName(first_name);
@@ -95,6 +100,8 @@ const Dashboard = () => {
 
   return (
     <Background>
+
+
       <View className="flex items-center">
         <Logo />
         <Text className="mt-5" style={styles.fontHomeSub}>
@@ -120,6 +127,7 @@ const Dashboard = () => {
           source={require('../assets/development.png')}
           Press={() => navigation.push('Progress')}
         />
+       
         <BtnOutline btnLabel="Logout" onPress={() => handleLogout()} />
       </View>
     </Background>

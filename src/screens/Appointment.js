@@ -24,6 +24,7 @@ import Appointpic from '../assets/Schedule-bro.svg';
 import {SelectList} from 'react-native-dropdown-select-list';
 import BtnOutline from '../components/BtnOutline';
 import { AlertNotificationRoot } from 'react-native-alert-notification';
+import TestingBtn from './TestingBtn';
 
 export default function Appointment() {
   const navigation = useNavigation();
@@ -41,10 +42,6 @@ export default function Appointment() {
   const [day, setDay] = useState('');
   const [conName, setConName] = useState('');
   const [selConst, setSelConst] = useState(null);
-  const [error, setError] = useState(false);
-
-
-
 
 
 
@@ -161,6 +158,7 @@ export default function Appointment() {
         <Loader />
       ) : (
         <Background>
+        
           <BackButton goBack={navigation.goBack} />
           <View
             className="flex items-center justify-center mt-10"
@@ -171,7 +169,7 @@ export default function Appointment() {
 
             <View className="flex justify-center items-center">
               <Text style={styles.fontHomeSub}>Create Appointment</Text>
-
+    
               <TextInput
                 style={[{width: wp(80)}, styles.fontField]}
                 className="mt-5"

@@ -40,7 +40,16 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setLoading] = useState('');
-  const [modal, setModal] = useState();
+
+  const handleSuccess = () => { 
+    navigation.push('LogIn')
+    Alert.alert('Registration Succcess')
+  }
+
+  const handleError = () => { 
+    navigation.push('SignUp')
+    Alert.alert('Something went wrong')
+  }
 
   const Data = {
     username: username,
@@ -51,9 +60,6 @@ const SignUp = () => {
     password: password,
   };
 
-  const showModal = () => {
-    return <TestingBtn />;
-  };
 
   const handleSubmit = data => {
     if (firstName <= 0) {
@@ -81,14 +87,15 @@ const SignUp = () => {
       return;
     }
     if (password === confirmPassword) {
-      setLoading(true);
+      // setLoading(true);
       const api = callApi('post', '/register', data)
         .then(response => {
           response.status === 200
-            ? (navigation.push('LogIn'), Alert.alert('Registration Success'))
-            : (navigation.push('SignUp'), Alert.alert('Something went wrong'));
+            ? handleSuccess()
+            : handleError()
         })
         .catch(error => {
+          console.log(error)
           dispatch(signupFailure(error.message));
           setLoading(false);
         });
@@ -118,6 +125,7 @@ const SignUp = () => {
         <Loader />
       ) : (
         <Background>
+       
           <BackButton goBack={navigation.goBack} />
           <View className="flex items-center justify-center mt-10">
             <Registerpic width={250} height={250} />
@@ -180,14 +188,7 @@ const SignUp = () => {
               keyboardType={'numeric'}
               activeOutlineColor="green"
               left={<TextInput.Icon icon={'phone'} />}
-              onChangeText={values => {
-                if (!isValidPhone(values)){
-                setPhone_no(values)
-                }
-                else{
-                  console.log("Invalid phone!")
-                }
-              }}
+              onChangeText={values => setPhone_no(values)}
             />
 
             <TextInput
@@ -243,6 +244,7 @@ const SignUp = () => {
               <Btn onPress={() => handleSubmit(Data)} btnLabel="Register" />
             </View>
           </View>
+          
         </Background>
       )}
     </ScrollView>

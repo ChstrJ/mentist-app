@@ -33,6 +33,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import BackButton from '../components/BackButton';
 import {useNavigation} from '@react-navigation/native';
+import SmallBtn from '../components/SmallBtn'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -42,6 +43,7 @@ import Voice from '@react-native-voice/voice';
 import {Header} from '@rneui/themed';
 import Notif from '../components/Notif';
 import TestingBtn from './TestingBtn';
+import Pop from '../components/Pop';
 
 export default function Chatscreen() {
 
@@ -58,7 +60,7 @@ export default function Chatscreen() {
   const [isModalVisible, setModalVisible] = useState(false);
   const [rating, setRating] = useState();
 
-  const clearChat = () => {
+  const modal = () => {
     toggleModal();
   };
 
@@ -297,36 +299,22 @@ export default function Chatscreen() {
         <Text style={styles.headerText}>Hello, {firstName}</Text>
     
         <View style={{marginLeft: wp(25)}}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#00A556',
-              borderColor: '#fff',
-              borderWidth: 2,
-              borderRadius: 15,
-              alignItems: 'center',
-              width: wp(20),
-              paddingVertical: 5,
-            }}
-            onPress={clearChat}>
-            <Text
-              style={{
-                fontSize: 14,
-                fontFamily: 'Poppins-SemiBold',
-                color: 'white',
-              }}>
-              Rate
-            </Text>
-          </TouchableOpacity>
+          
+          <SmallBtn
+            onPress={modal}
+            btnLabel="Rate"
+          />
         </View>
 
-        <Notif
+        <Pop
           visible={isModalVisible}
           label="Done"
           header="Rate the response of the AI"
+          btnLabel='Done'
           body={
             <View className="flex justify-center items-center">
               <Image
-                style={{marginBottom: 20}}
+                style={{marginBottom: 20, height: hp(12), width: wp(22)}}
                 source={require('../assets/rating.png')}
               />
               <StarRating
@@ -335,10 +323,12 @@ export default function Chatscreen() {
                 maxStars={5}
                 starSize={45}
                 enableHalfStar={false}
-                enableSwiping={true}></StarRating>
+                enableSwiping={true}/>
             </View>
+            
           }
-          press={() => {
+
+          onPress={() => {
             sendRating();
           }}
         />
