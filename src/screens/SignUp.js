@@ -188,7 +188,8 @@ const SignUp = () => {
               keyboardType={'numeric'}
               activeOutlineColor="green"
               left={<TextInput.Icon icon={'phone'} />}
-              onChangeText={values => setPhone_no(values)}
+              onChangeText={values => {isValidPhone(values) ?  setPhone_no(values) :  console.log("Invalid phone!")
+              }}
             />
 
             <TextInput
