@@ -11,19 +11,19 @@ import theme from '../core/theme';
 import { callApi } from '../helper/callApi'
 import Notif from '../components/Notif';
 import { getData } from '../helper/auth';
-
+import Modals from '../components/Modals';
 
 function ConfAppoint() {
     const navigation = useNavigation();
     //declare usestate
   
-    const [name, setName] = useState()
-    const [phone, setPhone] = useState()
+    // const [name, setName] = useState()
+    // const [phone, setPhone] = useState()
     const [resdate, setResDate] = useState('')
     // const [resdate, setResDate] = useState(new Date());
     const [restime, setresttime] = useState('')
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
+    // const [mode, setMode] = useState('date');
+    // const [show, setShow] = useState(false);
     const [appId, setAppId] = useState()
     const [notif, setNotif] = useState(false)
     const [consultant, setConsultant] = useState('');
@@ -65,11 +65,13 @@ function ConfAppoint() {
         })
     }, []) 
     
-    const cancelApp = (appId) => {
-      callApi('post', `appointment/cancel/${appId}`, appId)
+    const cancelApp  = async () => {
+      await callApi('put', `appointment/cancel/${appId}`)
       .then(reponse => {
         AsyncStorage.removeItem('AppID')
         navigation.navigate('Dashboard')
+        setNotif(true);
+        
       })
       .catch(e => {
         if (e.response){
@@ -85,10 +87,10 @@ function ConfAppoint() {
           console.log(e, "Eto yun baket? ")
         }
       })
-    const showMode = modeToShow => {
-      setMode(modeToShow);
-      setShow(true);
-    };
+    // const showMode = modeToShow => {
+    //   setMode(modeToShow);
+    //   setShow(true);
+    // };
   }
     return (
         <Background>
@@ -109,13 +111,13 @@ function ConfAppoint() {
               textColor='white'
               onPress={() => cancelApp(appId)}
             />
-              <Notif 
-                visible={notif} 
-                onRequestClose={() => setNotif(false)}
-                header="Success!"
-                body="Cancel Success!"
-                press={() => setNotif(false)}
-                label="OK"
+
+              <Modals 
+                visible={notif}
+                ModalLabel="Success"
+                src={require('../assets/checked.png')}
+                Message="Cancel Success"
+                Press={() => setNotif(false)}
               />
           </View>
           </Background>

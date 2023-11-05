@@ -1,6 +1,6 @@
 import { View, Text, Modal, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import React from 'react'
-import styles from '../styles/modalStyles'
+import styles from './modalStyles'
 export default function Modals({Action, visible, src, Press, ModalLabel, Message }) {
   return (
     <Modal 

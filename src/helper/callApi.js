@@ -2,8 +2,6 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Set up Axios defaults
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.headers.post['Accept'] = 'application/json';
 axios.defaults.baseURL = 'https://mentist.onrender.com/api/v1/';
 
 

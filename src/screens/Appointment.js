@@ -36,29 +36,12 @@ export default function Appointment() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setLoading] = useState('');
   const [notif, setNotif] = useState(false);
-  const [consultant, setConsultant] = useState([])
-  const [appId, setAppId] = useState('');
-  const [Error, setError] = useState('');
+  const [consult, setConsultant] = useState('');
+  const [day, setDay] = useState('');
   const [conName, setConName] = useState('');
-  const [time, setTime] = useState('');
-
+  const [selConst, setSelConst] = useState(null);
   useEffect(() => {
     getData();
-
-    const getConsultants = async () => {
-      const response = await callApi('get', '/consultant')
-      const consultants = response.data.consultants 
-      const listData = consultants.map((item) => {
-        return {key: item.id, 
-          value: `${item.name}    |    ${item.available_time}  |     ${item.date}     |    ${item.profession}`}
-      })
-        setConsultant(listData)
-    }
-    getConsultants()
-   
-
-
-
     try {
       AsyncStorage.getItem('id')
         .then(value => {
@@ -83,12 +66,13 @@ export default function Appointment() {
         }
       })
       .catch(e => console.log(e));
+      
   }, []);
 
   // const splitDate = date.toISOString()
 
   const Data = {
-    consultant_id: 2,
+    consultant_id: selConst,
     user_id: id,
     phone_number: phoneNumber,
     date: date.toISOString().split('T')[0],
@@ -108,7 +92,7 @@ export default function Appointment() {
     setShow(true);
   };
 
-  const handleAppointment = data => {
+  const handleAppointment = async data => {
     // if (!isValidPhone(phoneNumber) || !isValidDate(date)) {
     //   Alert.alert(
     //     'Invalid Credential',
@@ -116,16 +100,13 @@ export default function Appointment() {
     //   );
     // } else {
     // console.log(Data.booking_time)
-   callApi('post', '/appointment', data)
+    callApi('post', '/appointment', data)
       .then(response => {
         setLoading(true);
         const res = JSON.stringify(response);
         const respo = JSON.stringify(response.data.appointment_id);
         console.log(respo + ' ' + res);
-        // AsyncStorage.setItem('AppID', respo)
-        // AsyncStorage.getItem('AppID')
-        // .then(val => console.log(val))
-        // .catch(e => console.log(e))
+
         navigation.navigate('Dashboard');
         const resDate = response.data.date;
         const resTime = response.data.booking_time;
@@ -134,7 +115,6 @@ export default function Appointment() {
           'Schedule Success',
           `Your session will be on ${response.data.date}, ${response.data.booking_time}, with ${response.data.consultant.name}`,
         );
-
         AsyncStorage.setItem('resTime', resTime); // need to put pass in async items
         AsyncStorage.setItem('resDate', resDate); // need to put pass in async items
       })
@@ -148,8 +128,6 @@ export default function Appointment() {
   };
 
   
- 
-
 
   return (
     <ScrollView
@@ -185,6 +163,7 @@ export default function Appointment() {
                 header="Success"
                 body="Noice"
                 label="OK"
+                
               />
               <TextInput
                 style={[{width: wp(80)}, styles.fontField]}
@@ -210,6 +189,7 @@ export default function Appointment() {
                   style={{zIndex: 200, flex: 1}}
                 />
               </View>
+
 
               <View
                 style={[{width: wp(80)}, styles.fontField]}
@@ -243,6 +223,7 @@ export default function Appointment() {
                 <Btn
                   onPress={() => handleAppointment(Data)}
                   btnLabel="Confirm"
+                  style={{zIndex: 0}}
                 />
               </View>
             </View>

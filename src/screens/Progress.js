@@ -31,7 +31,7 @@ export default function Progress() {
   const [chartData, setChartData] = useState([])
   const navigate = useNavigation();
 
-  
+  //config for chart
   const chartConfig = {
     backgroundGradientFrom: '#1E2923',
     backgroundGradientFromOpacity: 0,
@@ -42,6 +42,7 @@ export default function Progress() {
     barPercentage: 1,
   };
 
+    //create colors for each rate
   const getColorRate = (rate) => {
     switch (rate) {
       case 'Poor':
@@ -75,6 +76,7 @@ export default function Progress() {
         legendFontSize: 15,
       }))
 
+      //pass the data
       setChartData(chartData)
     }
 
@@ -98,7 +100,7 @@ export default function Progress() {
         <Card>
         <PieChart
           data={chartData}
-          width={wp(100)}
+          width={wp(80)}
           height={hp(30)}
           chartConfig={chartConfig}
           accessor={'percentage'}
