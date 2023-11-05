@@ -72,7 +72,6 @@ const LogIn = ({}) => {
         .catch(error => {
           console.log(error);
           navigation.push('LogIn');
-          Alert.alert('Invalid Credentials','Please try again later')
         });
           
     } else {
@@ -156,6 +155,9 @@ const LogIn = ({}) => {
                 </Text>
               </TouchableOpacity>
             </View>
+            
+            
+           
             
             <View className="flex justify-center items-center">
               <Btn

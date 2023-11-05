@@ -42,7 +42,6 @@ export default function Appointment() {
   const [selConst, setSelConst] = useState(null);
   useEffect(() => {
     getData();
-    getConsultant();
     try {
       AsyncStorage.getItem('id')
         .then(value => {
@@ -80,27 +79,6 @@ export default function Appointment() {
     booking_time: date.toISOString().split('T')[1].split('.')[0],
   };
 
-  const getConsultant = async () => {
-    await callApi('get', '/consultant')
-    .then(response => {
-      const res = response.data.consultants
-      const listCont = res.map(item=> {
-        return {key: item.id, value: `${item.name}`}
-      })
-      setConsultant(listCont)
-      console.log(consult + "const and listCont " + listCont);
-
-    })
-
-    .catch(e => console.log(e))
-  }
-  const handleConsult = (selectedValue) => {
-    const selectedConsultant = consult.find(item => item.value === selectedValue)
-    if (selectedConsultant){
-      setSelConst(selectedConsultant.key)
-      console.log(selectedConsultant.key)
-    }
-  }
   //create onchange
   const onChange = (e, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -202,22 +180,14 @@ export default function Appointment() {
                 }}
               />
 
-              <View style={[{ width: wp(80), display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }]} className="flex mt-5">
-                <View style={{ width: wp(80), flex: 1 }}>
-                  <SelectList
-                    placeholder="Choose Consultant"
-                    data={consult}
-                    save="value"
-                    setSelected={val => {
-                      setConName(val);
-                      handleConsult(val)
-                      console.log(val)
-                    }}
-                    style={{ zIndex: 200, width: '100%' }} // Use width: '100%' to maintain the size
-                    searchPlaceholder="Choose Consultant"
-                    searchicon={false}
-                  />
-                </View>
+              <View style={[{width: wp(80)}]} className="flex mt-5">
+                <SelectList
+                  placeholder="Choose Consultant"
+                  data={consultant}
+                  save="value"
+                  setSelected={val => setConName(val)}
+                  style={{zIndex: 200, flex: 1}}
+                />
               </View>
 
 

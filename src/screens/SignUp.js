@@ -85,7 +85,7 @@ const SignUp = () => {
       const api = callApi('post', '/register', data)
         .then(response => {
           response.status === 200
-            ? (navigation.push('LogIn'), Alert.alert('Registration Success'))
+            ? (navigation.push('LogIn'), console.log('Success'))
             : (navigation.push('SignUp'), Alert.alert('Something went wrong'));
         })
         .catch(error => {
