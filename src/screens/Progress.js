@@ -100,8 +100,8 @@ export default function Progress() {
         <Card>
         <PieChart
           data={chartData}
-          width={wp(80)}
-          height={hp(30)}
+          width={wp(100)}
+          height={hp(25)}
           chartConfig={chartConfig}
           accessor={'percentage'}
           backgroundColor={'transparent'}

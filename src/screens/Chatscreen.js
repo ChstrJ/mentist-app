@@ -140,17 +140,20 @@ export default function Chatscreen() {
     const response = await callApi('get', `/chat/${id}`);
     const chatResponse = response.data;
     //map the data messages
-    const historyMessages = chatResponse.messages.map((message) => ({
-      _id: message.timestamp, // timestamp for a unique key
-      text: message.content,
-      createdAt: new Date(message.timestamp),
+    const historyMessages = chatResponse.messages.map((messages, index) => ({
+      _id: messages.timestamp + index.toString(), // timestamp for a unique key
+      text: messages.content,
+      createdAt: new Date(messages.timestamp),
       user: {
-        _id: message.role === 'user' ? '2' : '1',
-        name: message.role,
+        _id: messages.role === 'user' ? '2' : '1', // USER = 2 | BOT = 1
+        name: messages.role,
         avatar: 'https://randomuser.me/api/portraits/women/79.jpg',
       },
+
+      
     }));
 
+    historyMessages.sort((a, b) => a.createdAt - b.createdAt);
     setMessages(historyMessages);
   };
 
@@ -177,8 +180,7 @@ export default function Chatscreen() {
         );
         Istyping(false);
 
-        // Load chat history after sending a new message
-        chatHistory();
+       
       })
       .catch(e => {
         console.error('Error sending message:', e);
@@ -211,7 +213,12 @@ export default function Chatscreen() {
     Voice.onSpeechRecognized = onSpeechRecognized;
     Voice.onSpeechResults = onSpeechResults;
 
+    const keepCalling = setInterval(() => {
+      chatHistory();
+    }, 1000); // keep calling the function
+    
     return () => {
+      clearInterval(keepCalling);
       Voice.destroy().then(Voice.removeAllListeners);
     };
   }, []);

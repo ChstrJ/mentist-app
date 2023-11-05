@@ -23,6 +23,7 @@ import Notif from '../components/Notif';
 import Appointpic from '../assets/Schedule-bro.svg';
 import {SelectList} from 'react-native-dropdown-select-list';
 import BtnOutline from '../components/BtnOutline';
+import { AlertNotificationRoot } from 'react-native-alert-notification';
 
 export default function Appointment() {
   const navigation = useNavigation();
@@ -40,6 +41,14 @@ export default function Appointment() {
   const [day, setDay] = useState('');
   const [conName, setConName] = useState('');
   const [selConst, setSelConst] = useState(null);
+  const [error, setError] = useState(false);
+
+
+
+
+
+
+
   useEffect(() => {
     getData();
     getConsultant();
@@ -98,7 +107,7 @@ export default function Appointment() {
     const selectedConsultant = consult.find(item => item.value === selectedValue)
     if (selectedConsultant){
       setSelConst(selectedConsultant.key)
-      console.log(selectedConsultant.key)
+    
     }
   }
   //create onchange
@@ -115,20 +124,13 @@ export default function Appointment() {
   };
 
   const handleAppointment = async data => {
-    // if (!isValidPhone(phoneNumber) || !isValidDate(date)) {
-    //   Alert.alert(
-    //     'Invalid Credential',
-    //     'Please provide a valid date and number!',
-    //   );
-    // } else {
-    // console.log(Data.booking_time)
     callApi('post', '/appointment', data)
       .then(response => {
         setLoading(true);
         const res = JSON.stringify(response);
         const respo = JSON.stringify(response.data.appointment_id);
         console.log(respo + ' ' + res);
-
+  
         navigation.navigate('Dashboard');
         const resDate = response.data.date;
         const resTime = response.data.booking_time;
@@ -137,19 +139,19 @@ export default function Appointment() {
           'Schedule Success',
           `Your session will be on ${response.data.date}, ${response.data.booking_time}, with ${response.data.consultant.name}`,
         );
-        AsyncStorage.setItem('resTime', resTime); // need to put pass in async items
-        AsyncStorage.setItem('resDate', resDate); // need to put pass in async items
+        AsyncStorage.setItem('resTime', resTime);
+        AsyncStorage.setItem('resDate', resDate);
       })
       .catch(error => {
         if (error.response) {
+          const errorMessage = error.response.data.error.date ? error.response.data.error.date : error.response.data.error.booking_time
           console.log('HTTP Status Code:', error.response.status);
-          console.log('Error Data:', error.response.data);
+          console.log('Error Message:', errorMessage);
+          Alert.alert('Error!', errorMessage);
         }
       });
-    // }
   };
 
-  
 
   return (
     <ScrollView
