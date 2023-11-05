@@ -10,28 +10,27 @@ import React, {useState} from 'react';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput, Text} from 'react-native-paper';
-import { styles } from '../components/styles';
+import {styles} from '../components/styles';
 import BackButton from '../components/BackButton';
-import { Formik, Field, ErrorMessage } from 'formik';
+import {Formik, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import {callApi} from '../helper/callApi';
 import Loader from '../components/Loader';
 import { signupSucess, signupFailure } from '../actions/Action';
-import {storeData} from '../helper/auth';
+import {isValidPhone, storeData} from '../helper/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Btn from '../components/Btn';
-import Registerpic from '../assets/register.svg'
-
+import Registerpic from '../assets/register.svg';
+import TestingBtn from './TestingBtn';
 
 const SignUp = () => {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
-
 
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -41,6 +40,7 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setLoading] = useState('');
+  const [modal, setModal] = useState();
 
   const Data = {
     username: username,
@@ -51,16 +51,19 @@ const SignUp = () => {
     password: password,
   };
 
-  
+  const showModal = () => {
+    return <TestingBtn />;
+  };
+
   const handleSubmit = data => {
-    if (firstName <= 0){
-       Alert.alert('Error', 'Invalid First Name!');
-       return 
+    if (firstName <= 0) {
+      Alert.alert('Error', 'Invalid First Name!');
+      return;
     }
-    if (lastName <= 0){
+    if (lastName <= 0) {
       Alert.alert('Error', 'Invalid Last Name!');
-      return 
-   }
+      return;
+    }
     if (username > 8 || username <= 0) {
       Alert.alert('Error', 'Invalid Username!');
       return;
@@ -69,30 +72,29 @@ const SignUp = () => {
       Alert.alert('Error', 'Invalid Email!');
       return;
     }
-    if (password <= 8){
+    if (password <= 8) {
       Alert.alert('Error', 'Minimum 8 characters');
-      return
+      return;
     }
-    if (confirmPassword.length <= 0 || confirmPassword != password){
+    if (confirmPassword <= 0 || confirmPassword != password) {
       Alert.alert('Error', 'Invalid, Must be same with Password!');
-      return
+      return;
     }
     if (password === confirmPassword) {
-    setLoading(true);
-    const api = callApi('post', '/register', data)
-      .then(response => { 
-        const isSucess = response.status === 200;
-        isSucess ? (navigation.push("LogIn"), dispatch(signupSucess(response.data)), Alert.alert("Registration Successful"))
-        : (navigate.push("SignUp"), Alert.alert("Registration Failed"), setLoading(false))
-      })
-      .catch(error => {dispatch(signupSucess(error.message))
-       Alert.alert("Error", error.message)
-       setLoading(false)
-
-      });
-  } else {
-    Alert.alert("Password doesn't match");
-  }
+      setLoading(true);
+      const api = callApi('post', '/register', data)
+        .then(response => {
+          response.status === 200
+            ? (navigation.push('LogIn'), Alert.alert('Registration Success'))
+            : (navigation.push('SignUp'), Alert.alert('Something went wrong'));
+        })
+        .catch(error => {
+          dispatch(signupFailure(error.message));
+          setLoading(false);
+        });
+    } else {
+      Alert.alert("Password doesn't match");
+    }
   };
 
   // for showing and hiding pass
@@ -117,9 +119,8 @@ const SignUp = () => {
       ) : (
         <Background>
           <BackButton goBack={navigation.goBack} />
-          <View
-            className="flex items-center justify-center mt-10">
-            <Registerpic width={250} height={250}  />
+          <View className="flex items-center justify-center mt-10">
+            <Registerpic width={250} height={250} />
           </View>
 
           <View className="flex justify-center items-center">
@@ -128,7 +129,7 @@ const SignUp = () => {
               className=" text-black text-xl mt-10">
               Create an account
             </Text>
-        
+
             <TextInput
               style={[{width: wp(80)}, styles.fontField]}
               className="flex w-4/5 mt-5 rounded-xl"
@@ -179,7 +180,14 @@ const SignUp = () => {
               keyboardType={'numeric'}
               activeOutlineColor="green"
               left={<TextInput.Icon icon={'phone'} />}
-              onChangeText={values => setPhone_no(values)}
+              onChangeText={values => {
+                if (!isValidPhone(values)){
+                setPhone_no(values)
+                }
+                else{
+                  console.log("Invalid phone!")
+                }
+              }}
             />
 
             <TextInput
@@ -215,7 +223,7 @@ const SignUp = () => {
               }
               onChangeText={value => setConfirmPassword(value)}
             />
-          
+
             <View
               style={{
                 flexDirection: 'row',
@@ -224,19 +232,15 @@ const SignUp = () => {
               }}>
               <Text style={styles.fontText}>Already have an account?</Text>
               <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
-                <Text style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
+                <Text
+                  style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
                   Login here
                 </Text>
               </TouchableOpacity>
             </View>
 
             <View className="flex justify-center items-center">
-              <Btn
-                onPress={() => handleSubmit(Data)}
-                btnLabel="Register"
-              />
-            
-              
+              <Btn onPress={() => handleSubmit(Data)} btnLabel="Register" />
             </View>
           </View>
         </Background>

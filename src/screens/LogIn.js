@@ -28,6 +28,7 @@ import {loginSuccess, loginFailure} from '../actions/Action';
 import LottieView from 'lottie-react-native';
 import Btn from '../components/Btn';
 import Loginpic from '../assets/Login-broo.svg';
+import TestingBtn from './TestingBtn';
 
 const LogIn = ({}) => {
   const dispatch = useDispatch();
@@ -44,7 +45,13 @@ const LogIn = ({}) => {
   };
   const [isloading, setLoading] = useState();
 
-  const handleLogin = async data => {
+  const showModal = () => {
+    return(
+      <TestingBtn/>
+    )
+  }
+
+  const handleLogin = async () => {
     if (username != undefined && password != undefined) {
       setLoading(true);
       const response = callApi('post', '/login', {username, password})
@@ -59,19 +66,15 @@ const LogIn = ({}) => {
           // store in async
           storeData(token, first_name, id, phone_no, uname);
           console.log(uname)
-          const isSuccess = response.status === 200;
-          isSuccess ? (navigation.push('Dashboard'), dispatch(loginSuccess(response.data))) : (navigation.push('LogIn'), dispatch(loginFailure(error.message)));
+          response.status === 200 ? (navigation.push('Dashboard'), dispatch(loginSuccess(response.data))) : (navigation.push('LogIn'), dispatch(loginFailure(error.message)));
          
-          
         })
         .catch(error => {
           console.log(error);
           navigation.push('LogIn');
           Alert.alert('Invalid Credentials','Please try again later')
         });
-        
-        
-        
+          
     } else {
       Alert.alert('Invalid Credentials','Please try again later', setLoginAttempts(loginAttempts + 1),
       );
@@ -144,11 +147,7 @@ const LogIn = ({}) => {
             />
 
             <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: 20,
-              }}>
+              style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
               <Text style={styles.fontText}>Don't have an account?</Text>
               <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
                 <Text
