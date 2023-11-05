@@ -87,12 +87,10 @@ const SignUp = () => {
       return;
     }
     if (password === confirmPassword) {
-      // setLoading(true);
+      setLoading(true);
       const api = callApi('post', '/register', data)
         .then(response => {
-          response.status === 200
-            ? handleSuccess()
-            : handleError()
+          response.status === 200 ? handleSuccess() : handleError()
         })
         .catch(error => {
           console.log(error)
