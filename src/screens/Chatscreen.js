@@ -43,7 +43,6 @@ import Voice from '@react-native-voice/voice';
 import {Header} from '@rneui/themed';
 import Notif from '../components/Notif';
 import TestingBtn from './TestingBtn';
-import Pop from '../components/Pop';
 
 export default function Chatscreen() {
 
@@ -306,15 +305,14 @@ export default function Chatscreen() {
           />
         </View>
 
-        <Pop
+        <Notif
           visible={isModalVisible}
           label="Done"
           header="Rate the response of the AI"
-          btnLabel='Done'
           body={
             <View className="flex justify-center items-center">
               <Image
-                style={{marginBottom: 20, height: hp(12), width: wp(22)}}
+                style={{marginBottom: 20}}
                 source={require('../assets/rating.png')}
               />
               <StarRating
@@ -323,12 +321,11 @@ export default function Chatscreen() {
                 maxStars={5}
                 starSize={45}
                 enableHalfStar={false}
-                enableSwiping={true}/>
+                enableSwiping={true}></StarRating>
             </View>
-            
           }
 
-          onPress={() => {
+          press={() => {
             sendRating();
           }}
         />

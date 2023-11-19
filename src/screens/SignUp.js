@@ -25,7 +25,8 @@ import {
 } from 'react-native-responsive-screen';
 import Btn from '../components/Btn';
 import Registerpic from '../assets/register.svg';
-import TestingBtn from './TestingBtn';
+import SuccessModal from '../components/Modals/SuccessModal';
+import OptionsModal from '../components/Modals/OptionsModal';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -40,10 +41,19 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setLoading] = useState('');
+  const [successModal, setSuccessModal] = useState(false)
 
   const handleSuccess = () => { 
     navigation.push('LogIn')
-    Alert.alert('Registration Succcess')
+    setLoading(false)
+    setSuccessModal(true)
+    
+  }
+
+  
+
+  const closeModal = () => {
+    setSuccessModal(false)
   }
 
   const handleError = () => { 
@@ -61,7 +71,7 @@ const SignUp = () => {
   };
 
 
-  const handleSubmit = data => {
+  const handleSubmit = (data) => {
     if (firstName <= 0) {
       Alert.alert('Error', 'Invalid First Name!');
       return;
@@ -88,7 +98,7 @@ const SignUp = () => {
     }
     if (password === confirmPassword) {
       setLoading(true);
-      const api = callApi('post', '/register', data)
+      const api = callApi('post', '/register', Data)
         .then(response => {
           response.status === 200 ? handleSuccess() : handleError()
         })
@@ -96,6 +106,7 @@ const SignUp = () => {
           console.log(error)
           dispatch(signupFailure(error.message));
           setLoading(false);
+          Alert.alert("Something went wrong");
         });
     } else {
       Alert.alert("Password doesn't match");
@@ -126,7 +137,7 @@ const SignUp = () => {
        
           <BackButton goBack={navigation.goBack} />
           <View className="flex items-center justify-center mt-10">
-            <Registerpic width={250} height={250} />
+            <Registerpic width={200} height={200} />
           </View>
 
           <View className="flex justify-center items-center">
@@ -186,7 +197,7 @@ const SignUp = () => {
               keyboardType={'numeric'}
               activeOutlineColor="green"
               left={<TextInput.Icon icon={'phone'} />}
-              onChangeText={values => {isValidPhone(values) ?  setPhone_no(values) :  console.log("Invalid phone!")
+              onChangeText={values => {isValidPhone(values) ?  setPhone_no(values) : null
               }}
             />
 
@@ -238,6 +249,13 @@ const SignUp = () => {
                 </Text>
               </TouchableOpacity>
             </View>
+
+            <SuccessModal 
+            textHeader={'Welcome!'}
+            textBody={'Registration Success'}
+            visible={successModal} onClose={closeModal}
+            btnLabel={'Close'}>
+            </SuccessModal>
 
             <View className="flex justify-center items-center">
               <Btn onPress={() => handleSubmit(Data)} btnLabel="Register" />

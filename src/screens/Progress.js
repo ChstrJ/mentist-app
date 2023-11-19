@@ -64,22 +64,31 @@ export default function Progress() {
   useEffect(() => {
 
    //create func to call the ratings from api
-    const getRate = async () => {
-      const response = await callApi('get', '/chat/rate/result')
-      const ratings = response.data.ratings
-
+   const getRate = async () => {
+    try {
+      const response = await callApi('get', '/chat/rate/result');
+      const ratings = response.data.ratings;
+      const overall_total = response.data.total.overall_total;
+      console.log(overall_total);
+      console.log(ratings);
+  
       const chartData = ratings.map(item => ({
         name: `% ${item.rate}`,
-        percentage: item.overall  ,
+        percentage: parseFloat(((item.overall / overall_total) * 100).toFixed(2)),
         color: getColorRate(item.rate),
         legendFontColor: 'black',
         legendFontSize: 15,
-      }))
-
-      //pass the data
-      setChartData(chartData)
+      }));
+  
+      // Assuming setChartData is a function to set the chart data in your application state
+      setChartData(chartData);
+    } catch (e) {
+      // Handle errors here
+      console.error('Error fetching or processing data:', e);
     }
-
+  };
+  
+  
 
     //call the fuction
     getRate()
@@ -95,7 +104,7 @@ export default function Progress() {
       <View 
       style={{height: hp(90)}}
       className="flex justify-center items-center">
-      <Progresspic width={300} height={300} />
+      <Progresspic width={250} height={250} />
         <Text style={styles.fontTitle}>My Progress</Text>
         <Card>
         <PieChart
@@ -105,8 +114,8 @@ export default function Progress() {
           chartConfig={chartConfig}
           accessor={'percentage'}
           backgroundColor={'transparent'}
-          paddingLeft={'-30'}
-          center={[25, 5]}
+          paddingLeft={'-60'}
+          center={[45, 5]}
           absolute
         />
         </Card>

@@ -2,11 +2,11 @@ import { View, Text, StyleSheet} from 'react-native'
 import React from 'react'
 import { widthPercentageToDP  as wp} from 'react-native-responsive-screen'
 
-export default function Card(props) {
+export default function Card({children}) {
   return (
     <View style={styles.card}>
       <View style={styles.CardContent}>
-        {props.children}
+        {children}
       </View>
     </View>
   )
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         marginHorizontal: 15,
         marginVertical: 5,
-        width: wp(95)
+        width: wp(90)
     },
     CardContent: {
         marginHorizontal : 10,

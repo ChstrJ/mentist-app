@@ -14,3 +14,4 @@ export const SET_NOTIF = 'SET_NOTIF';
 export const SET_CONSULT = 'SET_CONSULT';
 export const SET_CON_NAME = 'SET_CON_NAME';
 export const SET_SEL_CONST = 'SET_SEL_CONST';
+export const SET_SUCCESS_MODAL = 'SET_SUCCESS_MODAL';

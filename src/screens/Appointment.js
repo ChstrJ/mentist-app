@@ -23,8 +23,6 @@ import Notif from '../components/Notif';
 import Appointpic from '../assets/Schedule-bro.svg';
 import {SelectList} from 'react-native-dropdown-select-list';
 import BtnOutline from '../components/BtnOutline';
-import { AlertNotificationRoot } from 'react-native-alert-notification';
-import TestingBtn from './TestingBtn';
 
 export default function Appointment() {
   const navigation = useNavigation();
@@ -42,13 +40,13 @@ export default function Appointment() {
   const [day, setDay] = useState('');
   const [conName, setConName] = useState('');
   const [selConst, setSelConst] = useState(null);
-
-
-
+  const [chosenDateText, setChosenDateText] = useState('Choose Date');
+  const [chosenTimeText, setChosenTimeText] = useState('Choose Time');
 
   useEffect(() => {
     getData();
     getConsultant();
+    handleDatePicker();
     try {
       AsyncStorage.getItem('id')
         .then(value => {
@@ -73,10 +71,24 @@ export default function Appointment() {
         }
       })
       .catch(e => console.log(e));
-      
   }, []);
 
   // const splitDate = date.toISOString()
+
+  const handleDatePicker = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+
+    if (mode === 'date') {
+      const formattedDate = date.toISOString().split('T')[0]
+      setChosenDateText(formattedDate);
+    } else if (mode === 'time') {
+      
+      const formattedTime = date.toISOString().split('T')[1].split('.')[0];
+      setChosenTimeText(formattedTime);
+    }
+  };
 
   const Data = {
     consultant_id: selConst,
@@ -87,26 +99,26 @@ export default function Appointment() {
   };
 
   const getConsultant = async () => {
-    await callApi('get', '/consultant')
-    .then(response => {
-      const res = response.data.consultants
-      const listCont = res.map(item=> {
-        return {key: item.id, value: `${item.name}`}
+    const reponse = await callApi('get', '/consultant')
+      .then(response => {
+        const res = response.data.consultants;
+        const listCont = res.map(item => {
+          return {key: item.id, value: `${item.name}`};
+        });
+        setConsultant(listCont);
+        console.log(consult + 'const and listCont ' + listCont);
       })
-      setConsultant(listCont)
-      console.log(consult + "const and listCont " + listCont);
 
-    })
-
-    .catch(e => console.log(e))
-  }
-  const handleConsult = (selectedValue) => {
-    const selectedConsultant = consult.find(item => item.value === selectedValue)
-    if (selectedConsultant){
-      setSelConst(selectedConsultant.key)
-    
+      .catch(e => console.log(e));
+  };
+  const handleConsult = selectedValue => {
+    const selectedConsultant = consult.find(
+      item => item.value === selectedValue,
+    );
+    if (selectedConsultant) {
+      setSelConst(selectedConsultant.key);
     }
-  }
+  };
   //create onchange
   const onChange = (e, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -127,7 +139,7 @@ export default function Appointment() {
         const res = JSON.stringify(response);
         const respo = JSON.stringify(response.data.appointment_id);
         console.log(respo + ' ' + res);
-  
+
         navigation.navigate('Dashboard');
         const resDate = response.data.date;
         const resTime = response.data.booking_time;
@@ -141,14 +153,16 @@ export default function Appointment() {
       })
       .catch(error => {
         if (error.response) {
-          const errorMessage = error.response.data.error.date ? error.response.data.error.date : error.response.data.error.booking_time
+          const errorMessage = error.response.data.error.date
+            ? error.response.data.error.date
+            : error.response.data.error.booking_time;
           console.log('HTTP Status Code:', error.response.status);
           console.log('Error Message:', errorMessage);
           Alert.alert('Error!', errorMessage);
+          setLoading(false);
         }
       });
   };
-
 
   return (
     <ScrollView
@@ -158,7 +172,6 @@ export default function Appointment() {
         <Loader />
       ) : (
         <Background>
-        
           <BackButton goBack={navigation.goBack} />
           <View
             className="flex items-center justify-center mt-10"
@@ -169,7 +182,7 @@ export default function Appointment() {
 
             <View className="flex justify-center items-center">
               <Text style={styles.fontHomeSub}>Create Appointment</Text>
-    
+
               <TextInput
                 style={[{width: wp(80)}, styles.fontField]}
                 className="mt-5"
@@ -185,7 +198,6 @@ export default function Appointment() {
                 header="Success"
                 body="Noice"
                 label="OK"
-                
               />
               <TextInput
                 style={[{width: wp(80)}, styles.fontField]}
@@ -202,39 +214,60 @@ export default function Appointment() {
                 }}
               />
 
-              <View style={[{ width: wp(80), display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }]} className="flex mt-5">
-                <View style={{ width: wp(80), flex: 1 }}>
+              <View
+                style={[
+                  {
+                    width: wp(80),
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    gap: 8,
+                  },
+                ]}
+                className="flex mt-5">
+                <View style={{width: wp(80), flex: 1}}>
                   <SelectList
                     placeholder="Choose Consultant"
                     data={consult}
                     save="value"
                     setSelected={val => {
                       setConName(val);
-                      handleConsult(val)
-                      console.log(val)
+                      handleConsult(val);
+                      console.log(val);
                     }}
-                    style={{ zIndex: 200, width: '100%' }} // Use width: '100%' to maintain the size
+                    style={{zIndex: 200, width: '100%'}} // Use width: '100%' to maintain the size
                     searchPlaceholder="Choose Consultant"
                     searchicon={false}
                   />
                 </View>
               </View>
 
-
               <View
-                style={[{width: wp(80)}, styles.fontField]}
+                style={[{width: wp(80), marginTop: 10}, styles.fontField]}
                 className="mt-2">
-                <BtnOutline
-                  btnLabel="Choose Date"
-                  onPress={() => showMode('date')}
+                <TextInput
+                  style={[{width: wp(80)}, styles.fontField]}
+                  className="mt-2"
+                  label="Chosen Date"
+                  value={chosenDateText}
+                  mode="outlined"
+                  left={<TextInput.Icon icon={'calendar'} />}
+                  activeOutlineColor='green'
+                  onTouchStart={() => {
+                    showMode('date'); 
+                  }}
                 />
               </View>
 
-              <View style={[{width: wp(80)}, styles.fontField]}>
-                <BtnOutline
-                  btnLabel="Choose Time"
-                  activeOutlineColor="green"
-                  onPress={() => showMode('time')}
+              <View style={[{width: wp(80), marginTop: 10}, styles.fontField]}>
+                <TextInput
+                  style={[{width: wp(80)}, styles.fontField]}
+                  label="Chosen Time"
+                  value={chosenTimeText}
+                  mode="outlined"
+                  left={<TextInput.Icon icon={'watch'} />}
+                  onFocus={() => showMode('time')}
+                  activeOutlineColor='green'
                 />
               </View>
 
@@ -245,11 +278,11 @@ export default function Appointment() {
                   mode={mode}
                   is24Hour={false}
                   display="spinner"
-                  onChange={onChange}
+                  onChange={handleDatePicker}
                 />
               )}
 
-              <View className="flex items-center justify-center">
+              <View className="flex items-center justify-center mt-5">
                 <Btn
                   onPress={() => handleAppointment(Data)}
                   btnLabel="Confirm"

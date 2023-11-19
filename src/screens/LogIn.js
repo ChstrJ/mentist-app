@@ -22,13 +22,11 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Loader from '../components/Loader';
-import Logo from '../components/Logo';
 import {storeData} from '../helper/auth';
 import {loginSuccess, loginFailure} from '../actions/Action';
 import LottieView from 'lottie-react-native';
 import Btn from '../components/Btn';
 import Loginpic from '../assets/Login-broo.svg';
-import TestingBtn from './TestingBtn';
 
 const LogIn = ({}) => {
   const dispatch = useDispatch();
@@ -61,23 +59,22 @@ const LogIn = ({}) => {
   const handleLogin = async () => {
     if (username != undefined && password != undefined) {
       setLoading(true);
-      const response = callApi('post', '/login', {username, password})
+      const response = await callApi('post', '/login', {username,password})
         .then(response => {
           // store token in var
           const token = response.data.token;
-          console.log(token)
+          console.log(response.data)
           const first_name = response.data.user.first_name;
           const phone_no = response.data.user.phone_number;
           const id = JSON.stringify(response.data.user.id);
           const uname = response.data.user.username; 
           // store in async
           storeData(token, first_name, id, phone_no, uname);
-          console.log(uname)
           response.status === 200 ? handleSuccess() : handleError();
          
         })
         .catch(error => {
-          console.log(error);
+          console.log(error.response.data);
           navigation.push('LogIn');
           Alert.alert('Invalid Credentials','Please try again later')
         });
@@ -172,7 +169,7 @@ const LogIn = ({}) => {
               />
             </View>
           </View>
-          {success && <TestingBtn />}
+  
         </Background>
       )}
     

@@ -126,14 +126,21 @@ export const styles = StyleSheet.create({
     bottom: 1
   }, 
   textAppoint: {
-    paddingTop: 100, 
+    marginVertical: 15,
     justifyContent: 'center',
     textAlign: 'center',
     fontFamily: 'Poppins Bold', 
-    position: 'relative', 
     bottom: 0, 
-    fontSize: 26,
+    fontSize: 25,
+    color: 'black',
+  }, 
+
+  textAppointBody: {
+    fontSize: 20,
+    fontFamily: 'Poppins-SemiBold', 
+    marginVertical: 10,
     color: 'black'
+
   }, 
 });
 

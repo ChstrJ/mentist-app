@@ -7,7 +7,7 @@ const Loader = () => {
   return (
     <View 
     style={{ height: hp(100), width: wp(100), position: 'absolute', backgroundColor: 'white'}}
-    className=" justify-center items-center">
+    className="justify-center items-center">
       <LottieView
         source={require('../assets/animations/loading2.json')}
         autoPlay
