@@ -1,4 +1,4 @@
-import {View, Button, Alert} from 'react-native';
+import {View, Button, Alert, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, Platform, ScrollView} from 'react-native';
 import Background from './Background';
@@ -23,6 +23,7 @@ import Notif from '../components/Notif';
 import Appointpic from '../assets/Schedule-bro.svg';
 import {SelectList} from 'react-native-dropdown-select-list';
 import BtnOutline from '../components/BtnOutline';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 export default function Appointment() {
   const navigation = useNavigation();
@@ -40,8 +41,8 @@ export default function Appointment() {
   const [day, setDay] = useState('');
   const [conName, setConName] = useState('');
   const [selConst, setSelConst] = useState(null);
-  const [chosenDateText, setChosenDateText] = useState('Choose Date');
-  const [chosenTimeText, setChosenTimeText] = useState('Choose Time');
+  const [chosenDateText, setChosenDateText] = useState('');
+  const [chosenTimeText, setChosenTimeText] = useState('');
 
   useEffect(() => {
     getData();
@@ -81,11 +82,16 @@ export default function Appointment() {
     setDate(currentDate);
 
     if (mode === 'date') {
-      const formattedDate = date.toISOString().split('T')[0]
+      const formattedDate = date.toISOString().split('T')[0];
       setChosenDateText(formattedDate);
     } else if (mode === 'time') {
-      
-      const formattedTime = date.toISOString().split('T')[1].split('.')[0];
+      const formattedTime = new Date(currentDate).toLocaleTimeString('en-PH', {
+        hour12: true,
+        hour: 'numeric',
+        minute: 'numeric',
+        timeZone: 'Asia/Manila',
+      });
+
       setChosenTimeText(formattedTime);
     }
   };
@@ -140,7 +146,7 @@ export default function Appointment() {
         const respo = JSON.stringify(response.data.appointment_id);
         console.log(respo + ' ' + res);
 
-        navigation.navigate('Dashboard');
+        navigation.push('Dashboard');
         const resDate = response.data.date;
         const resTime = response.data.booking_time;
         setNotif(true);
@@ -245,39 +251,50 @@ export default function Appointment() {
               <View
                 style={[{width: wp(80), marginTop: 10}, styles.fontField]}
                 className="mt-2">
-                <TextInput
-                  style={[{width: wp(80)}, styles.fontField]}
-                  className="mt-2"
-                  label="Chosen Date"
-                  value={chosenDateText}
-                  mode="outlined"
-                  left={<TextInput.Icon icon={'calendar'} />}
-                  activeOutlineColor='green'
+                <TouchableOpacity
                   onTouchStart={() => {
-                    showMode('date'); 
-                  }}
-                />
+                    showMode('date');
+                  }}>
+                  <TextInput
+                    style={[{width: wp(80)}, styles.fontField]}
+                    className="mt-2"
+                    label="Chosen Date"
+                    value={chosenDateText}
+                    mode="outlined"
+                    left={<TextInput.Icon icon={'calendar'} />}
+                    activeOutlineColor="green"
+                    editable={false}
+                  />
+                </TouchableOpacity>
               </View>
 
               <View style={[{width: wp(80), marginTop: 10}, styles.fontField]}>
-                <TextInput
-                  style={[{width: wp(80)}, styles.fontField]}
-                  label="Chosen Time"
-                  value={chosenTimeText}
-                  mode="outlined"
-                  left={<TextInput.Icon icon={'watch'} />}
-                  onFocus={() => showMode('time')}
-                  activeOutlineColor='green'
-                />
+                <TouchableOpacity
+                  onTouchStart={() => {
+                    showMode('time');
+                  }}>
+                  <TextInput
+                    style={[{width: wp(80)}, styles.fontField]}
+                    label="Chosen Time"
+                    value={chosenTimeText}
+                    mode="outlined"
+                    left={<TextInput.Icon icon={'watch'} />}
+                    editable={false}
+                    activeOutlineColor="green"
+                  />
+                </TouchableOpacity>
               </View>
 
               {show && (
-                <DateTimePicker
+                <RNDateTimePicker
+                  style={{}}
+                  themeVariant="dark"
                   testID="dateTimePicker"
                   value={date}
                   mode={mode}
                   is24Hour={false}
                   display="spinner"
+                  timeZoneName={'Asia/Singapore'}
                   onChange={handleDatePicker}
                 />
               )}

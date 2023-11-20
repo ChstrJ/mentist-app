@@ -29,7 +29,7 @@ import { callApi } from '../helper/callApi';
 export default function Progress() {
 
   const [chartData, setChartData] = useState([])
-  const navigate = useNavigation();
+  const navigation = useNavigation();
 
   //config for chart
   const chartConfig = {
@@ -99,7 +99,7 @@ export default function Progress() {
 
   return (
     <Background>
-      <BackButton goBack={navigate.goBack} />
+      <BackButton goBack={navigation.goBack} />
 
       <View 
       style={{height: hp(90)}}

@@ -12,7 +12,7 @@ const IntroScreen = () => {
 
 
   const handleDone = () => {
-    navigation.navigate('Home');
+    navigation.push('Home');
   };
 
   return (

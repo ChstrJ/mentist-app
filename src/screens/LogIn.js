@@ -23,34 +23,27 @@ import {
 } from 'react-native-responsive-screen';
 import Loader from '../components/Loader';
 import {storeData} from '../helper/auth';
-import {loginSuccess, loginFailure} from '../actions/Action';
-import LottieView from 'lottie-react-native';
 import Btn from '../components/Btn';
 import Loginpic from '../assets/Login-broo.svg';
 
 const LogIn = ({}) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const [hidePass, setHidePass] = useState(true);
-  const navigation = useNavigation();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [isButtonDisabled, setButtonDisabled] = useState();
-  const [success, setSuccess] = useState(false)
+  const [isloading, setLoading] = useState();
+  
 
   const Data = {
     username: username,
     password: password,
   };
-  const [isloading, setLoading] = useState();
 
-  const handleSuccess = () => { 
-    setSuccess(true)
-    navigation.push('Dashboard')
-  }
-
-
+ 
   const handleError = () => { 
     navigation.push('LogIn')
     Alert.alert('Something went wrong')
@@ -71,7 +64,6 @@ const LogIn = ({}) => {
           // store in async
           storeData(token, first_name, id, phone_no, uname);
           response.status === 200 ? handleSuccess() : handleError();
-         
         })
         .catch(error => {
           console.log(error.response.data);
@@ -153,7 +145,7 @@ const LogIn = ({}) => {
             <View
               style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
               <Text style={styles.fontText}>Don't have an account?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+              <TouchableOpacity onPress={() => navigation.push('SignUp')}>
                 <Text
                   style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
                   Register here

@@ -54,7 +54,7 @@ const Dashboard = () => {
   const handleLogout = async () => {
     const removed = removeData();
     // console.log(token, first_name)
-    removed ? navigation.navigate('Home') : console.log('Error logging out');
+    removed ? navigation.push('Home') : console.log('Error logging out');
   };
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const Dashboard = () => {
         console.log(res);
 
         if (res == '[]') {
-          navigation.navigate('Appointment');
+          navigation.push('Appointment');
         } else {
           const time = response.data.appointments[0].booking_time;
           const date = response.data.appointments[0].date;
@@ -88,7 +88,7 @@ const Dashboard = () => {
             .catch(e => {
               console.log(e);
             });
-          navigation.navigate('ConfAppoint');
+          navigation.push('ConfAppoint');
         }
       })
       .catch(e => {

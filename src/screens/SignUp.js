@@ -4,7 +4,6 @@ import {
   ScrollView,
   Alert,
   TouchableOpacity,
-  ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
 import Background from './Background';
@@ -12,13 +11,10 @@ import {useNavigation} from '@react-navigation/native';
 import {TextInput, Text} from 'react-native-paper';
 import {styles} from '../components/styles';
 import BackButton from '../components/BackButton';
-import {Formik, Field, ErrorMessage} from 'formik';
-import * as Yup from 'yup';
 import {callApi} from '../helper/callApi';
 import Loader from '../components/Loader';
-import { signupSucess, signupFailure } from '../actions/Action';
 import {isValidPhone, storeData} from '../helper/auth';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -26,7 +22,9 @@ import {
 import Btn from '../components/Btn';
 import Registerpic from '../assets/register.svg';
 import SuccessModal from '../components/Modals/SuccessModal';
-import OptionsModal from '../components/Modals/OptionsModal';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -49,8 +47,6 @@ const SignUp = () => {
     setSuccessModal(true)
     
   }
-
-  
 
   const closeModal = () => {
     setSuccessModal(false)
@@ -104,7 +100,6 @@ const SignUp = () => {
         })
         .catch(error => {
           console.log(error)
-          dispatch(signupFailure(error.message));
           setLoading(false);
           Alert.alert("Something went wrong");
         });
@@ -242,7 +237,7 @@ const SignUp = () => {
                 marginTop: 20,
               }}>
               <Text style={styles.fontText}>Already have an account?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
+              <TouchableOpacity onPress={() => navigation.push('LogIn')}>
                 <Text
                   style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
                   Login here
