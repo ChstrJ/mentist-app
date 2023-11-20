@@ -1,40 +1,23 @@
-// signupReducer.js
+import {
+  SIGNUP_SET_LAST_NAME,
+  SIGNUP_SET_FIRST_NAME,
+  SIGNUP_SET_PHONE_NUMBER,
+  SIGNUP_SET_EMAIL,
+  SIGNUP_SET_PASSWORD,
+  SIGNUP_SET_USER_NAME
+} from '../actions/Action';
 
 
+initialState = {
+  first_name: '',
+  last_name: '',
+  email: '',
+  phone_number: '',
+  first_name: '',
+  first_name: '',
+}
 
-const initialState = {
-    isSigningUp: false, 
-    error: null, 
-    first_name: null, 
-    last_name: null, 
-    password: null,
-    email: null,
-    username: null,
-    phone_no: null,
 
-  };
-  
+const signupReducer = () => {
 
-  const signupReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case 'SIGNUP_SUCCESS':
-        return {
-          ...state,
-          isSigningUp: false,
-          user: action.payload,
-          error: null,
-        };
-      case 'SIGNUP_FAILURE':
-        return {
-          ...state,
-          isSigningUp: false,
-          error: action.payload,
-          user: null,
-        };
-      default:
-        return state;
-    }
-  };
-  
-  export default signupReducer;
-  
+}

@@ -25,14 +25,18 @@ import Loader from '../components/Loader';
 import {storeData} from '../helper/auth';
 import Btn from '../components/Btn';
 import Loginpic from '../assets/Login-broo.svg';
+import { setUserName, setPassword } from '../actions/Action';
 
 const LogIn = ({}) => {
   const dispatch = useDispatch();
+  const {username, password} = useSelector(state =>state.loginReducer)
+
+
   const navigation = useNavigation();
 
   const [hidePass, setHidePass] = useState(true);
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  // const [username, setUsername] = useState();
+  // const [password, setPassword] = useState();
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [isButtonDisabled, setButtonDisabled] = useState();
   const [isloading, setLoading] = useState();
@@ -55,18 +59,20 @@ const LogIn = ({}) => {
       const response = await callApi('post', '/login', {username,password})
         .then(response => {
           // store token in var
-          const token = response.data.token;
-          console.log(response.data)
-          const first_name = response.data.user.first_name;
-          const phone_no = response.data.user.phone_number;
-          const id = JSON.stringify(response.data.user.id);
-          const uname = response.data.user.username; 
+          dispatch(setUserName(username))
+          dispatch(setPassword(password))
+          const token = response.token;
+          console.log(response)
+          const first_name = response.user.first_name;
+          const phone_no = response.user.phone_number;
+          const id = JSON.stringify(response.user.id);
+          const uname = response.user.username; 
           // store in async
           storeData(token, first_name, id, phone_no, uname);
           response.status === 200 ? handleSuccess() : handleError();
         })
         .catch(error => {
-          console.log(error.response.data);
+          console.log(error.response);
           navigation.push('LogIn');
           Alert.alert('Invalid Credentials','Please try again later')
         });
@@ -122,7 +128,7 @@ const LogIn = ({}) => {
               mode="outlined"
               activeOutlineColor="green"
               left={<TextInput.Icon icon={'account'} />}
-              onChangeText={values => setUsername(values)}
+              onChangeText={value => dispatch(setUserName(value))}
             />
 
             <TextInput
@@ -139,7 +145,7 @@ const LogIn = ({}) => {
                   onPress={togglePasswordVisibility}
                 />
               }
-              onChangeText={value => setPassword(value)}
+              onChangeText={value => dispatch(setPassword(value))}
             />
 
             <View

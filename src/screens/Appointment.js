@@ -7,7 +7,6 @@ import BackButton from '../components/BackButton';
 import {TextInput, Text} from 'react-native-paper';
 import Logo from '../components/Logo';
 import {styles} from '../components/styles';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import {Stack} from '@react-native-material/core';
 import Btn from '../components/Btn';
 import {getData, isValidPhone, isValidDate, setAppoint} from '../helper/auth';
@@ -82,7 +81,7 @@ export default function Appointment() {
     setDate(currentDate);
 
     if (mode === 'date') {
-      const formattedDate = date.toISOString().split('T')[0];
+      const formattedDate = currentDate.toLocaleDateString('en-PH')
       setChosenDateText(formattedDate);
     } else if (mode === 'time') {
       const formattedTime = new Date(currentDate).toLocaleTimeString('en-PH', {
@@ -133,9 +132,14 @@ export default function Appointment() {
     setDate(currentDate);
   };
 
-  const showMode = modeToShow => {
-    setMode(modeToShow);
+  const showModeDate = () => {
     setShow(true);
+    setMode('date');
+  };
+
+  const showModeTime = () => {
+    setShow(true);
+    setMode('time');
   };
 
   const handleAppointment = async data => {
@@ -198,13 +202,13 @@ export default function Appointment() {
                 value={firstName}
                 left={<TextInput.Icon icon={'account'} />}
               />
-              <Notif
+              {/* <Notif
                 visible={notif}
                 onRequestClose={true}
                 header="Success"
                 body="Noice"
                 label="OK"
-              />
+              /> */}
               <TextInput
                 style={[{width: wp(80)}, styles.fontField]}
                 className="mt-5"
@@ -249,15 +253,13 @@ export default function Appointment() {
               </View>
 
               <View
-                style={[{width: wp(80), marginTop: 10}, styles.fontField]}
-                className="mt-2">
-                <TouchableOpacity
-                  onTouchStart={() => {
-                    showMode('date');
-                  }}>
+                style={[{width: wp(80)}, styles.fontField]}>
+                 <TouchableOpacity onPress={() => {
+                  showModeDate()
+                }}>
                   <TextInput
                     style={[{width: wp(80)}, styles.fontField]}
-                    className="mt-2"
+                    className="mt-5"
                     label="Chosen Date"
                     value={chosenDateText}
                     mode="outlined"
@@ -268,12 +270,12 @@ export default function Appointment() {
                 </TouchableOpacity>
               </View>
 
-              <View style={[{width: wp(80), marginTop: 10}, styles.fontField]}>
-                <TouchableOpacity
-                  onTouchStart={() => {
-                    showMode('time');
-                  }}>
+              <View style={[{width: wp(80)}, styles.fontField]}>
+                <TouchableOpacity onPress={() => {
+                  showModeTime()
+                }}>
                   <TextInput
+                  className="mt-5"
                     style={[{width: wp(80)}, styles.fontField]}
                     label="Chosen Time"
                     value={chosenTimeText}
