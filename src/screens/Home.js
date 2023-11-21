@@ -29,17 +29,14 @@ const Home = props => {
       <View
         className="flex justify-center mt-24"
         style={styles.CenterContainer}>
-       
         <Text style={styles.fontHomeSub}>Welcome to</Text>
-  
-        <Text style={styles.fontHome}>
-          Mentist!
+        <Text style={styles.fontHome}>Mentist!
         </Text>
       </View>
 
       <View 
       className="flex justify-center items-center"
-      style={{height: hp(55)}}>
+      style={{marginTop: hp(15)}}>
         <Text style={styles.fontHomeSub} className="mt-10">
           Create an account?
         </Text>
@@ -58,7 +55,6 @@ const Home = props => {
         <Btn
           btnLabel="Login"
           onPress={() => 
-          
           navigation.push('LogIn')}
         />
       </View>

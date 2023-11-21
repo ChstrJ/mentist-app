@@ -1,10 +1,4 @@
-import {
-  View,
-  Image,
-  ScrollView,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Image, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
@@ -13,7 +7,7 @@ import {styles} from '../components/styles';
 import BackButton from '../components/BackButton';
 import {callApi} from '../helper/callApi';
 import Loader from '../components/Loader';
-import {isValidPhone, storeData} from '../helper/auth';
+
 import {useDispatch} from 'react-redux';
 import {
   widthPercentageToDP as wp,
@@ -22,9 +16,10 @@ import {
 import Btn from '../components/Btn';
 import Registerpic from '../assets/register.svg';
 import SuccessModal from '../components/Modals/SuccessModal';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import * as yup from 'yup';
-
+import Paper from '../components/Paper';
+import {SignupSchema, initialValue} from '../components/Validation/Validation';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -39,23 +34,7 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setLoading] = useState('');
-  const [successModal, setSuccessModal] = useState(false)
-
-  const handleSuccess = () => { 
-    navigation.push('LogIn')
-    setLoading(false)
-    setSuccessModal(true)
-    
-  }
-
-  const closeModal = () => {
-    setSuccessModal(false)
-  }
-
-  const handleError = () => { 
-    navigation.push('SignUp')
-    Alert.alert('Something went wrong')
-  }
+  const [successModal, setSuccessModal] = useState(false);
 
   const Data = {
     username: username,
@@ -66,42 +45,37 @@ const SignUp = () => {
     password: password,
   };
 
+  const handleSuccess = () => {
+    setLoading(false);
+    navigation.push('LogIn');
+    setTimeout(() => {
+      setSuccessModal(true);
+    });
+  };
 
-  const handleSubmit = (data) => {
-    if (firstName <= 0) {
-      Alert.alert('Error', 'Invalid First Name!');
-      return;
-    }
-    if (lastName <= 0) {
-      Alert.alert('Error', 'Invalid Last Name!');
-      return;
-    }
-    if (username > 8 || username <= 0) {
-      Alert.alert('Error', 'Invalid Username!');
-      return;
-    }
-    if (email <= 0) {
-      Alert.alert('Error', 'Invalid Email!');
-      return;
-    }
-    if (password <= 8) {
-      Alert.alert('Error', 'Minimum 8 characters');
-      return;
-    }
-    if (confirmPassword <= 0 || confirmPassword != password) {
-      Alert.alert('Error', 'Invalid, Must be same with Password!');
-      return;
-    }
-    if (password === confirmPassword) {
+  const closeModal = () => {
+    setSuccessModal(false);
+  };
+
+  const handleError = () => {
+    setLoading(false);
+    navigation.push('SignUp');
+    Alert.alert('Something went wrong');
+  };
+
+  const handleSubmit = () => {
+    if (Data !== null) {
+     
       setLoading(true);
       const api = callApi('post', '/register', Data)
         .then(response => {
-          response.status === 200 ? handleSuccess() : handleError()
+          response.status === 200
+            ? handleSuccess()
+            : handleError();
         })
         .catch(error => {
-          console.log(error)
-          setLoading(false);
-          Alert.alert("Something went wrong");
+          handleError()
+          Alert.alert('Something went wrong');
         });
     } else {
       Alert.alert("Password doesn't match");
@@ -129,134 +103,159 @@ const SignUp = () => {
         <Loader />
       ) : (
         <Background>
-       
           <BackButton goBack={navigation.goBack} />
           <View className="flex items-center justify-center mt-10">
             <Registerpic width={200} height={200} />
           </View>
 
-          <View className="flex justify-center items-center">
-            <Text
-              style={styles.fontTitle}
-              className=" text-black text-xl mt-10">
-              Create an account
-            </Text>
-
-            <TextInput
-              style={[{width: wp(80)}, styles.fontField]}
-              className="flex w-4/5 mt-5 rounded-xl"
-              label="First Name"
-              mode="outlined"
-              activeOutlineColor="green"
-              left={<TextInput.Icon icon={'account'} />}
-              onChangeText={value => setFirstName(value)}
-            />
-
-            <TextInput
-              style={[{width: wp(80)}, styles.fontField]}
-              className="flex w-4/5 mt-5 rounded-lg"
-              label="Last Name"
-              mode="outlined"
-              activeOutlineColor="green"
-              left={<TextInput.Icon icon={'account'} />}
-              onChangeText={values => setlastName(values)}
-            />
-
-            <TextInput
-              style={[{width: wp(80)}, styles.fontField]}
-              className="flex w-4/5 mt-5 rounded-lg"
-              label="Username"
-              mode="outlined"
-              activeOutlineColor="green"
-              left={<TextInput.Icon icon={'account'} />}
-              onChangeText={values => setUsername(values)}
-            />
-            {/* {errorMessage ? (<Text style={styles.errorTxt}>{errorMessage}</Text>) : null} */}
-
-            <TextInput
-              style={[{width: wp(80)}, styles.fontField]}
-              className="flex w-4/5 mt-5 rounded-lg"
-              label="Email"
-              mode="outlined"
-              activeOutlineColor="green"
-              left={<TextInput.Icon icon={'email'} />}
-              onChangeText={values => setEmail(values)}
-            />
-
-            <TextInput
-              style={[{width: wp(80)}, styles.fontField]}
-              className="flex w-4/5 mt-5 rounded-lg"
-              label="Phone No."
-              mode="outlined"
-              maxLength={11}
-              keyboardType={'numeric'}
-              activeOutlineColor="green"
-              left={<TextInput.Icon icon={'phone'} />}
-              onChangeText={values => {isValidPhone(values) ?  setPhone_no(values) : null
-              }}
-            />
-
-            <TextInput
-              style={[{width: wp(80)}, styles.fontField]}
-              className="flex w-4/5 mt-5 rounded-lg"
-              label="Password"
-              mode="outlined"
-              activeOutlineColor="green"
-              secureTextEntry={hidePass}
-              left={<TextInput.Icon icon={'key'} />}
-              right={
-                <TextInput.Icon
-                  icon={hidePass ? 'eye-off' : 'eye'}
-                  onPress={togglePasswordVisibility}
-                />
-              }
-              onChangeText={value => setPassword(value)}
-            />
-
-            <TextInput
-              style={[{width: wp(80)}, styles.fontField]}
-              className="flex w-4/5 mt-5 rounded-lg"
-              label="Confirm Password"
-              mode="outlined"
-              activeOutlineColor="green"
-              secureTextEntry={hidePass2}
-              left={<TextInput.Icon icon={'key'} />}
-              right={
-                <TextInput.Icon
-                  icon={hidePass2 ? 'eye-off' : 'eye'}
-                  onPress={togglePasswordVisibility2}
-                />
-              }
-              onChangeText={value => setConfirmPassword(value)}
-            />
-
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: 20,
-              }}>
-              <Text style={styles.fontText}>Already have an account?</Text>
-              <TouchableOpacity onPress={() => navigation.push('LogIn')}>
+          <Formik
+            initialValues={initialValue}
+            validationSchema={SignupSchema}
+            onSubmit={handleSubmit}>
+            {({handleChange, errors, touched, setFieldTouched}) => (
+              <View className="flex justify-center items-center">
                 <Text
-                  style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
-                  Login here
+                  style={styles.fontTitle}
+                  className=" text-black text-xl mt-10">
+                  Create an account
                 </Text>
-              </TouchableOpacity>
-            </View>
 
-            <SuccessModal 
-            textHeader={'Welcome!'}
-            textBody={'Registration Success'}
-            visible={successModal} onClose={closeModal}
-            btnLabel={'Close'}>
-            </SuccessModal>
+                <Paper
+                  label={'First Name'}
+                  icon={'account'}
+                  value={firstName}
+                  onChangeText={value => {
+                    setFirstName(value);
+                    handleChange('firstName')(value);
+                  }}
+                  errors={touched.firstName && errors.firstName}
+                  touched={touched.firstName}
+                  onBlur={() => setFieldTouched('firstName')}
+                />
 
-            <View className="flex justify-center items-center">
-              <Btn onPress={() => handleSubmit(Data)} btnLabel="Register" />
-            </View>
-          </View>
-          
+                <Paper
+                  label={'Last Name'}
+                  icon={'account'}
+                  value={lastName}
+                  onChangeText={value => {
+                    setlastName(value);
+                    handleChange('lastName')(value);
+                  }}
+                  errors={touched.lastName && errors.lastName}
+                  touched={touched.lastName}
+                  onBlur={() => setFieldTouched('lastName')}
+                />
+
+                <Paper
+                  label={'Username'}
+                  icon={'account-box'}
+                  value={username}
+                  onChangeText={value => {
+                    setUsername(value);
+                    handleChange('username')(value);
+                  }}
+                  errors={touched.username && errors.username}
+                  touched={touched.username}
+                  onBlur={() => setFieldTouched('username')}
+                />
+
+                <Paper
+                  label={'Email'}
+                  icon={'email'}
+                  value={email}
+                  onChangeText={value => {
+                    setEmail(value);
+                    handleChange('email')(value);
+                  }}
+                  errors={touched.email && errors.email}
+                  touched={touched.email}
+                  onBlur={() => setFieldTouched('email')}
+                />
+
+                <Paper
+                  label={'Phone Number'}
+                  icon={'phone'}
+                  keyboardType={'numeric'}
+                  maxLength={11}
+                  value={phone_no}
+                  onChangeText={value => {
+                    setPhone_no(value);
+                    handleChange('phone_number')(value);
+                  }}
+                  errors={touched.phone_number && errors.phone_number}
+                  touched={touched.phone_number}
+                  onBlur={() => setFieldTouched('phone_number')}
+                />
+
+                <Paper
+                  label={'Password'}
+                  icon={'key'}
+                  value={password}
+                  onChangeText={value => {
+                    setPassword(value);
+                    handleChange('password')(value);
+                  }}
+                  errors={touched.password && errors.password}
+                  touched={touched.password}
+                  onBlur={() => setFieldTouched('password')}
+                  secureTextEntry={hidePass}
+                  right={
+                    <TextInput.Icon
+                      icon={hidePass ? 'eye-off' : 'eye'}
+                      onPress={togglePasswordVisibility}
+                    />
+                  }
+                />
+
+                <Paper
+                  label={'Confirm Password'}
+                  icon={'key'}
+                  secureTextEntry={hidePass2}
+                  errors={touched.confirmPassword && errors.confirmPassword}
+                  touched={touched.confirmPassword}
+                  onChangeText={value => {
+                    handleChange('confirmPassword')(value);
+                  }}
+                  onBlur={() => setFieldTouched('confirmPassword')}
+                  right={
+                    <TextInput.Icon
+                      icon={hidePass2 ? 'eye-off' : 'eye'}
+                      onPress={togglePasswordVisibility2}
+                    />
+                  }
+                />
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginTop: 20,
+                  }}>
+                  <Text style={styles.fontText}>Already have an account?</Text>
+                  <TouchableOpacity onPress={() => navigation.push('LogIn')}>
+                    <Text
+                      style={[
+                        {color: 'green', marginLeft: 5},
+                        styles.fontText,
+                      ]}>
+                      Login here
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <SuccessModal
+                  textHeader={'Welcome!'}
+                  textBody={'Registration Success'}
+                  visible={successModal}
+                  onClose={closeModal}
+                  btnLabel={'Close'}></SuccessModal>
+
+                <View className="flex justify-center items-center">
+                  <Btn onPress={() => handleSubmit()} btnLabel="Register" />
+                </View>
+              </View>
+            )}
+          </Formik>
         </Background>
       )}
     </ScrollView>

@@ -72,8 +72,9 @@ export const styles = StyleSheet.create({
   },
   errorTxt: {
     fontFamily: 'Poppins Regular',
-    fontSize: 10,
+    fontSize: 13,
     color: 'red',
+    
   },
   submitBtn:{
     backgroundColor: '#00A556',

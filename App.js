@@ -17,6 +17,7 @@ import Progress from './src/screens/Progress';
 import {getData} from './src/helper/auth';
 import Splashscreen from './src/components/Splashscreen';
 import ConfAppoint from './src/screens/ConfAppoint';
+import TestingScreen from './src/screens/TestingScreen';
 
 const Stack = createStackNavigator();
 

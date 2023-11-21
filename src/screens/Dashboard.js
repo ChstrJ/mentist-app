@@ -98,14 +98,12 @@ const Dashboard = () => {
 
   return (
     <Background>
-      <View className="flex items-center">
+      <View style={{marginTop: hp(2)}} className="flex items-center">
         <Logo />
-        <Text className="mt-5" style={styles.fontHomeSub}>
-          {' '}
-          Good to see you here, {firstName}
-        </Text>
+        <Text className="mt-5" style={styles.fontHomeSub}>Good to see you here, {firstName} </Text>
       </View>
-      <View className="flex items-center" style={{height: hp(80)}}>
+      <View className="flex items-center" style={{marginTop: hp(5)}}>
+
         <Action
           actionLabel="Chatbot AI"
           source={require('../assets/chatbot.png')}
@@ -121,8 +119,10 @@ const Dashboard = () => {
           source={require('../assets/development.png')}
           Press={() => navigation.push('Progress')}
         />
-
+        <View
+        style={{marginTop: hp(8), paddingBottom: 5}}>
         <BtnOutline btnLabel="Logout" onPress={() => handleLogout()} />
+        </View>
       </View>
     </Background>
   );

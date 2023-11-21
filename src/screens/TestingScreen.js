@@ -1,34 +1,31 @@
 import {StyleSheet, Text, View, Image, Button} from 'react-native';
-import React, { useState } from 'react';
-
-import SuccessModal from '../components/Modals/SuccessModal';
-
+import React, {useState} from 'react';
+import {Formik} from 'formik';
+import Paper from '../components/Paper';
+import {SignupSchema, initialValue} from '../components/Validation/Validation';
 
 export default function TestingScreen() {
-    const [visible, setVisible] = useState(false);
-    
+  const [firstname, setFirstName] = useState('');
 
-    const closeModal = () => {
-      setVisible(false);
-      // Additional logic if needed upon modal close
-    };
-    
+  const handleSubmit = () => {
+    console.log(firstname);
+  };
+
   return (
-    
-   <View className="flex items-center justify-center">
-    <SuccessModal
-    visible={visible}
-    onClose={closeModal}
-    >
-    
-    </SuccessModal>
-    <Button title='Show Modal' onPress={() => setVisible(true)}>Click me</Button>
-   </View>
+    <View className="flex items-center justify-center">
+      <Formik
+        initialValues={initialValue}
+        validationSchema={SignupSchema}
+        onSubmit={handleSubmit}>
+        <Paper
+          label={'First Name'}
+          icon={'account'}
+          value={firstname}
+          onChangeText={values => setFirstName(values)}
+        />
+
+        <Button onPress={handleSubmit} title="Submit" />
+      </Formik>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-    header: {
-
-    },
-});
