@@ -33,6 +33,6 @@ export const initialValue = {
   email: '',
   phone_number: '',
   password: '',
-  confirmPassword,
+  confirmPassword: '',
  
 };

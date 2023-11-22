@@ -7,7 +7,6 @@ import {styles} from '../components/styles';
 import BackButton from '../components/BackButton';
 import {callApi} from '../helper/callApi';
 import Loader from '../components/Loader';
-
 import {useDispatch} from 'react-redux';
 import {
   widthPercentageToDP as wp,
@@ -17,7 +16,6 @@ import Btn from '../components/Btn';
 import Registerpic from '../assets/register.svg';
 import SuccessModal from '../components/Modals/SuccessModal';
 import {Formik} from 'formik';
-import * as yup from 'yup';
 import Paper from '../components/Paper';
 import {SignupSchema, initialValue} from '../components/Validation/Validation';
 
@@ -50,7 +48,7 @@ const SignUp = () => {
     navigation.push('LogIn');
     setTimeout(() => {
       setSuccessModal(true);
-    });
+    }, 1000);
   };
 
   const closeModal = () => {
@@ -65,17 +63,14 @@ const SignUp = () => {
 
   const handleSubmit = () => {
     if (Data !== null) {
-     
       setLoading(true);
       const api = callApi('post', '/register', Data)
         .then(response => {
-          response.status === 200
-            ? handleSuccess()
-            : handleError();
+          response.status === 200 ? handleSuccess() : handleError();
         })
         .catch(error => {
-          handleError()
-          Alert.alert('Something went wrong');
+          handleError();
+          console.log(error);
         });
     } else {
       Alert.alert("Password doesn't match");
@@ -105,7 +100,7 @@ const SignUp = () => {
         <Background>
           <BackButton goBack={navigation.goBack} />
           <View className="flex items-center justify-center mt-10">
-            <Registerpic width={200} height={200} />
+            <Registerpic width={170} height={170} />
           </View>
 
           <Formik
@@ -116,35 +111,40 @@ const SignUp = () => {
               <View className="flex justify-center items-center">
                 <Text
                   style={styles.fontTitle}
-                  className=" text-black text-xl mt-10">
+                  className=" text-black text-xl mt-5">
                   Create an account
                 </Text>
 
-                <Paper
-                  label={'First Name'}
-                  icon={'account'}
-                  value={firstName}
-                  onChangeText={value => {
-                    setFirstName(value);
-                    handleChange('firstName')(value);
-                  }}
-                  errors={touched.firstName && errors.firstName}
-                  touched={touched.firstName}
-                  onBlur={() => setFieldTouched('firstName')}
-                />
+                <View
+                style={{flexDirection: 'row', justifyContent: 'center'}}>
+                  <Paper
+                    label={'First Name'}
+                    icon={'account'}
+                    value={firstName}
+                    onChangeText={value => {
+                      setFirstName(value);
+                      handleChange('firstName')(value);
+                    }}
+                    errors={touched.firstName && errors.firstName}
+                    touched={touched.firstName}
+                    onBlur={() => setFieldTouched('firstName')}
+                    style={{width: wp(40), marginHorizontal: 5}}
+                  />
 
-                <Paper
-                  label={'Last Name'}
-                  icon={'account'}
-                  value={lastName}
-                  onChangeText={value => {
-                    setlastName(value);
-                    handleChange('lastName')(value);
-                  }}
-                  errors={touched.lastName && errors.lastName}
-                  touched={touched.lastName}
-                  onBlur={() => setFieldTouched('lastName')}
-                />
+                  <Paper
+                    label={'Last Name'}
+                    icon={'account'}
+                    value={lastName}
+                    onChangeText={value => {
+                      setlastName(value);
+                      handleChange('lastName')(value);
+                    }}
+                    errors={touched.lastName && errors.lastName}
+                    touched={touched.lastName}
+                    onBlur={() => setFieldTouched('lastName')}
+                    style={{width: wp(40), marginHorizontal: 5}}
+                  />
+                </View>
 
                 <Paper
                   label={'Username'}
@@ -225,11 +225,25 @@ const SignUp = () => {
                   }
                 />
 
+                
+
+                <SuccessModal
+                  textHeader={'Welcome!'}
+                  textBody={'Registration Success'}
+                  visible={successModal}
+                  onClose={closeModal}
+                  btnLabel={'Close'}></SuccessModal>
+
+                <View className="mt-5 flex justify-center items-center">
+                  <Btn onPress={() => handleSubmit()} btnLabel="Register" />
+                </View>
+
                 <View
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    marginTop: 20,
+                    marginTop: 5,
+                    marginBottom: 5
                   }}>
                   <Text style={styles.fontText}>Already have an account?</Text>
                   <TouchableOpacity onPress={() => navigation.push('LogIn')}>
@@ -242,19 +256,10 @@ const SignUp = () => {
                     </Text>
                   </TouchableOpacity>
                 </View>
-
-                <SuccessModal
-                  textHeader={'Welcome!'}
-                  textBody={'Registration Success'}
-                  visible={successModal}
-                  onClose={closeModal}
-                  btnLabel={'Close'}></SuccessModal>
-
-                <View className="flex justify-center items-center">
-                  <Btn onPress={() => handleSubmit()} btnLabel="Register" />
-                </View>
               </View>
+              
             )}
+            
           </Formik>
         </Background>
       )}

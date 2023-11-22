@@ -139,8 +139,17 @@ const LogIn = ({}) => {
               onChangeText={value => setPassword(value)}
             />
 
+            
+            <View className="mt-2 flex justify-center items-center">
+              <Btn
+                onPress={() => handleLogin(Data)}
+                disabled={isButtonDisabled}
+                btnLabel={'Login'}
+              />
+            </View>
+          </View>
             <View
-              style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+              style={{flexDirection: 'row', justifyContent: 'center', marginTop: 5}}>
               <Text style={styles.fontText}>Don't have an account?</Text>
               <TouchableOpacity onPress={() => navigation.push('SignUp')}>
                 <Text
@@ -149,15 +158,6 @@ const LogIn = ({}) => {
                 </Text>
               </TouchableOpacity>
             </View>
-            
-            <View className="flex justify-center items-center">
-              <Btn
-                onPress={() => handleLogin(Data)}
-                disabled={isButtonDisabled}
-                btnLabel={'Login'}
-              />
-            </View>
-          </View>
   
         </Background>
       )}

@@ -59,7 +59,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [firstName]);
 
   const getAppoint = () => {
     callApi('get', `/appointment/${uid}`, uid)

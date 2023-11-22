@@ -1,7 +1,7 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {TextInput, Text} from 'react-native-paper';
-import {widthPercentageToDP} from 'react-native-responsive-screen';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {styles} from './styles';
 
 
@@ -12,7 +12,7 @@ const Paper = ({label, icon, onChangeText, errors, touched, ...children}) => {
   return (
     <View>
       <TextInput
-        style={[{width: widthPercentageToDP(80)}, styles.fontField]}
+        style={[{width: wp(82)}, styles.fontField]}
         className="flex w-4/5 mt-5 rounded-xl"
         label={label}
         mode="outlined"

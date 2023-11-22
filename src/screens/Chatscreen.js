@@ -2,49 +2,30 @@ import React, {useState, useCallback, useEffect, PureComponent} from 'react';
 import {
   View,
   Text,
-  TextInput,
-  Button,
   StyleSheet,
   Image,
-  ImageBackground,
-  FlatList,
   Alert,
-  TouchableOpacity,
   Platform,
   PermissionsAndroid,
-  Modal,
 } from 'react-native';
-import {
-  GiftedChat,
-  InputToolbar,
-  Send,
-  Bubble,
-  Actions,
-} from 'react-native-gifted-chat';
+import {GiftedChat, Send, Bubble, Actions} from 'react-native-gifted-chat';
 import {callApi} from '../helper/callApi';
-import {
-  ALERT_TYPE,
-  Dialog,
-  AlertNotificationRoot,
-  AlertNotificationDialog,
-} from 'react-native-alert-notification';
 import StarRating from 'react-native-star-rating-widget';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import BackButton from '../components/BackButton';
 import {useNavigation} from '@react-navigation/native';
-import SmallBtn from '../components/SmallBtn'
+import SmallBtn from '../components/SmallBtn';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import LottieView from 'lottie-react-native';
 import Voice from '@react-native-voice/voice';
-import {Header} from '@rneui/themed';
 import Notif from '../components/Notif';
-import TestingBtn from './TestingBtn';
 
 export default function Chatscreen() {
+
 
   const [firstName, setFirstName] = useState('');
   const [messages, setMessages] = useState([]);
@@ -54,7 +35,7 @@ export default function Chatscreen() {
   const [recording, setRecording] = useState(false);
   const [recognized, setRecognized] = useState('');
   const [started, setStarted] = useState('');
-  const [end, setEnd] = useState(false);
+  const [isChatEmpty, setChatEmpty] = useState(false);
   const [results, setResults] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [rating, setRating] = useState();
@@ -63,11 +44,13 @@ export default function Chatscreen() {
     toggleModal();
   };
 
-  
-
   const getUser = async () => {
     const first_name = await AsyncStorage.getItem('first_name');
     setFirstName(first_name);
+  };
+
+  const CheckChatEmpty = () => {
+    messages.length === 0 ? setChatEmpty(true) : setChatEmpty(false);
   };
 
   //GET PERMISSION TO ON MIC
@@ -94,12 +77,14 @@ export default function Chatscreen() {
     };
     await callApi('post', '/chat/rate', rate)
       .then(response => {
-        response.status === 200 ? Alert.alert("Success Rating") : Alert.alert("Error Rating")  
+        response.status === 200
+          ? Alert.alert('Rating Success!')
+          : Alert.alert('Rating Failed!');
       })
       .catch(e => console.log(e));
     toggleModal(false);
   };
-  
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -108,9 +93,10 @@ export default function Chatscreen() {
     console.log('Speech started');
     setStarted(true);
   };
+
   const onSpeechEnd = e => {
     console.log('Speech ended');
-    setEnd(true);
+    setRecording(false);
     if (results.length > 0) {
       const recognizedSpeech = results[0];
       onSend([{text: recognizedSpeech}]);
@@ -123,6 +109,7 @@ export default function Chatscreen() {
 
   const onSpeechResults = e => {
     setResults(e.value);
+    setRecording(false);
     const recognizedSpeech = e.value[0];
     onSend([{text: recognizedSpeech}]);
   };
@@ -132,7 +119,8 @@ export default function Chatscreen() {
       await Voice.start('en-PH');
       console.log(e);
     } catch (error) {
-      console.error(error);
+      console.log(error);
+      setRecording(false);
     }
   };
   // load the chat history messages
@@ -150,52 +138,41 @@ export default function Chatscreen() {
         name: messages.role,
         avatar: 'https://randomuser.me/api/portraits/women/79.jpg',
       },
-
-      
     }));
 
     historyMessages.sort((a, b) => a.createdAt - b.createdAt);
     setMessages(historyMessages);
   };
 
-  
-  // Sending a message and updating the chat history
   const onSend = async (newMessages = []) => {
     const messageText = newMessages[0].text;
-
     const data = {
       message: messageText,
     };
-
     Istyping(true);
-
     const id = await AsyncStorage.getItem('id');
     callApi('post', `/chat/${id}`, data)
       .then(response => {
         const responseData = JSON.stringify(response.data);
-
         console.log(responseData);
-        // Update the state with the new message
         setMessages(previousMessages =>
           GiftedChat.append(previousMessages, newMessages),
         );
         Istyping(false);
-
-       
+        setRecording(false);
       })
       .catch(e => {
         console.error('Error sending message:', e);
         Istyping(false);
+        setRecording(false);
       });
   };
 
   const onMicPress = async () => {
     if (!recording) {
-      // If not recording, start the speech recognition
       startSpeechRecognition();
       setRecording(true);
     } else {
-      // If recording, stop the speech recognition
       await Voice.stop();
       setRecording(false);
     }
@@ -203,26 +180,27 @@ export default function Chatscreen() {
 
   //end of sending message
 
+
   //load this states
   useEffect(() => {
+
+    //states
     getUser();
     getPermission();
     chatHistory();
+    CheckChatEmpty();
 
+    //speech recognition
     Voice.onSpeechStart = onSpeechStart;
     Voice.onSpeechEnd = onSpeechEnd;
     Voice.onSpeechRecognized = onSpeechRecognized;
     Voice.onSpeechResults = onSpeechResults;
 
-    const keepCalling = setInterval(() => {
-      chatHistory();
-    }, 1000); // keep calling the function
-    
+    //destroy voice listeners when components unmounts
     return () => {
-      clearInterval(keepCalling);
       Voice.destroy().then(Voice.removeAllListeners);
     };
-  }, []);
+  }, [messages]);
 
   // props for gifted chat
   const renderBubble = props => {
@@ -236,7 +214,11 @@ export default function Chatscreen() {
         }}
         textStyle={{
           right: {
-            color: '#ffffff',
+            fontFamily: 'Poppins Regular',
+            color: '#fff',
+          },
+          left: {
+            fontFamily: 'Poppins Regular',
           },
         }}
       />
@@ -271,11 +253,7 @@ export default function Chatscreen() {
         }}
         icon={() => (
           <Image
-            source={
-              recording
-                ? require('../assets/voiceLoading.gif')
-                : require('../assets/recordingIcon.png')
-            }
+            source={require('../assets/recordingIcon.png')}
             style={{width: 40, height: 40}}
           />
         )}
@@ -294,15 +272,13 @@ export default function Chatscreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <BackButton goBack={navigation.goBack} />
-        <Image source={require('../assets/79.jpg')} style={styles.image} />
+        <Image
+          source={{uri: 'https://randomuser.me/api/portraits/women/79.jpg'}}
+          style={styles.image}
+        />
         <Text style={styles.headerText}>Hello, {firstName}</Text>
-    
-        <View style={{marginLeft: wp(25)}}>
-          
-          <SmallBtn
-            onPress={modal}
-            btnLabel="Rate"
-          />
+        <View style={{marginLeft: wp(20)}}>
+          <SmallBtn onPress={modal} btnLabel="Rate" />
         </View>
 
         <Notif
@@ -324,7 +300,6 @@ export default function Chatscreen() {
                 enableSwiping={true}></StarRating>
             </View>
           }
-
           press={() => {
             sendRating();
           }}
@@ -339,7 +314,6 @@ export default function Chatscreen() {
           name: 'user',
         }}
         renderBubble={renderBubble}
-        // renderMessage={renderMsg}
         messagesContainerStyle={{backgroundColor: 'white'}}
         alwaysShowSend
         renderSend={renderSend}
@@ -351,6 +325,26 @@ export default function Chatscreen() {
         inverted={false}
         renderActions={renderActions}
       />
+
+      {isChatEmpty && (
+        <View style={styles.chatEmptyContainer}>
+          <Text style={{fontFamily: 'Poppins Regular', fontSize: 15}}>
+            Start a conversation by typing a message..
+          </Text>
+        </View>
+      )}
+
+      {recording && (
+        <View>
+          <LottieView
+            autoPlay
+            loop
+            speed={1}
+            style={styles.lottieSmall}
+            source={require('../assets/animations/records.json')}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -382,6 +376,12 @@ const styles = StyleSheet.create({
     marginBottom: hp(1),
     marginLeft: wp(10),
     borderRadius: wp(10),
+  },
+
+  chatEmptyContainer: {
+    position: 'absolute',
+    top: '50%',
+    left: '10%',
   },
 
   lottieSmall: {
