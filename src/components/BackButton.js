@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { TouchableOpacity, Image, StyleSheet, Dimensions} from 'react-native'
 import { heightPercentageToDP } from 'react-native-responsive-screen'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 

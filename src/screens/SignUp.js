@@ -100,7 +100,7 @@ const SignUp = () => {
         <Background>
           <BackButton goBack={navigation.goBack} />
           <View className="flex items-center justify-center mt-10">
-            <Registerpic width={170} height={170} />
+            <Registerpic width={200} height={200} />
           </View>
 
           <Formik

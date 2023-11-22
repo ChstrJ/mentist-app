@@ -380,8 +380,8 @@ const styles = StyleSheet.create({
 
   chatEmptyContainer: {
     position: 'absolute',
-    top: '50%',
-    left: '10%',
+    top: hp(50),
+    left: wp(11),
   },
 
   lottieSmall: {

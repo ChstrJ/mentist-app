@@ -10,15 +10,13 @@ import {
 import React, {useState, useEffect} from 'react';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
-import Logout from '../components/Logout';
 import {styles} from '../components/styles';
 import Action from '../components/Action';
 import {getData, removeData} from '../helper/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from '../components/Logo';
 import {Text} from 'react-native-paper';
-import {useModal} from 'react-native-modalfy';
-import Modal from 'react-native-modal';
+
 
 import {
   widthPercentageToDP as wp,
@@ -26,7 +24,7 @@ import {
 } from 'react-native-responsive-screen';
 import BtnOutline from '../components/BtnOutline';
 import {callApi} from '../helper/callApi';
-import TestingBtn from './TestingBtn';
+
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -102,6 +100,7 @@ const Dashboard = () => {
         <Logo />
         <Text className="mt-5" style={styles.fontHomeSub}>Good to see you here, {firstName} </Text>
       </View>
+      
       <View className="flex items-center" style={{marginTop: hp(5)}}>
 
         <Action
@@ -120,7 +119,7 @@ const Dashboard = () => {
           Press={() => navigation.push('Progress')}
         />
         <View
-        style={{marginTop: hp(8), paddingBottom: 5}}>
+        style={{bottom: hp(-17), position: 'absolute', paddingBottom: 5}}>
         <BtnOutline btnLabel="Logout" onPress={() => handleLogout()} />
         </View>
       </View>
