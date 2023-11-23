@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
   },
   fontField: {
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 18,
+    fontSize: 17,
   },
   button:{
         borderRadius: 20,

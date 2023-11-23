@@ -46,9 +46,10 @@ const SignUp = () => {
   const handleSuccess = () => {
     setLoading(false);
     navigation.push('LogIn');
+
     setTimeout(() => {
       setSuccessModal(true);
-    }, 1000);
+    });
   };
 
   const closeModal = () => {
@@ -128,7 +129,7 @@ const SignUp = () => {
                     errors={touched.firstName && errors.firstName}
                     touched={touched.firstName}
                     onBlur={() => setFieldTouched('firstName')}
-                    style={{width: wp(40), marginHorizontal: 5}}
+                    style={[{width: wp(40), marginHorizontal: 5}, styles.fontField]}
                   />
 
                   <Paper
@@ -142,7 +143,7 @@ const SignUp = () => {
                     errors={touched.lastName && errors.lastName}
                     touched={touched.lastName}
                     onBlur={() => setFieldTouched('lastName')}
-                    style={{width: wp(40), marginHorizontal: 5}}
+                    style={[{width: wp(40), marginHorizontal: 5}, styles.fontField]}
                   />
                 </View>
 

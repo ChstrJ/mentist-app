@@ -1,4 +1,4 @@
-import {View, Text, Dimensions, StyleSheet} from 'react-native';
+import {View, Text, Dimensions, StyleSheet, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Background from './Background';
 import BackButton from '../components/BackButton';
@@ -82,8 +82,10 @@ export default function Progress() {
 
   return (
     <Background>
+        <ScrollView
+    showsVerticalScrollIndicator={false}
+    contentContainerStyle={{flexGrow: 1}}>
       <BackButton goBack={navigation.goBack} />
-
       <View
         style={{height: hp(90)}}
         className="flex justify-center items-center">
@@ -117,6 +119,7 @@ export default function Progress() {
           </Card>
         )}
       </View>
+      </ScrollView>
     </Background>
   );
 }

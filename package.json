@@ -43,6 +43,7 @@
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^3.4.1",
     "react-native-screens": "^3.24.0",
+    "react-native-size-matters": "^0.4.2",
     "react-native-star-rating-widget": "^1.7.2",
     "react-native-status-bar-height": "^2.6.0",
     "react-native-svg": "^12.5.1",

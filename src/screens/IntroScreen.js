@@ -5,6 +5,7 @@ import Onboarding from 'react-native-onboarding-swiper';
 import LottieView from 'lottie-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { s, vs } from 'react-native-size-matters';
 
 const IntroScreen = () => {
   const navigation = useNavigation();
@@ -81,10 +82,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    
+   
   },
   lottie: {
-    height: hp(50),
-    width: 400,
+    height: s(300),
+    width: s(300),
     alignSelf: 'center',
     justifyContent: 'center',
     

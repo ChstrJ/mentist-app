@@ -23,6 +23,8 @@ import Appointpic from '../assets/Schedule-bro.svg';
 import {SelectList} from 'react-native-dropdown-select-list';
 import BtnOutline from '../components/BtnOutline';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
+import Paper from '../components/Paper';
+import { s } from 'react-native-size-matters';
 
 export default function Appointment() {
   const navigation = useNavigation();
@@ -81,7 +83,7 @@ export default function Appointment() {
     setDate(currentDate);
 
     if (mode === 'date') {
-      const formattedDate = currentDate.toLocaleDateString('en-PH')
+      const formattedDate = currentDate.toLocaleDateString('en-PH');
       setChosenDateText(formattedDate);
     } else if (mode === 'time') {
       const formattedTime = new Date(currentDate).toLocaleTimeString('en-PH', {
@@ -183,9 +185,7 @@ export default function Appointment() {
       ) : (
         <Background>
           <BackButton goBack={navigation.goBack} />
-          <View
-            className="flex items-center justify-center mt-10"
-            style={styles.CenterContainer}>
+          <View className="flex items-center justify-center mt-10">
             <View className=" flex items-center">
               <Appointpic width={200} height={200} />
             </View>
@@ -193,32 +193,18 @@ export default function Appointment() {
             <View className="flex justify-center items-center">
               <Text style={styles.fontHomeSub}>Create Appointment</Text>
 
-              <TextInput
-                style={[{width: wp(80)}, styles.fontField]}
-                className="mt-5"
-                mode="outlined"
-                disabled={true}
-                label="Name"
+              <Paper
+                label={'Name'}
+                icon={'account'}
                 value={firstName}
-                left={<TextInput.Icon icon={'account'} />}
+                disabled={true}
               />
-              {/* <Notif
-                visible={notif}
-                onRequestClose={true}
-                header="Success"
-                body="Noice"
-                label="OK"
-              /> */}
-              <TextInput
-                style={[{width: wp(80)}, styles.fontField]}
-                className="mt-5"
-                mode="outlined"
-                label="Phone No."
+
+              <Paper
+                label={'Phone Number'}
+                icon={'phone'}
                 value={phoneNumber}
                 disabled={true}
-                keyboardType="numeric"
-                maxLength={11}
-                left={<TextInput.Icon icon={'phone'} />}
                 onChangeText={phoneNumber => {
                   setPhoneNumber(phoneNumber);
                 }}
@@ -229,13 +215,14 @@ export default function Appointment() {
                   {
                     width: wp(80),
                     display: 'flex',
+                    alignItems: 'center',
                     flexDirection: 'column',
                     justifyContent: 'center',
                     gap: 8,
                   },
                 ]}
                 className="flex mt-5">
-                <View style={{width: wp(80), flex: 1}}>
+                <View style={{width: s(290), flex: 1}}>
                   <SelectList
                     placeholder="Choose Consultant"
                     data={consult}
@@ -252,34 +239,39 @@ export default function Appointment() {
                 </View>
               </View>
 
-              <View
-                style={[{width: wp(80)}, styles.fontField]}>
-                 <TouchableOpacity onPress={() => {
-                  showModeDate()
-                }}>
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    showModeDate();
+                  }}>
                   <TextInput
-                    style={[{width: wp(80)}, styles.fontField]}
+                    style={[{width: s(290)}, styles.fontField]}
                     className="mt-5"
                     label="Chosen Date"
                     value={chosenDateText}
+                    outlineStyle={{borderRadius: 13}}
                     mode="outlined"
                     left={<TextInput.Icon icon={'calendar'} />}
                     activeOutlineColor="green"
                     editable={false}
                   />
+
+                  
                 </TouchableOpacity>
               </View>
 
-              <View style={[{width: wp(80)}, styles.fontField]}>
-                <TouchableOpacity onPress={() => {
-                  showModeTime()
-                }}>
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    showModeTime();
+                  }}>
                   <TextInput
-                  className="mt-5"
-                    style={[{width: wp(80)}, styles.fontField]}
+                    className="mt-5"
+                    style={[{width: s(290)}, styles.fontField]}
                     label="Chosen Time"
                     value={chosenTimeText}
                     mode="outlined"
+                    outlineStyle={{borderRadius: 13}}
                     left={<TextInput.Icon icon={'watch'} />}
                     editable={false}
                     activeOutlineColor="green"

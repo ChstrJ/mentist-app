@@ -11,6 +11,7 @@ export default function BtnCancel({btnLabel, onPress}) {
         backgroundColor: '#d23232',
         borderRadius: 15,
         alignItems: 'center',
+        justifyContent: 'center',
         width: wp(80),
         paddingVertical: 10,
         marginVertical: 10,

@@ -1,11 +1,6 @@
 import {
   View,
-  Image,
   ScrollView,
-  ImageBackground,
-  TouchableOpacity,
-  Alert,
-  Button,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Background from './Background';
@@ -23,6 +18,7 @@ import {
 } from 'react-native-responsive-screen';
 import BtnOutline from '../components/BtnOutline';
 import {callApi} from '../helper/callApi';
+import { s } from 'react-native-size-matters';
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -90,14 +86,16 @@ const Dashboard = () => {
 
   return (
     <Background>
+     <ScrollView
+    showsVerticalScrollIndicator={false}
+    contentContainerStyle={{flexGrow: 1}}>
       <View style={{marginTop: hp(2)}} className="flex items-center">
         <Logo />
         <Text className="mt-5" style={styles.fontHomeSub}>
           Good to see you here, {firstName}{' '}
         </Text>
       </View>
-
-      <View className="flex items-center" style={{marginTop: hp(5)}}>
+      <View className="flex items-center" style={{marginTop: s(5)}}>
         <Action
           actionLabel="Chatbot AI"
           source={require('../assets/chatbot.png')}
@@ -113,10 +111,11 @@ const Dashboard = () => {
           source={require('../assets/development.png')}
           Press={() => navigation.push('Progress')}
         />
-        <View style={{bottom: hp(-17), position: 'absolute', paddingBottom: 5}}>
+        <View style={{height: s(-15), display: 'flex', paddingBottom: 5}}>
           <BtnOutline btnLabel="Logout" onPress={() => handleLogout()} />
         </View>
       </View>
+      </ScrollView>
     </Background>
   );
 };

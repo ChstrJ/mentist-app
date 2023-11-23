@@ -26,51 +26,55 @@ import {storeData} from '../helper/auth';
 import Btn from '../components/Btn';
 import Loginpic from '../assets/Login-broo.svg';
 
-import { loginUser } from '../actions/authAction';
+import {loginUser} from '../actions/authAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import Paper from '../components/Paper';
 
 const LogIn = ({}) => {
-
-  
-
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
-
-
   const [hidePass, setHidePass] = useState(true);
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [isButtonDisabled, setButtonDisabled] = useState();
   const [isloading, setLoading] = useState();
-  
 
   const Data = {
     username: username,
     password: password,
   };
 
- 
-  const handleSuccess = () =>{
-    navigation.push('Dashboard')
-    setLoading(false)
-  }
+  const handleSuccess = () => {
+    navigation.push('Dashboard');
+    setLoading(false);
+  };
 
-
-  const handleError = () => { 
-    navigation.push('LogIn')
-    Alert.alert('Something went wrong')
-  }
+  const handleError = () => {
+    navigation.push('LogIn');
+    Alert.alert('Something went wrong');
+  };
 
   const handleLogin = async () => {
     if (username != undefined && password != undefined) {
-      setLoading(true)
-      dispatch(loginUser(username, password, navigation.navigate, setLoading, loginAttempts, setLoginAttempts));
+      setLoading(true);
+      dispatch(
+        loginUser(
+          username,
+          password,
+          navigation.navigate,
+          setLoading,
+          loginAttempts,
+          setLoginAttempts,
+        ),
+      );
     } else {
-      Alert.alert('Invalid Credentials','Please try again later', setLoginAttempts(loginAttempts + 1),
+      Alert.alert(
+        'Invalid Credentials',
+        'Please try again later',
+        setLoginAttempts(loginAttempts + 1),
       );
     }
   };
@@ -93,7 +97,6 @@ const LogIn = ({}) => {
   }, [loginAttempts]);
 
   return (
-    
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{flexGrow: 1}}>
@@ -101,9 +104,8 @@ const LogIn = ({}) => {
         <Loader />
       ) : (
         <Background>
-       
           <BackButton goBack={navigation.goBack} />
-          <View className=" flex items-center mt-10">
+          <View className=" flex items-center mt-5">
             <Loginpic width={300} height={300} />
           </View>
 
@@ -113,35 +115,29 @@ const LogIn = ({}) => {
               Login Account
             </Text>
 
-            <TextInput
-              style={[{width: wp(80)}, styles.fontField]}
-              className="flex w-4/5 mt-5 rounded-lg"
-              label="Username"
-              mode="outlined"
-              activeOutlineColor="green"
-              left={<TextInput.Icon icon={'account'} />}
+            <Paper
+              label={'Username'}
+              icon={'account'}
+              value={username}
               onChangeText={values => setUsername(values)}
             />
 
-            <TextInput
-              className="flex w-4/5 mt-2 rounded-md"
-              style={[{width: wp(80)}, styles.fontField]}
-              mode="outlined"
-              label="Password"
-              activeOutlineColor="green"
+            <Paper
+              label={'Password'}
+              icon={'key'}
+              value={password}
+              onChangeText={value => setPassword(value)}
               secureTextEntry={hidePass}
-              left={<TextInput.Icon icon={'key'} />}
               right={
                 <TextInput.Icon
                   icon={hidePass ? 'eye-off' : 'eye'}
                   onPress={togglePasswordVisibility}
                 />
               }
-              onChangeText={value => setPassword(value)}
             />
 
-            
-            <View className="mt-2 flex justify-center items-center">
+
+            <View className="mt-4 flex justify-center items-center">
               <Btn
                 onPress={() => handleLogin(Data)}
                 disabled={isButtonDisabled}
@@ -149,22 +145,22 @@ const LogIn = ({}) => {
               />
             </View>
           </View>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'center', marginTop: 5}}>
-              <Text style={styles.fontText}>Don't have an account?</Text>
-              <TouchableOpacity onPress={() => navigation.push('SignUp')}>
-                <Text
-                  style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
-                  Register here
-                </Text>
-              </TouchableOpacity>
-            </View>
-  
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginTop: 5,
+            }}>
+            <Text style={styles.fontText}>Don't have an account?</Text>
+            <TouchableOpacity onPress={() => navigation.push('SignUp')}>
+              <Text style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
+                Register here
+              </Text>
+            </TouchableOpacity>
+          </View>
         </Background>
       )}
-    
     </ScrollView>
-   
   );
 };
 
