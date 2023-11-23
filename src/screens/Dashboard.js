@@ -111,9 +111,11 @@ const Dashboard = () => {
           source={require('../assets/development.png')}
           Press={() => navigation.push('Progress')}
         />
-        <View style={{height: s(-15), display: 'flex', paddingBottom: 5}}>
+
+        <View style={{height: s(-14), display: 'flex', paddingBottom: 5}}>
           <BtnOutline btnLabel="Logout" onPress={() => handleLogout()} />
         </View>
+
       </View>
       </ScrollView>
     </Background>
