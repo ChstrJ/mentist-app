@@ -27,6 +27,7 @@ import Btn from '../components/Btn';
 import Loginpic from '../assets/Login-broo.svg';
 
 import { loginUser } from '../actions/authAction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const LogIn = ({}) => {

@@ -17,7 +17,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from '../components/Logo';
 import {Text} from 'react-native-paper';
 
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -25,17 +24,12 @@ import {
 import BtnOutline from '../components/BtnOutline';
 import {callApi} from '../helper/callApi';
 
-
 const Dashboard = () => {
   const navigation = useNavigation();
   const [firstName, setFirstName] = useState('');
-  
+
   // const [date, setDate] = useState(new Date());
-  const [appId, setAppId] = useState('');
   const [uid, setUID] = useState('');
-  const [isPopupVisible, setPopupVisibility] = useState(false);
-
-
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
@@ -43,21 +37,21 @@ const Dashboard = () => {
   };
 
   const getUser = async () => {
-    const first_name = await AsyncStorage.getItem('first_name');
-    setFirstName(first_name);
+    const firstName = await AsyncStorage.getItem('first_name');
+    setFirstName(firstName);
     const user_id = await AsyncStorage.getItem('id');
     setUID(user_id);
   };
 
   const handleLogout = async () => {
     const removed = removeData();
-    // console.log(token, first_name)
-    removed ? navigation.push('Home') : console.log('Error logging out');
+    removed ? (navigation.navigate('Home')) : console.log('Error logging out');
   };
 
+
   useEffect(() => {
-    getUser();
-  }, [firstName]);
+    getUser()
+  });
 
   const getAppoint = () => {
     callApi('get', `/appointment/${uid}`, uid)
@@ -98,11 +92,12 @@ const Dashboard = () => {
     <Background>
       <View style={{marginTop: hp(2)}} className="flex items-center">
         <Logo />
-        <Text className="mt-5" style={styles.fontHomeSub}>Good to see you here, {firstName} </Text>
+        <Text className="mt-5" style={styles.fontHomeSub}>
+          Good to see you here, {firstName}{' '}
+        </Text>
       </View>
-      
-      <View className="flex items-center" style={{marginTop: hp(5)}}>
 
+      <View className="flex items-center" style={{marginTop: hp(5)}}>
         <Action
           actionLabel="Chatbot AI"
           source={require('../assets/chatbot.png')}
@@ -118,9 +113,8 @@ const Dashboard = () => {
           source={require('../assets/development.png')}
           Press={() => navigation.push('Progress')}
         />
-        <View
-        style={{bottom: hp(-17), position: 'absolute', paddingBottom: 5}}>
-        <BtnOutline btnLabel="Logout" onPress={() => handleLogout()} />
+        <View style={{bottom: hp(-17), position: 'absolute', paddingBottom: 5}}>
+          <BtnOutline btnLabel="Logout" onPress={() => handleLogout()} />
         </View>
       </View>
     </Background>

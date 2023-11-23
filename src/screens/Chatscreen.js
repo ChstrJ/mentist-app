@@ -25,8 +25,6 @@ import Voice from '@react-native-voice/voice';
 import Notif from '../components/Notif';
 
 export default function Chatscreen() {
-
-
   const [firstName, setFirstName] = useState('');
   const [messages, setMessages] = useState([]);
   const [initialLoad, setInitialLoad] = useState(10);
@@ -35,7 +33,6 @@ export default function Chatscreen() {
   const [recording, setRecording] = useState(false);
   const [recognized, setRecognized] = useState('');
   const [started, setStarted] = useState('');
-  const [isChatEmpty, setChatEmpty] = useState(false);
   const [results, setResults] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [rating, setRating] = useState();
@@ -47,10 +44,6 @@ export default function Chatscreen() {
   const getUser = async () => {
     const first_name = await AsyncStorage.getItem('first_name');
     setFirstName(first_name);
-  };
-
-  const CheckChatEmpty = () => {
-    messages.length === 0 ? setChatEmpty(true) : setChatEmpty(false);
   };
 
   //GET PERMISSION TO ON MIC
@@ -180,27 +173,30 @@ export default function Chatscreen() {
 
   //end of sending message
 
-
   //load this states
   useEffect(() => {
-
     //states
     getUser();
     getPermission();
     chatHistory();
-    CheckChatEmpty();
 
+    
     //speech recognition
     Voice.onSpeechStart = onSpeechStart;
     Voice.onSpeechEnd = onSpeechEnd;
     Voice.onSpeechRecognized = onSpeechRecognized;
     Voice.onSpeechResults = onSpeechResults;
-
+    
+    const keepCalling = setInterval(() => {
+      chatHistory();
+    }, 1000); // keep calling the function
+    
     //destroy voice listeners when components unmounts
     return () => {
+      clearInterval(keepCalling);
       Voice.destroy().then(Voice.removeAllListeners);
     };
-  }, [messages]);
+  }, []);
 
   // props for gifted chat
   const renderBubble = props => {
@@ -277,7 +273,7 @@ export default function Chatscreen() {
           style={styles.image}
         />
         <Text style={styles.headerText}>Hello, {firstName}</Text>
-        <View style={{marginLeft: wp(20)}}>
+        <View style={{position: 'absolute', right: 10}}>
           <SmallBtn onPress={modal} btnLabel="Rate" />
         </View>
 
@@ -326,14 +322,6 @@ export default function Chatscreen() {
         renderActions={renderActions}
       />
 
-      {isChatEmpty && (
-        <View style={styles.chatEmptyContainer}>
-          <Text style={{fontFamily: 'Poppins Regular', fontSize: 15}}>
-            Start a conversation by typing a message..
-          </Text>
-        </View>
-      )}
-
       {recording && (
         <View>
           <LottieView
@@ -376,12 +364,6 @@ const styles = StyleSheet.create({
     marginBottom: hp(1),
     marginLeft: wp(10),
     borderRadius: wp(10),
-  },
-
-  chatEmptyContainer: {
-    position: 'absolute',
-    top: hp(50),
-    left: wp(11),
   },
 
   lottieSmall: {

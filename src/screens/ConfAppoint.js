@@ -89,7 +89,7 @@ function ConfAppoint() {
           setLoading(false);
           setSuccessModal(true)
           setTimeout(() => {
-            navigation.push('Dashboard'); 
+            navigation.navigate('Dashboard'); 
           }, 1000);
         }
       })
