@@ -205,7 +205,7 @@ const SignUp = () => {
                   </View>
 
                   <View style={{paddingHorizontal: 20, marginTop: 10}}>
-                    <Text style={styles.fontSmol}>Gender</Text>
+                    <Text style={[{marginLeft: 3},styles.fontSmol]}>Gender</Text>
                     <View
                       style={[
                         {
@@ -245,7 +245,7 @@ const SignUp = () => {
                   </View>
 
                   <View style={{paddingHorizontal: 20, marginTop: 10}}>
-                    <Text style={styles.fontSmol}>Do you have mental illness history?</Text>
+                    <Text style={[{marginLeft: 3},styles.fontSmol]}>Do you have mental illness history?</Text>
                     <View
                       style={[
                         {
