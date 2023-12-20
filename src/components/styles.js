@@ -42,6 +42,12 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     color: '#333333'    
   },
+
+  fontSmol: {
+    fontFamily: 'Poppins Regular',
+    fontSize: 15,
+    color: '#333333'    
+  },
   fontHome: {
     fontFamily: 'Poppins Bold',
     fontSize: 40,
