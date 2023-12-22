@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
 
   fontSmol: {
     fontFamily: 'Poppins Regular',
-    fontSize: 15,
+    fontSize: 14,
     color: '#333333'    
   },
   fontHome: {
