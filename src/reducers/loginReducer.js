@@ -1,35 +1,19 @@
-import { LOGIN_SUCCESS, LOGIN_FAILURE } from "../actions/types/types";
+import {LOGIN_SET_USER_NAME, LOGIN_SET_PASSWORD} from '../actions/Action';
 
-// Define the initial state
 const initialState = {
-    isLoggingIn: false, 
-    error: null, 
-    username: null,
-    password: null,
-  };
-  
-  // Define the login reducer function
-  const loginReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case 'LOGIN_SUCCESS':
-        return {
-          ...state,
-          isLoggingIn: false,
-          username: action.payload,
-          password: action.payload,
-          error: null,
-        };
-      case 'LOGIN_FAILURE':
-        return {
-          ...state,
-          isLoggingIn: false,
-          error: action.payload,
-          user: null,
-        };
-      default:
-        return state;
-    }
-  };
-  
-  export default loginReducer;
-  
+  username: '',
+  password: '',
+};
+
+const loginReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case LOGIN_SET_USER_NAME:
+      return {...state, username: action.payload};
+    case LOGIN_SET_PASSWORD:
+      return {...state, password: action.payload};
+    default:
+      return state;
+  }
+};
+
+export default loginReducer;

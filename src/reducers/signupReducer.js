@@ -1,40 +1,39 @@
-// signupReducer.js
+import {
+  SIGNUP_SET_LAST_NAME,
+  SIGNUP_SET_FIRST_NAME,
+  SIGNUP_SET_PHONE_NUMBER,
+  SIGNUP_SET_EMAIL,
+  SIGNUP_SET_PASSWORD,
+  SIGNUP_SET_USERNAME,
+} from '../actions/Action';
 
+initialState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone_no: '',
+  username: '',
+  password: '',
+  isLoading: false,
+  successModal: false,
+  error: null,
+};
 
-
-const initialState = {
-    isSigningUp: false, 
-    error: null, 
-    first_name: null, 
-    last_name: null, 
-    password: null,
-    email: null,
-    username: null,
-    phone_no: null,
-
-  };
-  
-
-  const signupReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case 'SIGNUP_SUCCESS':
-        return {
-          ...state,
-          isSigningUp: false,
-          user: action.payload,
-          error: null,
-        };
-      case 'SIGNUP_FAILURE':
-        return {
-          ...state,
-          isSigningUp: false,
-          error: action.payload,
-          user: null,
-        };
-      default:
-        return state;
-    }
-  };
-  
-  export default signupReducer;
-  
+const signupReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case SIGNUP_SET_FIRST_NAME:
+      return {...state, first_name: action.payload};
+    case SIGNUP_SET_LAST_NAME:
+      return {...state, last_name: action.payload};
+    case SIGNUP_SET_EMAIL:
+      return {...state, email: action.payload};
+    case SIGNUP_SET_PHONE_NUMBER:
+      return {...state,phone_number: action.payload};
+    case SIGNUP_SET_PASSWORD:
+      return {...state,password: action.payload};
+    case SIGNUP_SET_USERNAME:
+      return {...state,username: action.payload};
+    default:
+      return state;
+  }
+};

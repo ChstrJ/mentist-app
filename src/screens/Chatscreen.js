@@ -2,49 +2,29 @@ import React, {useState, useCallback, useEffect, PureComponent} from 'react';
 import {
   View,
   Text,
-  TextInput,
-  Button,
   StyleSheet,
   Image,
-  ImageBackground,
-  FlatList,
   Alert,
-  TouchableOpacity,
   Platform,
   PermissionsAndroid,
-  Modal,
 } from 'react-native';
-import {
-  GiftedChat,
-  InputToolbar,
-  Send,
-  Bubble,
-  Actions,
-} from 'react-native-gifted-chat';
+import {GiftedChat, Send, Bubble, Actions} from 'react-native-gifted-chat';
 import {callApi} from '../helper/callApi';
-import {
-  ALERT_TYPE,
-  Dialog,
-  AlertNotificationRoot,
-  AlertNotificationDialog,
-} from 'react-native-alert-notification';
 import StarRating from 'react-native-star-rating-widget';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import BackButton from '../components/BackButton';
 import {useNavigation} from '@react-navigation/native';
+import SmallBtn from '../components/SmallBtn';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import LottieView from 'lottie-react-native';
 import Voice from '@react-native-voice/voice';
-import {Header} from '@rneui/themed';
 import Notif from '../components/Notif';
-import TestingBtn from './TestingBtn';
 
 export default function Chatscreen() {
-
   const [firstName, setFirstName] = useState('');
   const [messages, setMessages] = useState([]);
   const [initialLoad, setInitialLoad] = useState(10);
@@ -53,16 +33,13 @@ export default function Chatscreen() {
   const [recording, setRecording] = useState(false);
   const [recognized, setRecognized] = useState('');
   const [started, setStarted] = useState('');
-  const [end, setEnd] = useState(false);
   const [results, setResults] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [rating, setRating] = useState();
 
-  const clearChat = () => {
+  const modal = () => {
     toggleModal();
   };
-
-  
 
   const getUser = async () => {
     const first_name = await AsyncStorage.getItem('first_name');
@@ -93,12 +70,14 @@ export default function Chatscreen() {
     };
     await callApi('post', '/chat/rate', rate)
       .then(response => {
-        response.status === 200 ? Alert.alert("Success Rating") : Alert.alert("Error Rating")  
+        response.status === 200
+          ? Alert.alert('Rating Success!')
+          : Alert.alert('Rating Failed!');
       })
       .catch(e => console.log(e));
     toggleModal(false);
   };
-  
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -107,9 +86,10 @@ export default function Chatscreen() {
     console.log('Speech started');
     setStarted(true);
   };
+
   const onSpeechEnd = e => {
     console.log('Speech ended');
-    setEnd(true);
+    setRecording(false);
     if (results.length > 0) {
       const recognizedSpeech = results[0];
       onSend([{text: recognizedSpeech}]);
@@ -122,6 +102,7 @@ export default function Chatscreen() {
 
   const onSpeechResults = e => {
     setResults(e.value);
+    setRecording(false);
     const recognizedSpeech = e.value[0];
     onSend([{text: recognizedSpeech}]);
   };
@@ -131,7 +112,8 @@ export default function Chatscreen() {
       await Voice.start('en-PH');
       console.log(e);
     } catch (error) {
-      console.error(error);
+      console.log(error);
+      setRecording(false);
     }
   };
   // load the chat history messages
@@ -140,59 +122,50 @@ export default function Chatscreen() {
     const response = await callApi('get', `/chat/${id}`);
     const chatResponse = response.data;
     //map the data messages
-    const historyMessages = chatResponse.messages.map((message) => ({
-      _id: message.timestamp, // timestamp for a unique key
-      text: message.content,
-      createdAt: new Date(message.timestamp),
+    const historyMessages = chatResponse.messages.map((messages, index) => ({
+      _id: messages.timestamp + index.toString(), // timestamp for a unique key
+      text: messages.content,
+      createdAt: new Date(messages.timestamp),
       user: {
-        _id: message.role === 'user' ? '2' : '1',
-        name: message.role,
+        _id: messages.role === 'user' ? '2' : '1', // USER = 2 | BOT = 1
+        name: messages.role,
         avatar: 'https://randomuser.me/api/portraits/women/79.jpg',
       },
     }));
 
+    historyMessages.sort((a, b) => a.createdAt - b.createdAt);
     setMessages(historyMessages);
   };
 
-  
-  // Sending a message and updating the chat history
   const onSend = async (newMessages = []) => {
     const messageText = newMessages[0].text;
-
     const data = {
       message: messageText,
     };
-
     Istyping(true);
-
     const id = await AsyncStorage.getItem('id');
     callApi('post', `/chat/${id}`, data)
       .then(response => {
         const responseData = JSON.stringify(response.data);
-
         console.log(responseData);
-        // Update the state with the new message
         setMessages(previousMessages =>
           GiftedChat.append(previousMessages, newMessages),
         );
         Istyping(false);
-
-        // Load chat history after sending a new message
-        chatHistory();
+        setRecording(false);
       })
       .catch(e => {
         console.error('Error sending message:', e);
         Istyping(false);
+        setRecording(false);
       });
   };
 
   const onMicPress = async () => {
     if (!recording) {
-      // If not recording, start the speech recognition
       startSpeechRecognition();
       setRecording(true);
     } else {
-      // If recording, stop the speech recognition
       await Voice.stop();
       setRecording(false);
     }
@@ -202,16 +175,25 @@ export default function Chatscreen() {
 
   //load this states
   useEffect(() => {
+    //states
     getUser();
     getPermission();
     chatHistory();
 
+    
+    //speech recognition
     Voice.onSpeechStart = onSpeechStart;
     Voice.onSpeechEnd = onSpeechEnd;
     Voice.onSpeechRecognized = onSpeechRecognized;
     Voice.onSpeechResults = onSpeechResults;
-
+    
+    const keepCalling = setInterval(() => {
+      chatHistory();
+    }, 1000); // keep calling the function
+    
+    //destroy voice listeners when components unmounts
     return () => {
+      clearInterval(keepCalling);
       Voice.destroy().then(Voice.removeAllListeners);
     };
   }, []);
@@ -228,7 +210,11 @@ export default function Chatscreen() {
         }}
         textStyle={{
           right: {
-            color: '#ffffff',
+            fontFamily: 'Poppins Regular',
+            color: '#fff',
+          },
+          left: {
+            fontFamily: 'Poppins Regular',
           },
         }}
       />
@@ -263,11 +249,7 @@ export default function Chatscreen() {
         }}
         icon={() => (
           <Image
-            source={
-              recording
-                ? require('../assets/voiceLoading.gif')
-                : require('../assets/recordingIcon.png')
-            }
+            source={require('../assets/recordingIcon.png')}
             style={{width: 40, height: 40}}
           />
         )}
@@ -286,30 +268,13 @@ export default function Chatscreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <BackButton goBack={navigation.goBack} />
-        <Image source={require('../assets/79.jpg')} style={styles.image} />
+        <Image
+          source={{uri: 'https://randomuser.me/api/portraits/women/79.jpg'}}
+          style={styles.image}
+        />
         <Text style={styles.headerText}>Hello, {firstName}</Text>
-    
-        <View style={{marginLeft: wp(25)}}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#00A556',
-              borderColor: '#fff',
-              borderWidth: 2,
-              borderRadius: 15,
-              alignItems: 'center',
-              width: wp(20),
-              paddingVertical: 5,
-            }}
-            onPress={clearChat}>
-            <Text
-              style={{
-                fontSize: 14,
-                fontFamily: 'Poppins-SemiBold',
-                color: 'white',
-              }}>
-              Rate
-            </Text>
-          </TouchableOpacity>
+        <View style={{position: 'absolute', right: 10}}>
+          <SmallBtn onPress={modal} btnLabel="Rate" />
         </View>
 
         <Notif
@@ -345,7 +310,6 @@ export default function Chatscreen() {
           name: 'user',
         }}
         renderBubble={renderBubble}
-        // renderMessage={renderMsg}
         messagesContainerStyle={{backgroundColor: 'white'}}
         alwaysShowSend
         renderSend={renderSend}
@@ -357,6 +321,18 @@ export default function Chatscreen() {
         inverted={false}
         renderActions={renderActions}
       />
+
+      {recording && (
+        <View>
+          <LottieView
+            autoPlay
+            loop
+            speed={1}
+            style={styles.lottieSmall}
+            source={require('../assets/animations/records.json')}
+          />
+        </View>
+      )}
     </View>
   );
 }

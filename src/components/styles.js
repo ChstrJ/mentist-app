@@ -42,6 +42,12 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     color: '#333333'    
   },
+
+  fontSmol: {
+    fontFamily: 'Poppins Regular',
+    fontSize: 14,
+    color: '#333333'    
+  },
   fontHome: {
     fontFamily: 'Poppins Bold',
     fontSize: 40,
@@ -60,7 +66,7 @@ export const styles = StyleSheet.create({
   },
   fontField: {
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 18,
+    fontSize: 17,
   },
   button:{
         borderRadius: 20,
@@ -72,8 +78,9 @@ export const styles = StyleSheet.create({
   },
   errorTxt: {
     fontFamily: 'Poppins Regular',
-    fontSize: 10,
+    fontSize: 13,
     color: 'red',
+    
   },
   submitBtn:{
     backgroundColor: '#00A556',
@@ -126,14 +133,21 @@ export const styles = StyleSheet.create({
     bottom: 1
   }, 
   textAppoint: {
-    paddingTop: 100, 
+    marginVertical: 15,
     justifyContent: 'center',
     textAlign: 'center',
     fontFamily: 'Poppins Bold', 
-    position: 'relative', 
     bottom: 0, 
-    fontSize: 26,
+    fontSize: 25,
+    color: 'black',
+  }, 
+
+  textAppointBody: {
+    fontSize: 20,
+    fontFamily: 'Poppins-SemiBold', 
+    marginVertical: 10,
     color: 'black'
+
   }, 
 });
 
@@ -147,7 +161,7 @@ export const modalStyle = StyleSheet.create({
   }, 
   modalView: {
     width: 300, 
-    height: 300, 
+    height: 310, 
     backgroundColor: 'white', 
     borderRadius: 20, 
     elevation: 20,

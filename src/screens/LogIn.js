@@ -22,60 +22,59 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Loader from '../components/Loader';
-import Logo from '../components/Logo';
 import {storeData} from '../helper/auth';
-import {loginSuccess, loginFailure} from '../actions/Action';
-import LottieView from 'lottie-react-native';
 import Btn from '../components/Btn';
 import Loginpic from '../assets/Login-broo.svg';
-import TestingBtn from './TestingBtn';
+
+import {loginUser} from '../actions/authAction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Paper from '../components/Paper';
 
 const LogIn = ({}) => {
   const dispatch = useDispatch();
-
-  const [hidePass, setHidePass] = useState(true);
   const navigation = useNavigation();
+
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+
+  const [hidePass, setHidePass] = useState(true);
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [isButtonDisabled, setButtonDisabled] = useState();
+  const [isloading, setLoading] = useState();
+
   const Data = {
     username: username,
     password: password,
   };
-  const [isloading, setLoading] = useState();
 
-  const showModal = () => {
-    return(
-      <TestingBtn/>
-    )
-  }
+  const handleSuccess = () => {
+    navigation.push('Dashboard');
+    setLoading(false);
+  };
+
+  const handleError = () => {
+    navigation.push('LogIn');
+    Alert.alert('Something went wrong');
+  };
 
   const handleLogin = async () => {
     if (username != undefined && password != undefined) {
       setLoading(true);
-      const response = callApi('post', '/login', {username, password})
-        .then(response => {
-          // store token in var
-          const token = response.data.token;
-          console.log(token)
-          const first_name = response.data.user.first_name;
-          const phone_no = response.data.user.phone_number;
-          const id = JSON.stringify(response.data.user.id);
-          const uname = response.data.user.username; 
-          // store in async
-          storeData(token, first_name, id, phone_no, uname);
-          console.log(uname)
-          response.status === 200 ? (navigation.push('Dashboard'), dispatch(loginSuccess(response.data))) : (navigation.push('LogIn'), dispatch(loginFailure(error.message)));
-         
-        })
-        .catch(error => {
-          console.log(error);
-          navigation.push('LogIn');
-        });
-          
+      dispatch(
+        loginUser(
+          username,
+          password,
+          navigation.navigate,
+          setLoading,
+          loginAttempts,
+          setLoginAttempts,
+        ),
+      );
     } else {
-      Alert.alert('Invalid Credentials','Please try again later', setLoginAttempts(loginAttempts + 1),
+      Alert.alert(
+        'Invalid Credentials',
+        'Please try again later',
+        setLoginAttempts(loginAttempts + 1),
       );
     }
   };
@@ -93,13 +92,11 @@ const LogIn = ({}) => {
         setButtonDisabled(false);
       }, 15000); // 15 secs
       // reset it to 0
-
       return () => clearTimeout(timeout);
     }
   }, [loginAttempts]);
 
   return (
-    
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{flexGrow: 1}}>
@@ -108,7 +105,7 @@ const LogIn = ({}) => {
       ) : (
         <Background>
           <BackButton goBack={navigation.goBack} />
-          <View className=" flex items-center mt-10">
+          <View className=" flex items-center mt-5">
             <Loginpic width={300} height={300} />
           </View>
 
@@ -118,48 +115,29 @@ const LogIn = ({}) => {
               Login Account
             </Text>
 
-            <TextInput
-              style={[{width: wp(80)}, styles.fontField]}
-              className="flex w-4/5 mt-5 rounded-lg"
-              label="Username"
-              mode="outlined"
-              activeOutlineColor="green"
-              left={<TextInput.Icon icon={'account'} />}
+            <Paper
+              label={'Username'}
+              icon={'account'}
+              value={username}
               onChangeText={values => setUsername(values)}
             />
 
-            <TextInput
-              className="flex w-4/5 mt-2 rounded-md"
-              style={[{width: wp(80)}, styles.fontField]}
-              mode="outlined"
-              label="Password"
-              activeOutlineColor="green"
+            <Paper
+              label={'Password'}
+              icon={'key'}
+              value={password}
+              onChangeText={value => setPassword(value)}
               secureTextEntry={hidePass}
-              left={<TextInput.Icon icon={'key'} />}
               right={
                 <TextInput.Icon
                   icon={hidePass ? 'eye-off' : 'eye'}
                   onPress={togglePasswordVisibility}
                 />
               }
-              onChangeText={value => setPassword(value)}
             />
 
-            <View
-              style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
-              <Text style={styles.fontText}>Don't have an account?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                <Text
-                  style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
-                  Register here
-                </Text>
-              </TouchableOpacity>
-            </View>
-            
-            
-           
-            
-            <View className="flex justify-center items-center">
+
+            <View className="mt-4 flex justify-center items-center">
               <Btn
                 onPress={() => handleLogin(Data)}
                 disabled={isButtonDisabled}
@@ -167,10 +145,22 @@ const LogIn = ({}) => {
               />
             </View>
           </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginTop: 5,
+            }}>
+            <Text style={styles.fontText}>Don't have an account?</Text>
+            <TouchableOpacity onPress={() => navigation.push('SignUp')}>
+              <Text style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
+                Register here
+              </Text>
+            </TouchableOpacity>
+          </View>
         </Background>
       )}
     </ScrollView>
-   
   );
 };
 

@@ -11,10 +11,7 @@ export default function Notif({visible, onRequestClose, body, header, press, lab
         onRequestClose={onRequestClose}
         transparent
         animationType='fade'
-        hardwareAccelerated
-       
-    >
-        
+        hardwareAccelerated>
         <View 
             style={modalStyle.centerView}>
             <View style={modalStyle.modalView}>
