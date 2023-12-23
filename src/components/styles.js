@@ -1,6 +1,5 @@
-import theme from '../core/theme';
+
 import {StyleSheet, Dimensions} from 'react-native';
-import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
@@ -43,6 +42,12 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     color: '#333333'    
   },
+
+  fontSmol: {
+    fontFamily: 'Poppins Regular',
+    fontSize: 14,
+    color: '#333333'    
+  },
   fontHome: {
     fontFamily: 'Poppins Bold',
     fontSize: 40,
@@ -61,7 +66,7 @@ export const styles = StyleSheet.create({
   },
   fontField: {
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 18,
+    fontSize: 17,
   },
   button:{
         borderRadius: 20,
@@ -73,8 +78,9 @@ export const styles = StyleSheet.create({
   },
   errorTxt: {
     fontFamily: 'Poppins Regular',
-    fontSize: 10,
+    fontSize: 13,
     color: 'red',
+    
   },
   submitBtn:{
     backgroundColor: '#00A556',
@@ -127,14 +133,21 @@ export const styles = StyleSheet.create({
     bottom: 1
   }, 
   textAppoint: {
-    paddingTop: 100, 
+    marginVertical: 15,
     justifyContent: 'center',
     textAlign: 'center',
     fontFamily: 'Poppins Bold', 
-    position: 'relative', 
     bottom: 0, 
-    fontSize: 26,
+    fontSize: 25,
+    color: 'black',
+  }, 
+
+  textAppointBody: {
+    fontSize: 20,
+    fontFamily: 'Poppins-SemiBold', 
+    marginVertical: 10,
     color: 'black'
+
   }, 
 });
 
@@ -143,16 +156,15 @@ export const modalStyle = StyleSheet.create({
     flex: 1, 
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00000099'
+    backgroundColor: '#00000099',
+    
   }, 
   modalView: {
     width: 300, 
-    height: 300, 
+    height: 310, 
     backgroundColor: 'white', 
-    color: 'black', 
-    borderWidth: 1, 
-    borderColor: '#000', 
     borderRadius: 20, 
+    elevation: 20,
   }, 
   modalTitle: {
     height: 50, 
@@ -169,16 +181,21 @@ export const modalStyle = StyleSheet.create({
   }, 
   modalTextTitle: {
     color: '#000', 
-    fontSize: 20, 
-    fontWeight: 'bold', 
+    fontSize: 18, 
+    fontFamily: 'Poppins-SemiBold',
     textAlign: 'center', 
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 5,
+    padding: 10,
+    
   }, 
   modalTextBody: {
     color: '#000', 
     fontSize: 20, 
     margin: 10, 
     textAlign: 'center', 
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 10
+    
   }
 })

@@ -4,16 +4,16 @@ import { modalStyle } from './styles'
 import Btn from './Btn'
 
 
-export default function Notif({visible, onRequestClose, body, header, press, label}) {
+export default function Notif({visible, onRequestClose, body, header, press, label, img}) {
   return (
     <Modal 
         visible={visible}
         onRequestClose={onRequestClose}
         transparent
         animationType='fade'
-        hardwareAcceleratedon
-    >
-        <View style={modalStyle.centerView}>
+        hardwareAccelerated>
+        <View 
+            style={modalStyle.centerView}>
             <View style={modalStyle.modalView}>
               <View style={modalStyle.modalTitle}>
                   <Text style={modalStyle.modalTextTitle}>{header}</Text>

@@ -1,183 +1,309 @@
-import {View, Button, Alert} from 'react-native';
+import {View, Button, Alert, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, Platform} from 'react-native';
+import {SafeAreaView, Platform, ScrollView} from 'react-native';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import {TextInput, Text} from 'react-native-paper';
 import Logo from '../components/Logo';
-import { styles }  from '../components/styles';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import {styles} from '../components/styles';
 import {Stack} from '@react-native-material/core';
 import Btn from '../components/Btn';
-import { getData, isValidPhone, isValidDate, setAppoint } from '../helper/auth';
-import { callApi } from '../helper/callApi';
+import {getData, isValidPhone, isValidDate, setAppoint} from '../helper/auth';
+import {callApi} from '../helper/callApi';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ConfAppoint from './ConfAppoint';
 import Loader from '../components/Loader';
 import Notif from '../components/Notif';
+import Appointpic from '../assets/Schedule-bro.svg';
+import {SelectList} from 'react-native-dropdown-select-list';
+import BtnOutline from '../components/BtnOutline';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
+import Paper from '../components/Paper';
+import { s } from 'react-native-size-matters';
 
 export default function Appointment() {
   const navigation = useNavigation();
   //declare usestate
 
-  const [name, setName] = useState()
-  const [phone, setPhone] = useState()
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [id, setId] = useState('')
-  const [appId, setAppId] = useState('')
-  const [error, setError] = useState(false)
-  const [conName, setConName] = useState('')
-  const [time, setTime] = useState('')
-  
+  const [id, setId] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [isLoading, setLoading] = useState('');
+  const [notif, setNotif] = useState(false);
+  const [consult, setConsultant] = useState('');
+  const [day, setDay] = useState('');
+  const [conName, setConName] = useState('');
+  const [selConst, setSelConst] = useState(null);
+  const [chosenDateText, setChosenDateText] = useState('');
+  const [chosenTimeText, setChosenTimeText] = useState('');
+
   useEffect(() => {
-    getData()
+    getData();
+    getConsultant();
+    handleDatePicker();
     try {
       AsyncStorage.getItem('id')
-      .then(value => {
-        setId(value)
-      })
-      .catch(e => console.log(e))
+        .then(value => {
+          setId(value);
+        })
+        .catch(e => console.log(e));
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }, )
+    AsyncStorage.getItem('first_name')
+      .then(value => {
+        if (value) {
+          setFirstName(value);
+        }
+      })
+      .catch(e => console.log(e));
+
+    AsyncStorage.getItem('phone_no')
+      .then(value => {
+        if (value) {
+          setPhoneNumber(value);
+        }
+      })
+      .catch(e => console.log(e));
+  }, []);
+
+  // const splitDate = date.toISOString()
+
+  const handleDatePicker = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+
+    if (mode === 'date') {
+      const formattedDate = currentDate.toLocaleDateString('en-PH');
+      setChosenDateText(formattedDate);
+    } else if (mode === 'time') {
+      const formattedTime = new Date(currentDate).toLocaleTimeString('en-PH', {
+        hour12: true,
+        hour: 'numeric',
+        minute: 'numeric',
+        timeZone: 'Asia/Manila',
+      });
+
+      setChosenTimeText(formattedTime);
+    }
+  };
+
   const Data = {
-    consultant_id: 1,
-    user_id: id, 
-    phone_number: phone,
+    consultant_id: selConst,
+    user_id: id,
+    phone_number: phoneNumber,
     date: date.toISOString().split('T')[0],
     booking_time: date.toISOString().split('T')[1].split('.')[0],
-  }
+  };
 
+  const getConsultant = async () => {
+    const reponse = await callApi('get', '/consultant')
+      .then(response => {
+        const res = response.data.consultants;
+        const listCont = res.map(item => {
+          return {key: item.id, value: `${item.name}`};
+        });
+        setConsultant(listCont);
+        console.log(consult + 'const and listCont ' + listCont);
+      })
+
+      .catch(e => console.log(e));
+  };
+  const handleConsult = selectedValue => {
+    const selectedConsultant = consult.find(
+      item => item.value === selectedValue,
+    );
+    if (selectedConsultant) {
+      setSelConst(selectedConsultant.key);
+    }
+  };
   //create onchange
   const onChange = (e, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios' ? true : false);
+
     setDate(currentDate);
   };
 
-  const showMode = modeToShow => {
-    setMode(modeToShow);
+  const showModeDate = () => {
     setShow(true);
+    setMode('date');
   };
 
-  const handleAppointment = async (data) => {
-    if (!isValidPhone(phone) || !isValidDate(date)){
-      Alert.alert('Invalid Credential', 'Please provide a valid date and number!')
-    }
-    else{
-      callApi('post', '/appointment', data)
+  const showModeTime = () => {
+    setShow(true);
+    setMode('time');
+  };
+
+  const handleAppointment = async data => {
+    callApi('post', '/appointment', data)
       .then(response => {
-        AsyncStorage.setItem('Date', response.data.date)
-        .then(value => {
-          setDate(value)
-        }).catch(e => {console.log(e)})
-        const id = response.data.appointment_id
-        AsyncStorage.setItem('AppointID', id)
-        .then(res => {
-          setAppId(res)
-        })
-        navigation.push('Dashboard')
-        // Alert.alert('Schedule Success', `Your session will be on ${response.data.date}, ${response.data.time}, with ${response.data.consultant.name}`)
-        setConName(response.data.consultant.name)
-        setTime(response.data.time)
-        setDate(response.data.date)
+        setLoading(true);
+        const res = JSON.stringify(response);
+        const respo = JSON.stringify(response.data.appointment_id);
+        console.log(respo + ' ' + res);
+
+        navigation.push('Dashboard');
+        const resDate = response.data.date;
+        const resTime = response.data.booking_time;
+        setNotif(true);
+        Alert.alert(
+          'Schedule Success',
+          `Your session will be on ${response.data.date}, ${response.data.booking_time}, with ${response.data.consultant.name}`,
+        );
+        AsyncStorage.setItem('resTime', resTime);
+        AsyncStorage.setItem('resDate', resDate);
       })
       .catch(error => {
         if (error.response) {
-          // The server responded with an error (status code 4xx or 5xx)
+          const errorMessage = error.response.data.error.date
+            ? error.response.data.error.date
+            : error.response.data.error.booking_time;
           console.log('HTTP Status Code:', error.response.status);
-          console.log('Error Data:', error.response.data);
-          
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.log('No response received from the server');
-        } else {
-          // Something else happened while setting up the request
-          console.log('Error:', error.message);
+          console.log('Error Message:', errorMessage);
+          Alert.alert('Error!', errorMessage);
+          setLoading(false);
         }
-      })
-    }
+      });
   };
 
-
   return (
-    
-      <Background>
-        <BackButton goBack={navigation.goBack} />
-        <View
-          className="flex items-center justify-center mt-10"
-          style={styles.CenterContainer}>
-          <Logo />
-
-          <View className="mt-2 flex items-center">
-            <Text className="text-center flex text-xl">Create Appointment</Text>
-           
-            <TextInput
-              className="w-[300] mt-3 rounded-md"
-              mode="focused"
-              label="Phone Number"
-              keyboardType="numeric"
-              maxLength={11}
-              left={<TextInput.Icon icon={'phone'} />}
-              outlineColor="green"
-              activeOutlineColor="green"
-              onChangeText={val => {setPhone(val)}}
-            />
-
-            <View className="mt-5 w-[300]">
-              <Button
-                color={'#6FF484'}
-                activeOutlineColor='green'
-                title="Choose Date"
-                onPress={() => showMode('date')}
-              />
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{flexGrow: 1}}>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Background>
+          <BackButton goBack={navigation.goBack} />
+          <View className="flex items-center justify-center mt-10">
+            <View className=" flex items-center">
+              <Appointpic width={200} height={200} />
             </View>
 
-            <View className="mt-5 w-[300] text-white">
-              <Button
-                color={'#6FF484'}
-                title="Choose Time"
-                activeOutlineColor='green'
-                onPress={() => showMode('time')}
+            <View className="flex justify-center items-center">
+              <Text style={styles.fontHomeSub}>Create Appointment</Text>
+
+              <Paper
+                label={'Name'}
+                icon={'account'}
+                value={firstName}
+                disabled={true}
               />
-            </View>
-  
+
+              <Paper
+                label={'Phone Number'}
+                icon={'phone'}
+                value={phoneNumber}
+                disabled={true}
+                onChangeText={phoneNumber => {
+                  setPhoneNumber(phoneNumber);
+                }}
+              />
+
+              <View
+                style={[
+                  {
+                    width: wp(80),
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    gap: 8,
+                  },
+                ]}
+                className="flex mt-5">
+                <View style={{width: s(290), flex: 1}}>
+                  <SelectList
+                    placeholder="Choose Consultant"
+                    data={consult}
+                    save="value"
+                    setSelected={val => {
+                      setConName(val);
+                      handleConsult(val);
+                      console.log(val);
+                    }}
+                    style={{zIndex: 200, width: '100%'}} // Use width: '100%' to maintain the size
+                    searchPlaceholder="Choose Consultant"
+                    searchicon={false}
+                  />
+                </View>
+              </View>
+
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    showModeDate();
+                  }}>
+                  <TextInput
+                    style={[{width: s(290)}, styles.fontField]}
+                    className="mt-5"
+                    label="Chosen Date"
+                    value={chosenDateText}
+                    outlineStyle={{borderRadius: 13}}
+                    mode="outlined"
+                    left={<TextInput.Icon icon={'calendar'} />}
+                    activeOutlineColor="green"
+                    editable={false}
+                  />
+
+                  
+                </TouchableOpacity>
+              </View>
+
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    showModeTime();
+                  }}>
+                  <TextInput
+                    className="mt-5"
+                    style={[{width: s(290)}, styles.fontField]}
+                    label="Chosen Time"
+                    value={chosenTimeText}
+                    mode="outlined"
+                    outlineStyle={{borderRadius: 13}}
+                    left={<TextInput.Icon icon={'watch'} />}
+                    editable={false}
+                    activeOutlineColor="green"
+                  />
+                </TouchableOpacity>
+              </View>
+
               {show && (
-                <DateTimePicker 
-                  testID='dateTimePicker'
-                  value={new Date(date)}
+                <RNDateTimePicker
+                  style={{}}
+                  themeVariant="dark"
+                  testID="dateTimePicker"
+                  value={date}
                   mode={mode}
                   is24Hour={false}
-                  display='default'
-                  onChange={onChange}
+                  display="spinner"
+                  timeZoneName={'Asia/Singapore'}
+                  onChange={handleDatePicker}
                 />
               )}
 
-
-            <View className="flex items-center mt-5">
-              <Text className="mb-5 text-lg">Your Appointment Date is:</Text>
-              <Text className="flex text-2xl w-100">
-                {date.toLocaleString('en-PH')}
-              </Text>
-            </View>
-                
-            <View className="flex items-center justify-center">
-              <Btn
-                className="flex justify-center items-center"
-                bgColor={styles.Colors.third}
-                textColor="white"
-                btnLabel="Confirm"
-                Press={() => handleAppointment(Data)}
-              />
-              
+              <View className="flex items-center justify-center mt-5">
+                <Btn
+                  onPress={() => handleAppointment(Data)}
+                  btnLabel="Confirm"
+                  style={{zIndex: 0}}
+                />
+              </View>
             </View>
           </View>
-        </View>
         </Background>
-    
+      )}
+    </ScrollView>
   );
 }
