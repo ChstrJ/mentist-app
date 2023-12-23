@@ -109,63 +109,6 @@ const SignUp = () => {
   };
 
 
-  // const validationSchema = Yup.object().shape({
-  //   username: Yup.string().required('Username is required'),
-  //   password: Yup.string().required('Password is required'),
-  //   email: Yup.string()
-  //   .email('Invalid Email')
-  //   .required('This field is required')
-  // });
-
-  
-
-  const handleSubmit = data => {
-    if (firstName.length <= 0){
-       Alert.alert('Error', 'Invalid First Name!');
-       return 
-    }
-    if (lastName.length <= 0){
-      Alert.alert('Error', 'Invalid Last Name!');
-      return 
-   }
-    if (username > 8 || username <= 0) {
-      Alert.alert('Error', 'Invalid Username!');
-      return;
-    }
-    if (email.length <= 0) {
-      Alert.alert('Error', 'Invalid Email!');
-      return;
-    }
-    if (password.length <= 0){
-      Alert.alert('Error', 'Invalid Password!');
-      return
-    }
-    if (confirmPassword.length <= 0 || confirmPassword != password){
-      Alert.alert('Error', 'Invalid, Must be same with Password!');
-      return
-    }
-    if (password === confirmPassword) {
-    dispatch({type: 'SIGNUP_REQUEST'});
-    setLoading(true);
-    const api = callApi('post', '/register', data)
-      .then(response => {
-        navigation.push('LogIn');
-        dispatch({type: SIGNUP_SUCCESS, payload: response.data.user});
-        Alert.alert("Registration Successful");
-        setTimeout(() => {
-          setLoading(false);
-        }, 500);
-      })
-      .catch(error => {
-        dispatch({type: SIGNUP_FAILURE, payload: error.message});
-        // Alert.alert(error.message);
-        Alert.alert("Error", error.message)
-        setLoading(false)
-      });
-  } else {
-    Alert.alert("Password doesn't match");
-  }
-  };
 
   // for showing and hiding pass
   const [hidePass, setHidePass] = useState(true);
