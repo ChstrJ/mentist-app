@@ -108,8 +108,6 @@ const SignUp = () => {
     }
   };
 
-
-
   // for showing and hiding pass
   const [hidePass, setHidePass] = useState(true);
   const [hidePass2, setHidePass2] = useState(true);
@@ -134,19 +132,7 @@ const SignUp = () => {
           <BackButton goBack={navigation.goBack} />
           <View className="flex items-center justify-center mt-10">
             <Registerpic width={200} height={200} />
-          <View
-            className="flex justify-center mt-10"
-            style={styles.CenterContainer}>
-
-          <Image
-          style={{height: hp(35), width: hp(35)}}
-            source={require('../assets/account.png')}
-
-          />
-
           </View>
-
-
 
           <Formik
             initialValues={initialValue}
