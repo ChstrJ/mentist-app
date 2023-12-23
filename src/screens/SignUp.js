@@ -1,9 +1,9 @@
-import {View, Image, ScrollView, Alert, TouchableOpacity} from 'react-native';
+import {View, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import React, {useState} from 'react';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
-import {TextInput, Text, Provider} from 'react-native-paper';
+import {TextInput, Text} from 'react-native-paper';
 import {styles} from '../components/styles';
 import BackButton from '../components/BackButton';
 import {s} from 'react-native-size-matters';
@@ -26,7 +26,7 @@ const SignUp = () => {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date())
   const [bday, setBday] = useState('');
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -38,8 +38,8 @@ const SignUp = () => {
   const [successModal, setSuccessModal] = useState(false);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [gender, setGender] = useState('');
-  const [history, setHistory] = useState({});
+  const [gender, setGender] = useState('male');
+  const [history, setHistory] = useState('false');
 
   const Data = {
     username: username,
@@ -48,7 +48,7 @@ const SignUp = () => {
     email: email,
     phone_number: phone_no,
     password: password,
-    birthdate: date,
+    birthdate: date.toISOString().split('T')[0],
     gender: gender,
     history: history,
   };
@@ -95,12 +95,13 @@ const SignUp = () => {
     if (Data !== null) {
       setLoading(true);
       const api = callApi('post', '/register', Data)
-        .then(response => {
-          response.status === 200 ? handleSuccess() : handleError();
+      .then(res => {
+          console.log(res.data)
+          res.status === 200 ? handleSuccess() : handleError();
         })
-        .catch(error => {
+        .catch(e => {
+          console.error(e)
           handleError();
-          console.log(error);
         });
     } else {
       Alert.alert("Password doesn't match");
@@ -225,8 +226,8 @@ const SignUp = () => {
                       onValueChange={itemValue => {
                         setHistory(itemValue);
                       }}>
-                      <Picker.Item label="No" value="no" />
-                      <Picker.Item label="Yes" value="yes" />
+                      <Picker.Item label="No" value="false" />
+                      <Picker.Item label="Yes" value="true" />
                     </Picker>
                   </View>
                 </View>
