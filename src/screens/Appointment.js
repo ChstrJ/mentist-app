@@ -7,7 +7,6 @@ import BackButton from '../components/BackButton';
 import {TextInput, Text} from 'react-native-paper';
 import Logo from '../components/Logo';
 import {styles} from '../components/styles';
-import {Stack} from '@react-native-material/core';
 import Btn from '../components/Btn';
 import {getData, isValidPhone, isValidDate, setAppoint} from '../helper/auth';
 import {callApi} from '../helper/callApi';
@@ -16,12 +15,9 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ConfAppoint from './ConfAppoint';
 import Loader from '../components/Loader';
-import Notif from '../components/Notif';
 import Appointpic from '../assets/Schedule-bro.svg';
 import {SelectList} from 'react-native-dropdown-select-list';
-import BtnOutline from '../components/BtnOutline';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import Paper from '../components/Paper';
 import { s } from 'react-native-size-matters';

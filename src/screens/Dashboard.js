@@ -16,10 +16,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import BtnOutline from '../components/BtnOutline';
 import {callApi} from '../helper/callApi';
 import { s } from 'react-native-size-matters';
-import LogoutBtn from '../components/logoutBtn';
+import LogoutBtn from '../components/Logout';
 
 const Dashboard = () => {
   const navigation = useNavigation();

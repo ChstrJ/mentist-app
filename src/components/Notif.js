@@ -1,7 +1,6 @@
 import { View, Text, Modal, TouchableOpacity, } from 'react-native'
 import React, {useState} from 'react'
 import { modalStyle } from './styles'
-import Btn from './Btn'
 
 
 export default function Notif({visible, onRequestClose, body, header, press, label, img}) {
