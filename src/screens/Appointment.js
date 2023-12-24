@@ -281,13 +281,12 @@ export default function Appointment() {
 
               {show && (
                 <RNDateTimePicker
-                  style={{}}
                   themeVariant="dark"
                   testID="dateTimePicker"
                   value={date}
                   mode={mode}
                   is24Hour={false}
-                  display="spinner"
+                  display="default"
                   timeZoneName={'Asia/Singapore'}
                   onChange={handleDatePicker}
                 />
