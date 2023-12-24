@@ -272,7 +272,7 @@ export default function Appointment() {
                     value={chosenTimeText}
                     mode="outlined"
                     outlineStyle={{borderRadius: 13}}
-                    left={<TextInput.Icon icon={'watch'} />}
+                    left={<TextInput.Icon icon={'clock'} />}
                     editable={false}
                     activeOutlineColor="green"
                   />
