@@ -63,7 +63,7 @@ const Home = props => {
         <Btn
           btnLabel="Login"
           onPress={() => 
-          navigation.navigate('LogIn')}
+          navigation.navigate('Dashboard')}
         />
       </View>
     </ScrollView>
