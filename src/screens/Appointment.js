@@ -7,7 +7,6 @@ import BackButton from '../components/BackButton';
 import {TextInput, Text} from 'react-native-paper';
 import Logo from '../components/Logo';
 import {styles} from '../components/styles';
-import {Stack} from '@react-native-material/core';
 import Btn from '../components/Btn';
 import {getData, isValidPhone, isValidDate, setAppoint} from '../helper/auth';
 import {callApi} from '../helper/callApi';
@@ -16,12 +15,9 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ConfAppoint from './ConfAppoint';
 import Loader from '../components/Loader';
-import Notif from '../components/Notif';
 import Appointpic from '../assets/Schedule-bro.svg';
 import {SelectList} from 'react-native-dropdown-select-list';
-import BtnOutline from '../components/BtnOutline';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import Paper from '../components/Paper';
 import { s } from 'react-native-size-matters';
@@ -272,7 +268,7 @@ export default function Appointment() {
                     value={chosenTimeText}
                     mode="outlined"
                     outlineStyle={{borderRadius: 13}}
-                    left={<TextInput.Icon icon={'watch'} />}
+                    left={<TextInput.Icon icon={'clock'} />}
                     editable={false}
                     activeOutlineColor="green"
                   />
@@ -281,13 +277,12 @@ export default function Appointment() {
 
               {show && (
                 <RNDateTimePicker
-                  style={{}}
                   themeVariant="dark"
                   testID="dateTimePicker"
                   value={date}
                   mode={mode}
                   is24Hour={false}
-                  display="spinner"
+                  display="default"
                   timeZoneName={'Asia/Singapore'}
                   onChange={handleDatePicker}
                 />

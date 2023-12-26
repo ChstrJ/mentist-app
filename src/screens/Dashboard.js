@@ -16,9 +16,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import BtnOutline from '../components/BtnOutline';
 import {callApi} from '../helper/callApi';
 import { s } from 'react-native-size-matters';
+import LogoutBtn from '../components/Logout';
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -89,12 +89,19 @@ const Dashboard = () => {
      <ScrollView
     showsVerticalScrollIndicator={false}
     contentContainerStyle={{flexGrow: 1}}>
+
+      <LogoutBtn
+        onPress={() => handleLogout()}
+      />
+    
       <View style={{marginTop: hp(2)}} className="flex items-center">
         <Logo />
         <Text className="mt-5" style={styles.fontHomeSub}>
           Good to see you here, {firstName}{' '}
         </Text>
       </View>
+
+
       <View className="flex items-center" style={{marginTop: s(5)}}>
         <Action
           actionLabel="Chatbot AI"
@@ -112,9 +119,7 @@ const Dashboard = () => {
           Press={() => navigation.push('Progress')}
         />
 
-        <View style={{height: s(-14), display: 'flex', paddingBottom: 5}}>
-          <BtnOutline btnLabel="Logout" onPress={() => handleLogout()} />
-        </View>
+        
 
       </View>
       </ScrollView>

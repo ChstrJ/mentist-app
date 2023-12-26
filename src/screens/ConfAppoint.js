@@ -1,27 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
-import Background from './Background';
 import BackButton from '../components/BackButton';
 import {styles} from '../components/styles';
-import Logo from '../components/Logo';
-import Btn from '../components/Btn';
 import theme from '../core/theme';
 import {callApi} from '../helper/callApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Modals from '../components/Modals';
 import Loader from '../components/Loader';
 import {useNavigation} from '@react-navigation/native';
 import Card from '../components/Card';
 import CalendarPic from '../assets/Calendar-bro.svg';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 import BtnCancel from '../components/BtnCancel';
 import OptionsModal from '../components/Modals/OptionsModal';
 import SuccessModal from '../components/Modals/SuccessModal';
 import { useDispatch } from 'react-redux';
-import { modalReducer } from '../reducers/setSuccessModal';
 
 
 function ConfAppoint() {
@@ -32,7 +23,6 @@ function ConfAppoint() {
   const [resdate, setResDate] = useState('');
   const [restime, setRestTime] = useState('');
   const [appId, setAppId] = useState('');
-  const [notif, setNotif] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [showOptionsModal, setShowOptionsModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
@@ -124,13 +114,7 @@ function ConfAppoint() {
                   onPress={() => showModal()}
                 />
               </View>
-              {/* <Modals
-            visible={notif}
-            ModalLabel="Success"
-            src={require('../assets/checked.png')}
-            Message="Cancel Success"
-            Press={() => setNotif(false)}
-          /> */}
+            
             </Card>
           </View>
         </View>

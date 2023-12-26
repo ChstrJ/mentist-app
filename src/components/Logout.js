@@ -1,28 +1,30 @@
-import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
-import theme from '../core/theme'
+import { TouchableOpacity, Image, StyleSheet, Dimensions} from 'react-native'
+import { heightPercentageToDP } from 'react-native-responsive-screen'
+import { getStatusBarHeight } from 'react-native-status-bar-height'
 
-export default function Logout({Press, actionLabel}) {
+export default function LogoutBtn({onPress}) {
   return (
-    <TouchableOpacity 
-    onPress={Press} 
-      style={{
-        backgroundColor: theme.rightColors.logOutColor,
-        borderRadius: 20,
-        alignItems: 'center',
-        width: 300,
-        paddingVertical: 15,
-        elevation: 10, 
-        display: 'flex',
-        flexDirection: 'row', 
-        paddingLeft: 12,
-        justifyContent: 'center', 
-        marginTop: 20, 
-        marginBottom: 20, 
-      }}>
-        <Text style={{color: 'white', fontSize: 18, fontWeight: 900, flex: 1, textAlign: 'center'}}>
-            {actionLabel}
-        </Text>
+    <TouchableOpacity onPress={onPress} style={style.container}>
+      <Image
+        style={style.image}
+        source={require('../assets/log-out.png')}
+        tintColor={'red'}
+      />
     </TouchableOpacity>
+    
   )
 }
+
+const style = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top: getStatusBarHeight() - 10,
+    // borderColor: 'red',
+    // borderWidth: 3,
+    // borderRadius: 13,
+    // padding:5,
+    right: 13,
+  },
+  
+})

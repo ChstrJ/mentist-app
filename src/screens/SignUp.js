@@ -21,6 +21,7 @@ import SuccessModal from '../components/Modals/SuccessModal';
 import {Formik} from 'formik';
 import Paper from '../components/Paper';
 import {SignupSchema, initialValue} from '../components/Validation/Validation';
+import { handleSuccessSignup } from '../helper/handle';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -56,14 +57,7 @@ const SignUp = () => {
 
   const minDate = new Date(1980, 0, 1)
 
-  const handleSuccess = () => {
-    setLoading(false);
-    navigation.push('LogIn');
-
-    setTimeout(() => {
-      setSuccessModal(true);
-    }, 1000);
-  };
+  
 
   const closeModal = () => {
     setSuccessModal(false);
@@ -74,7 +68,7 @@ const SignUp = () => {
     setMode('date');
   };
 
-  const handleDatePicker = (event, selectedDate) => {
+    const handleDatePickerSignup = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
@@ -85,26 +79,30 @@ const SignUp = () => {
     }
   };
 
-  const handleError = () => {
+  const handleErrorSignup = () => {
     setLoading(false);
     navigation.push('SignUp');
     Alert.alert('Something went wrong');
   };
 
+
+  
+
+    //for submitting the signup form
   const handleSubmit = () => {
     if (Data !== null) {
       setLoading(true);
       const api = callApi('post', '/register', Data)
       .then(res => {
           console.log(res.data)
-          res.status === 200 ? handleSuccess() : handleError();
+          handleSuccessSignup()
         })
         .catch(e => {
           console.error(e)
-          handleError();
+          handleErrorSignup();
         });
     } else {
-      Alert.alert("Password doesn't match");
+      Alert.alert("Something went wrong","Please try again later");
     }
   };
 
@@ -260,9 +258,9 @@ const SignUp = () => {
                     value={date}
                     mode={mode}
                     minimumDate={minDate}
-                    display="spinner"
+                    display="default"
                     timeZoneName={'Asia/Singapore'}
-                    onChange={handleDatePicker}
+                    onChange={handleDatePickerSignup}
                   />
                 )}
 

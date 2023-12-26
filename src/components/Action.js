@@ -22,7 +22,7 @@ const Action = ({source, Press, actionLabel}) => {
             </Image>
             <Text 
             className="flex justify-center items-center"
-            style={{color: 'black', fontSize: 18, marginTop: 10, fontFamily: 'Poppins-SemiBold'}}>
+            style={{fontSize: 19, marginTop: 10, fontFamily: 'Poppins Regular'}}>
             {actionLabel}
           </Text>
         </TouchableOpacity>
