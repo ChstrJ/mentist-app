@@ -119,19 +119,25 @@ export default function Appointment() {
     const getConsultant = async() => {
       const conf = await callApi('get', '/consultant')
         .then(response => {
-            console.log(JSON.stringify(response.data))
-            const res = response.data.consultant
-            let count = Object.keys(res).length
+            // console.log(JSON.stringify(response.data))
+            const res = response.data.consultants
+            console.log(res[1].schedule)
+            // console.log(res)
 
+            let count = Object.keys(res).length
             let constArr = []
+
             for (let i = 0; i < count; i++){
               constArr.push({
                 id: res[i].id,
-                name: res[i].name
+                name: res[i].name, 
+                schedule: res[i].schedule
               })
+              // console.log(constArr.id)
             }
             setConsultant(constArr)
             console.log(consult)
+            // console.log(consult, "wala") 
         })
         .catch(e => {
           console.log(e)
@@ -140,14 +146,14 @@ export default function Appointment() {
     }
 
 
-  const handleConsult = selectedValue => {
-    const selectedConsultant = consult.find(
-      item => item.value === selectedValue,
-    );
-    if (selectedConsultant) {
-      setSelConst(selectedConsultant.key);
-    }
-  };
+  // const handleConsult = selectedValue => {
+  //   const selectedConsultant = consult.find(
+  //     item => item.value === selectedValue,
+  //   );
+  //   if (selectedConsultant) {
+  //     setSelConst(selectedConsultant.key);
+  //   }
+  // };
 
   const arr = [
     { label: 'Item 1', value: '1' },
@@ -287,7 +293,9 @@ export default function Appointment() {
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
                     onChange={item => {
-                      setValue(item.value);
+                      console.log(item.name, "gago")
+                      setConName(item.name);
+                      console.log(consult, "wala")
                       setIsFocus(false);
                     }}
 
