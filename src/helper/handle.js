@@ -20,6 +20,5 @@ export const handleSuccessSignup = () => {
 
   export const handleErrorSignup = () => {
     setLoading(false);
-    navigation.push('SignUp');
     Alert.alert('Something went wrong');
   };

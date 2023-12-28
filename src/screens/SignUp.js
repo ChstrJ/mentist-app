@@ -21,13 +21,13 @@ import SuccessModal from '../components/Modals/SuccessModal';
 import {Formik} from 'formik';
 import Paper from '../components/Paper';
 import {SignupSchema, initialValue} from '../components/Validation/Validation';
-import { handleSuccessSignup } from '../helper/handle';
+import {handleSuccessSignup} from '../helper/handle';
 
 const SignUp = () => {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
-  const [date, setDate] = useState(new Date())
+  const [date, setDate] = useState(new Date());
   const [bday, setBday] = useState('');
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -54,10 +54,20 @@ const SignUp = () => {
     history: history,
   };
 
+  const minDate = new Date(1980, 0, 1);
 
-  const minDate = new Date(1980, 0, 1)
+  const handleSuccess = () => {
+    setLoading(false);
+    navigation.push('LogIn');
 
-  
+    setTimeout(() => {
+      setSuccessModal(true);
+    }, 1000);
+  };
+
+  const handleError = () => {
+    setLoading(false);
+  };
 
   const closeModal = () => {
     setSuccessModal(false);
@@ -68,7 +78,7 @@ const SignUp = () => {
     setMode('date');
   };
 
-    const handleDatePickerSignup = (event, selectedDate) => {
+  const handleDatePickerSignup = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
@@ -79,30 +89,33 @@ const SignUp = () => {
     }
   };
 
-  const handleErrorSignup = () => {
-    setLoading(false);
-    navigation.push('SignUp');
-    Alert.alert('Something went wrong');
-  };
-
-
-  
-
-    //for submitting the signup form
+  //for submitting the signup form
   const handleSubmit = () => {
     if (Data !== null) {
       setLoading(true);
       const api = callApi('post', '/register', Data)
-      .then(res => {
-          console.log(res.data)
-          handleSuccessSignup()
+        .then(response => {
+          console.log(response.data);
+          handleSuccess();
         })
-        .catch(e => {
-          console.error(e)
-          handleErrorSignup();
+        .catch(error => {
+          const { data } = error.response;
+
+          if (data && data.error) {
+            const errorMessages = Object.entries(data.error).flatMap(([fieldName, fieldError]) => {
+              if (Array.isArray(fieldError)) {
+                return fieldError.map(error => `${fieldName}: ${error}`);
+              } else {
+                return [`${fieldName}: ${fieldError}`];
+              }
+            });
+          
+            setLoading(false);
+            Alert.alert('Something went wrong', errorMessages.join('\n'));
+          }
         });
     } else {
-      Alert.alert("Something went wrong","Please try again later");
+      Alert.alert('Something went wrong', 'Please try again later');
     }
   };
 
@@ -248,7 +261,6 @@ const SignUp = () => {
                     />
                   </TouchableOpacity>
                 </View>
-                
 
                 {show && (
                   <RNDateTimePicker

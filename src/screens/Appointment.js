@@ -166,7 +166,7 @@ export default function Appointment() {
             : error.response.data.error.booking_time;
           console.log('HTTP Status Code:', error.response.status);
           console.log('Error Message:', errorMessage);
-          Alert.alert('Error!', errorMessage);
+          Alert.alert('Something went wrong', errorMessage);
           setLoading(false);
         }
       });

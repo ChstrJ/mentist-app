@@ -57,6 +57,7 @@ export const styles = StyleSheet.create({
   fontHomeSub: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 20,
+    color: '#333333'
   },
 
   fontText: {
