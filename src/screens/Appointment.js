@@ -289,14 +289,15 @@ export default function Appointment() {
                     maxHeight={300}
                     labelField="name"
                     valueField="id"
-                    placeholder={!isFocus ? 'Choose Consultant' : 'Choosing...'}
+                    placeholder={'Choose Consultant'}
                     searchPlaceholder="Search..."
-                    value={consult}
+                    value={consult.name}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
                     onChange={item => {
-                      console.log(item.name, "gago")
+                      console.log(item, "gago")
                       setConsultant(item.name);
+                      console.log(consult)
                       console.log(consult, "wala")
                       setIsFocus(false);
                     }}
