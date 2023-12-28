@@ -47,10 +47,15 @@ export default function Appointment() {
 
   const [consultData, setConsultantData] = useState([])
   const [consult, setConsultant] = useState([])
+  const [scheduleData, setScheduleData] = useState([])
+  const [schedule, setSchedule] = useState([])
+  
+
   useEffect(() => {
     getData();
     getConsultant();
     handleDatePicker();
+
     try {
       AsyncStorage.getItem('id')
         .then(value => {
@@ -123,7 +128,7 @@ export default function Appointment() {
         .then(response => {
             // console.log(JSON.stringify(response.data))
             const res = response.data.consultants
-            console.log(res[1].schedule)
+            // console.log(res[1].schedule)
             // console.log(res)
 
             let count = Object.keys(res).length
@@ -133,7 +138,7 @@ export default function Appointment() {
               constArr.push({
                 id: res[i].id,
                 name: res[i].name, 
-                schedule: res[i].schedule
+                
               })
               // console.log(constArr.id)
             }
@@ -146,7 +151,24 @@ export default function Appointment() {
         })
       
     }
+    const handleSchedule = async() => {
+      const conf = await callApi('get', '/consultant')
+        .then(response => {
+          const res = response.data.consultants
 
+          let count = Object.keys(res).length
+          let schedArr = []
+
+          for (let i = 0; i < count; i++){
+            schedArr.push({
+              schedule: res[i].schedule
+            })
+          }
+          setScheduleData(schedArr)
+          console.log(schedArr)
+        })
+        .catch(e => console.log(e))
+    }
 
   // const handleConsult = selectedValue => {
   //   const selectedConsultant = consult.find(
@@ -295,10 +317,8 @@ export default function Appointment() {
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
                     onChange={item => {
-                      console.log(item, "gago")
+                      console.log(item.name, "gago")
                       setConsultant(item.name);
-                      console.log(consult)
-                      console.log(consult, "wala")
                       setIsFocus(false);
                     }}
                 />
