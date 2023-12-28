@@ -1,13 +1,8 @@
 import {
-  StyleSheet,
   View,
-  Image,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
-  KeyboardAvoidingView,
   Alert,
-  ImageBackground,
 } from 'react-native';
 import {TextInput, Text} from 'react-native-paper';
 import React, {useState, useEffect} from 'react';
@@ -15,19 +10,11 @@ import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import {styles} from '../components/styles';
-import {callApi} from '../helper/callApi';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 import Loader from '../components/Loader';
-import {storeData} from '../helper/auth';
 import Btn from '../components/Btn';
 import Loginpic from '../assets/Login-broo.svg';
-
 import {loginUser} from '../actions/authAction';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Paper from '../components/Paper';
 
 const LogIn = ({}) => {

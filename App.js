@@ -18,6 +18,7 @@ import {getData} from './src/helper/auth';
 import Splashscreen from './src/components/Splashscreen';
 import ConfAppoint from './src/screens/ConfAppoint';
 import TestingScreen from './src/screens/TestingScreen';
+import Helplines from './src/screens/Helplines';
 
 const Stack = createStackNavigator();
 
@@ -106,6 +107,14 @@ function App() {
             }}
             name="ConfAppoint"
             component={ConfAppoint}
+          />
+           <Stack.Screen
+            options={{
+              gestureEnabled: true,
+              cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+            }}
+            name="Helplines"
+            component={Helplines}
           />
         </Stack.Navigator>
       </NavigationContainer>

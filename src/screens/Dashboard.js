@@ -10,7 +10,7 @@ import Action from '../components/Action';
 import {getData, removeData} from '../helper/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from '../components/Logo';
-import {Text} from 'react-native-paper';
+import {Button, Text} from 'react-native-paper';
 
 import {
   widthPercentageToDP as wp,
@@ -19,6 +19,7 @@ import {
 import {callApi} from '../helper/callApi';
 import { s } from 'react-native-size-matters';
 import LogoutBtn from '../components/Logout';
+import Btn from '../components/Btn';
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -118,6 +119,13 @@ const Dashboard = () => {
           source={require('../assets/development.png')}
           Press={() => navigation.push('Progress')}
         />
+
+       <Btn
+        btnLabel={"testing"}
+        onPress={() => navigation.push("Helplines")}
+       /> 
+
+        
 
         
 

@@ -60,6 +60,18 @@ export const styles = StyleSheet.create({
     color: '#333333'
   },
 
+  fontSubHelp: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 18,
+    color: '#333333'
+  },
+
+  fontSubGrey: {
+    fontFamily: 'Poppins Regular',
+    fontSize: 15,
+    color: 'grey'
+  },
+
   fontText: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 18,
