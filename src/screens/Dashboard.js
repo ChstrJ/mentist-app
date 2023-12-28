@@ -121,7 +121,7 @@ const Dashboard = () => {
         />
 
        <Btn
-        btnLabel={"testing"}
+        btnLabel={"Contact Helplines"}
         onPress={() => navigation.push("Helplines")}
        /> 
 
