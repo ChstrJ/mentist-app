@@ -285,7 +285,7 @@ export default function Appointment() {
                     inputSearchStyle={style.inputSearchStyle}
                     iconStyle={style.iconStyle}
                     data={consultData}
-                    // search
+                    search
                     maxHeight={300}
                     labelField="name"
                     valueField="id"
@@ -300,8 +300,8 @@ export default function Appointment() {
                       console.log(consult, "wala")
                       setIsFocus(false);
                     }}
-
                 />
+                
                 </View>
               </View>
 
