@@ -36,7 +36,7 @@ export default function Appointment() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setLoading] = useState('');
   const [notif, setNotif] = useState(false);
-  const [consult, setConsultant] = useState([]);
+  ;
   const [day, setDay] = useState('');
   const [conName, setConName] = useState('');
   const [selConst, setSelConst] = useState(null);
@@ -45,6 +45,8 @@ export default function Appointment() {
   const [isFocus, setIsFocus] = useState(false);
   const [value, setValue] = useState(null);
 
+  const [consultData, setConsultantData] = useState([])
+  const [consult, setConsultant] = useState([])
   useEffect(() => {
     getData();
     getConsultant();
@@ -135,7 +137,7 @@ export default function Appointment() {
               })
               // console.log(constArr.id)
             }
-            setConsultant(constArr)
+            setConsultantData(constArr)
             console.log(consult)
             // console.log(consult, "wala") 
         })
@@ -282,19 +284,19 @@ export default function Appointment() {
                     selectedTextStyle={style.selectedTextStyle}
                     inputSearchStyle={style.inputSearchStyle}
                     iconStyle={style.iconStyle}
-                    data={consult}
-                    search
+                    data={consultData}
+                    // search
                     maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder={!isFocus ? 'Select item' : '...'}
+                    labelField="name"
+                    valueField="id"
+                    placeholder={!isFocus ? 'Choose Consultant' : 'Choosing...'}
                     searchPlaceholder="Search..."
-                    value={value}
+                    value={consult}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
                     onChange={item => {
                       console.log(item.name, "gago")
-                      setConName(item.name);
+                      setConsultant(item.name);
                       console.log(consult, "wala")
                       setIsFocus(false);
                     }}
