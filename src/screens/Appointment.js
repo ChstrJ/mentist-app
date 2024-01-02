@@ -126,25 +126,22 @@ export default function Appointment() {
     const getConsultant = async() => {
       const conf = await callApi('get', '/consultant')
         .then(response => {
-            // console.log(JSON.stringify(response.data))
+           
             const res = response.data.consultants
-            // console.log(res[1].schedule)
-            // console.log(res)
-
+            // getting all the count response 
             let count = Object.keys(res).length
+            // creating empty array for object response
             let constArr = []
 
             for (let i = 0; i < count; i++){
+              // pushing through the empty array 
               constArr.push({
-                id: res[i].id,
-                name: res[i].name, 
-                
+                id: res[i].id, // id object
+                name: res[i].name, // creating name object
               })
-              // console.log(constArr.id)
             }
-            setConsultantData(constArr)
-            console.log(consult)
-            // console.log(consult, "wala") 
+            setConsultantData(constArr) // setting data for consultant
+
         })
         .catch(e => {
           console.log(e)
@@ -287,19 +284,6 @@ export default function Appointment() {
                 ]}
                 className="flex mt-5">
                 <View style={{width: s(310), flex: 1}}>
-                  {/* <SelectList
-                    placeholder="Choose Consultant"
-                    data={consult}
-                    save="value"
-                    setSelected={val => {
-                      setConName(val);
-                      handleConsult(val);
-                      console.log(val);
-                    }}
-                    style={{zIndex: 200, width: '100%', flex: 1,}} // Use width: '100%' to maintain the size
-                    searchPlaceholder="Choose Consultant"
-                    searchicon={false}
-                  /> */}
                   <Dropdown
                     style={[style.dropdown, {borderWidth: 1} ]}
                     placeholderStyle={style.placeholderStyle}
@@ -317,12 +301,34 @@ export default function Appointment() {
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
                     onChange={item => {
-                      console.log(item.name, "gago")
+                      setSelConst(item.id)
+                      console.log(item.id)
                       setConsultant(item.name);
                       setIsFocus(false);
                     }}
                 />
-                
+
+                <Dropdown
+                    style={[style.dropdown, {borderWidth: 1} ]}
+                    placeholderStyle={style.placeholderStyle}
+                    selectedTextStyle={style.selectedTextStyle}
+                    inputSearchStyle={style.inputSearchStyle}
+                    iconStyle={style.iconStyle}
+                    data={consultData}
+                    search
+                    maxHeight={300}
+                    labelField="name"
+                    valueField="id"
+                    placeholder={'Choose Schedule'}
+                    searchPlaceholder="Search..."
+                    value={schedule}
+                    onFocus={() => setIsFocus(true)}
+                    onBlur={() => setIsFocus(false)}
+                    onChange={item => {
+                      setConsultant(item.name);
+                      setIsFocus(false);
+                    }}
+                />
                 </View>
               </View>
 
@@ -342,8 +348,6 @@ export default function Appointment() {
                     activeOutlineColor="green"
                     editable={false}
                   />
-
-                  
                 </TouchableOpacity>
               </View>
 
