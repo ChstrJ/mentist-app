@@ -1,4 +1,10 @@
-import {View, ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Background from './Background';
 import {useNavigation} from '@react-navigation/native';
@@ -14,7 +20,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {callApi} from '../helper/callApi';
-import {s} from 'react-native-size-matters';
+import {s, verticalScale as vs} from 'react-native-size-matters';
 import LogoutBtn from '../components/Logout';
 import Btn from '../components/Btn';
 
@@ -112,27 +118,30 @@ const Dashboard = () => {
             Press={() => navigation.push('Progress')}
           />
 
-          <View style={[styles1.container, styles1.bottomBar]}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginTop: 5,
-              }}>
-              <Text style={styles.fontText}>Need to call someone?</Text>
-              <TouchableOpacity onPress={() => navigation.push('Helplines')}>
-                <Text
-                  style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
-                  Click here
-                </Text>
-              </TouchableOpacity>
-            </View>
+          <View
+            style={[{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginTop: s(5),
+            }, styles1.bottomBar, styles1.container]}>
+            <Text style={styles.fontText}>Need to call someone?</Text>
+            <TouchableOpacity onPress={() => navigation.push('Helplines')}>
+              <Text style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
+                Click here
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
     </Background>
   );
 };
+
+const { height: screenHeight } = Dimensions.get('screen');
+const { height: windowHeight } = Dimensions.get('window');
+const navbarHeight = screenHeight - windowHeight;
+
+
 
 const styles1 = StyleSheet.create({
   container: {
@@ -142,12 +151,12 @@ const styles1 = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: 0,
-    padding: 10,
+    bottom: navbarHeight - 80,
+    padding: 5,
     backgroundColor: 'lightgrey',
   },
   fontText: {
-    fontSize: 16,
+    fontSize: 14,
   },
 });
 

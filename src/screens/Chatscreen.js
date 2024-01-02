@@ -178,7 +178,7 @@ export default function Chatscreen() {
     //states
     getUser();
     getPermission();
-    chatHistory();
+
 
     
     //speech recognition
