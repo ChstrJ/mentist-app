@@ -26,6 +26,7 @@ import Btn from '../components/Btn';
 
 const Dashboard = () => {
   const navigation = useNavigation();
+
   const [firstName, setFirstName] = useState('');
 
   // const [date, setDate] = useState(new Date());
@@ -118,12 +119,14 @@ const Dashboard = () => {
             Press={() => navigation.push('Progress')}
           />
 
+          <Btn
+            btnLabel={'mood'}
+            onPress={() => navigation.push('TestingScreen')}
+          />
+
           <View
-            style={[{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: s(5),
-            }, styles1.bottomBar, styles1.container]}>
+            className=" flex-row justify-center w-full fixed"
+            style={[styles1.bottomBar]}>
             <Text style={styles.fontText}>Need to call someone?</Text>
             <TouchableOpacity onPress={() => navigation.push('Helplines')}>
               <Text style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
@@ -137,18 +140,16 @@ const Dashboard = () => {
   );
 };
 
-const { height: screenHeight } = Dimensions.get('screen');
-const { height: windowHeight } = Dimensions.get('window');
+const {height: screenHeight} = Dimensions.get('screen');
+const {height: windowHeight} = Dimensions.get('window');
 const navbarHeight = screenHeight - windowHeight;
-
-
 
 const styles1 = StyleSheet.create({
   container: {
     flex: 1,
   },
   bottomBar: {
-    position: 'absolute',
+    
     left: 0,
     right: 0,
     bottom: navbarHeight - 80,

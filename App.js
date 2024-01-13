@@ -113,6 +113,14 @@ function App() {
               gestureEnabled: true,
               cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
             }}
+            name="TestingScreen"
+            component={TestingScreen}
+          />
+           <Stack.Screen
+            options={{
+              gestureEnabled: true,
+              cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+            }}
             name="Helplines"
             component={Helplines}
           />

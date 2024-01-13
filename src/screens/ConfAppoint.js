@@ -12,8 +12,7 @@ import CalendarPic from '../assets/Calendar-bro.svg';
 import BtnCancel from '../components/BtnCancel';
 import OptionsModal from '../components/Modals/OptionsModal';
 import SuccessModal from '../components/Modals/SuccessModal';
-import { useDispatch } from 'react-redux';
-
+import {useDispatch} from 'react-redux';
 
 function ConfAppoint() {
   const navigation = useNavigation();
@@ -36,9 +35,11 @@ function ConfAppoint() {
   };
 
   const handleSuccess = () => {
-    navigation.push('Dashboard');
     setLoading(false);
-    setSuccessModal(true);
+    navigation.push('Dashboard');
+    setTimeout(() => {
+      setSuccessModal(true);
+    }, 500);
   };
 
   // useEffect for data retrieval
@@ -76,11 +77,7 @@ function ConfAppoint() {
       .then(res => {
         const remove = AsyncStorage.removeItem('AppID');
         if (remove) {
-          setLoading(false);
-          setSuccessModal(true)
-          setTimeout(() => {
-            navigation.navigate('Dashboard'); 
-          }, 1000);
+          handleSuccess()
         }
       })
       .catch(e => {
@@ -114,7 +111,6 @@ function ConfAppoint() {
                   onPress={() => showModal()}
                 />
               </View>
-            
             </Card>
           </View>
         </View>
@@ -131,7 +127,7 @@ function ConfAppoint() {
       <OptionsModal
         visible={showOptionsModal}
         onCancel={() => {
-          setShowOptionsModal(false); 
+          setShowOptionsModal(false);
           cancelAppointment();
         }}
         onConfirm={() => {

@@ -62,7 +62,7 @@ const SignUp = () => {
 
     setTimeout(() => {
       setSuccessModal(true);
-    }, 1000);
+    }, 500);
   };
 
   const handleError = () => {
@@ -95,12 +95,14 @@ const SignUp = () => {
       setLoading(true);
       const api = callApi('post', '/register', Data)
         .then(response => {
-          console.log(response.data);
+          console.error(response.data);
           handleSuccess();
         })
         .catch(error => {
+         
           const { data } = error.response;
-
+          console.error(data)
+          
           if (data && data.error) {
             const errorMessages = Object.entries(data.error).flatMap(([fieldName, fieldError]) => {
               if (Array.isArray(fieldError)) {

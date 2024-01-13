@@ -10,6 +10,7 @@ import {styles} from '../components/styles';
 import Btn from '../components/Btn';
 import {getData, isValidPhone, isValidDate, setAppoint} from '../helper/auth';
 import {callApi} from '../helper/callApi';
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -24,6 +25,7 @@ import { s } from 'react-native-size-matters';
 import { Dropdown} from 'react-native-element-dropdown'
 
 
+
 export default function Appointment() {
   const navigation = useNavigation();
   //declare usestate
@@ -34,9 +36,8 @@ export default function Appointment() {
   const [id, setId] = useState('');
   const [firstName, setFirstName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [isLoading, setLoading] = useState('');
+  const [isLoading, setLoading] = useState(false);
   const [notif, setNotif] = useState(false);
-  ;
   const [day, setDay] = useState('');
   const [conName, setConName] = useState('');
   const [selConst, setSelConst] = useState(null);
@@ -204,18 +205,20 @@ export default function Appointment() {
     setMode('time');
   };
 
+ 
+
   const handleAppointment = async data => {
-    callApi('post', '/appointment', data)
+    setLoading(true);
+    callApi('post', '/appointment', Data)
       .then(response => {
-        setLoading(true);
+        console.log(response.data)
         const res = JSON.stringify(response);
         const respo = JSON.stringify(response.data.appointment_id);
         console.log(respo + ' ' + res);
-
         navigation.push('Dashboard');
+        setLoading(false);
         const resDate = response.data.date;
         const resTime = response.data.booking_time;
-        setNotif(true);
         Alert.alert(
           'Schedule Success',
           `Your session will be on ${response.data.date}, ${response.data.booking_time}, with ${response.data.consultant.name}`,
@@ -224,15 +227,20 @@ export default function Appointment() {
         AsyncStorage.setItem('resDate', resDate);
       })
       .catch(error => {
+        setLoading(false);
         if (error.response) {
           const errorMessage = error.response.data.error.date
             ? error.response.data.error.date
             : error.response.data.error.booking_time;
-          console.log('HTTP Status Code:', error.response.status);
-          console.log('Error Message:', errorMessage);
+          console.error('HTTP Status Code:', error.response.status);
+          console.error('Error Message:', errorMessage);
           Alert.alert('Something went wrong', errorMessage);
+          if(errorMessage === undefined) {
+            Alert.alert('Something went wrong', 'Please select a consultant');
+          }
           setLoading(false);
-        }
+        } 
+        
       });
   };
 
@@ -283,15 +291,18 @@ export default function Appointment() {
                   },
                 ]}
                 className="flex mt-5">
-                <View style={{width: s(310), flex: 1}}>
+                <View 
+
+                style={{width: s(310), flex: 1}}>
                   <Dropdown
                     style={[style.dropdown, {borderWidth: 1} ]}
                     placeholderStyle={style.placeholderStyle}
                     selectedTextStyle={style.selectedTextStyle}
                     inputSearchStyle={style.inputSearchStyle}
                     iconStyle={style.iconStyle}
+                    showsVerticalScrollIndicator={true}
                     data={consultData}
-                    search
+
                     maxHeight={300}
                     labelField="name"
                     valueField="id"
@@ -308,7 +319,7 @@ export default function Appointment() {
                     }}
                 />
 
-                <Dropdown
+                {/* <Dropdown
                     style={[style.dropdown, {borderWidth: 1} ]}
                     placeholderStyle={style.placeholderStyle}
                     selectedTextStyle={style.selectedTextStyle}
@@ -328,7 +339,7 @@ export default function Appointment() {
                       setConsultant(item.name);
                       setIsFocus(false);
                     }}
-                />
+                /> */}
                 </View>
               </View>
 
@@ -411,25 +422,33 @@ const style = StyleSheet.create({
       borderWidth: 1 ,
       borderRadius: 15,
       paddingHorizontal: 8,
-      margin: 10
+      margin: 10,
+      fontFamily: 'Poppins Regular'
+      
     },
     icon: {
       marginRight: 5,
     },
     label: {
       position: 'absolute',
-      backgroundColor: 'white',
+      borderWidth: 1,
       left: 22,
       top: 8,
       zIndex: 999,
       paddingHorizontal: 8,
       fontSize: 14,
+      fontFamily: 'Poppins Regular'
+
     },
     placeholderStyle: {
       fontSize: 16,
+      fontFamily: 'Poppins Regular'
+   
     },
     selectedTextStyle: {
       fontSize: 16,
+      fontFamily: 'Poppins Regular'
+     
     },
     iconStyle: {
       width: 20,
@@ -438,5 +457,8 @@ const style = StyleSheet.create({
     inputSearchStyle: {
       height: 40,
       fontSize: 16,
+
+     
+ 
     },
   });

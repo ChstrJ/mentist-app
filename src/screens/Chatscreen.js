@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import BackButton from '../components/BackButton';
 import {useNavigation} from '@react-navigation/native';
+import { getStatusBarHeight as sb} from 'react-native-status-bar-height'
 import SmallBtn from '../components/SmallBtn';
 import {
   widthPercentageToDP as wp,
@@ -344,7 +345,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: wp(4),
+    top: sb() - 25,
     backgroundColor: '#00A556',
     elevation: 4,
   },
@@ -362,7 +363,7 @@ const styles = StyleSheet.create({
     marginRight: wp(2),
     marginTop: hp(1),
     marginBottom: hp(1),
-    marginLeft: wp(10),
+    marginLeft: wp(14),
     borderRadius: wp(10),
   },
 
