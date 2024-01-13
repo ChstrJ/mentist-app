@@ -23,11 +23,13 @@ import {callApi} from '../helper/callApi';
 import {s, verticalScale as vs} from 'react-native-size-matters';
 import LogoutBtn from '../components/Logout';
 import Btn from '../components/Btn';
+import TestingScreen from './TestingScreen';
 
 const Dashboard = () => {
   const navigation = useNavigation();
 
   const [firstName, setFirstName] = useState('');
+  const [showMood, setShowMood] = useState(false)
 
   // const [date, setDate] = useState(new Date());
   const [uid, setUID] = useState('');
@@ -49,9 +51,14 @@ const Dashboard = () => {
     removed ? navigation.navigate('Home') : console.log('Error logging out');
   };
 
+  handleMood = () => {
+    navigation.push('Mental')
+  }
+
   useEffect(() => {
+    handleMood()
     getUser();
-  });
+  },[]);
 
   const getAppoint = () => {
     callApi('get', `/appointment/${uid}`, uid)
@@ -102,6 +109,8 @@ const Dashboard = () => {
           </Text>
         </View>
 
+       
+
         <View className="flex items-center" style={{marginTop: s(5)}}>
           <Action
             actionLabel="Chatbot AI"
@@ -121,7 +130,7 @@ const Dashboard = () => {
 
           <Btn
             btnLabel={'mood'}
-            onPress={() => navigation.push('TestingScreen')}
+            onPress={() => navigation.push('Mental')}
           />
 
           <View

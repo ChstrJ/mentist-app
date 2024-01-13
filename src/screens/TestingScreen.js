@@ -19,50 +19,7 @@ export default function TestingScreen() {
 
   return (
     <ScrollView>
-      <Background>
-        <BackButton />
-
-        <View className="p-4">
-          <Text style={styles.fontSub} className="mt-10 flex text-center">
-            On a scale of 1-10, how are you feeling today?
-          </Text>
-          <View className="flex-row justify-center mt-5 items-center">
-            <RadioButton.Group
-              onValueChange={handleLikertChange}
-              value={likertValue.toString()}>
-              <View className="flex">
-                <View className="flex">
-                  <RadioButton.Item
-                    label="Optimistic (1)"
-                    value="1"
-                    color="green"
-                  />
-                </View>
-              </View>
-
-              <RadioButton.Item label="Energetic (2)" value="2" color="green" />
-
-              <RadioButton.Item label="Happy (3)" value="3" color="green" />
-
-              <RadioButton.Item label="Content (4)" value="4" color="green" />
-
-              <RadioButton.Item label="Neutral (5)" value="5" color="green" />
-
-              <RadioButton.Item label="Sad (6)" value="6" color="green" />
-
-              <RadioButton.Item label="Stressed (7)" value="7" color="green" />
-
-              <RadioButton.Item label="Anxious (8)" value="8" color="green" />
-
-              <RadioButton.Item label="Depressed (9)" value="9" color="green" />
-
-              <RadioButton.Item label="Despairing (10)" value="10" color="green"
-              />
-            </RadioButton.Group>
-          </View>
-          <Text className="mt-4">Selected Value: {likertValue}</Text>
-        </View>
-      </Background>
+     
     </ScrollView>
   );
 }

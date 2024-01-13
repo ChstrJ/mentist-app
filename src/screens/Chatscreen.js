@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import BackButton from '../components/BackButton';
 import {useNavigation} from '@react-navigation/native';
-import { getStatusBarHeight as sb} from 'react-native-status-bar-height'
+import {getStatusBarHeight as sb} from 'react-native-status-bar-height';
 import SmallBtn from '../components/SmallBtn';
 import {
   widthPercentageToDP as wp,
@@ -69,6 +69,7 @@ export default function Chatscreen() {
     const rate = {
       rate: rating,
     };
+
     await callApi('post', '/chat/rate', rate)
       .then(response => {
         response.status === 200
@@ -180,18 +181,16 @@ export default function Chatscreen() {
     getUser();
     getPermission();
 
-
-    
     //speech recognition
     Voice.onSpeechStart = onSpeechStart;
     Voice.onSpeechEnd = onSpeechEnd;
     Voice.onSpeechRecognized = onSpeechRecognized;
     Voice.onSpeechResults = onSpeechResults;
-    
+
     const keepCalling = setInterval(() => {
       chatHistory();
     }, 1000); // keep calling the function
-    
+
     //destroy voice listeners when components unmounts
     return () => {
       clearInterval(keepCalling);

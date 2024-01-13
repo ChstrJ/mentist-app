@@ -11,7 +11,10 @@ import Dashboard from './src/screens/Dashboard';
 import store from './src/store/store';
 import Chatscreen from './src/screens/Chatscreen';
 
-import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from '@react-navigation/stack';
 import Appointment from './src/screens/Appointment';
 import Progress from './src/screens/Progress';
 import {getData} from './src/helper/auth';
@@ -19,6 +22,7 @@ import Splashscreen from './src/components/Splashscreen';
 import ConfAppoint from './src/screens/ConfAppoint';
 import TestingScreen from './src/screens/TestingScreen';
 import Helplines from './src/screens/Helplines';
+import Mental from './src/screens/Mental';
 
 const Stack = createStackNavigator();
 
@@ -67,6 +71,7 @@ function App() {
             name="LogIn"
             component={LogIn}
           />
+
           <Stack.Screen
             options={{
               gestureEnabled: true,
@@ -74,6 +79,15 @@ function App() {
             }}
             name="Dashboard"
             component={Dashboard}
+          />
+          <Stack.Screen
+            options={{
+              gestureEnabled: true,
+              cardStyleInterpolator:
+                CardStyleInterpolators.forModalPresentationIOS,
+            }}
+            name="Mental"
+            component={Mental}
           />
 
           <Stack.Screen
@@ -103,23 +117,18 @@ function App() {
           <Stack.Screen
             options={{
               gestureEnabled: true,
-              cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+              cardStyleInterpolator:
+                CardStyleInterpolators.forModalPresentationIOS,
             }}
             name="ConfAppoint"
             component={ConfAppoint}
           />
-           <Stack.Screen
+
+          <Stack.Screen
             options={{
               gestureEnabled: true,
-              cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
-            }}
-            name="TestingScreen"
-            component={TestingScreen}
-          />
-           <Stack.Screen
-            options={{
-              gestureEnabled: true,
-              cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+              cardStyleInterpolator:
+                CardStyleInterpolators.forModalPresentationIOS,
             }}
             name="Helplines"
             component={Helplines}
