@@ -105,7 +105,7 @@ export default function Progress() {
           name: `${ratingName}`,
           percentage: parseInt(percentage),
           color: getColorRate(item.rate),
-          legendFontFamily: 'Poppins Regular',
+          
           legendFontColor: 'black',
           legendFontSize: 15,
           legendMarginTop: 5,
@@ -170,7 +170,7 @@ export default function Progress() {
         ) : (
           <Card>
           <View style={styles.chatEmptyContainer}>
-            <Text style={{fontFamily: 'Poppins Regular', fontSize: 17, display:'flex', textAlign: 'center'}}>
+            <Text style={{fontFamily: 'Poppins Regular', fontSize: 17, display:'flex', textAlign: 'center', color:'black'}}>
               No progress yet...
               
             </Text>

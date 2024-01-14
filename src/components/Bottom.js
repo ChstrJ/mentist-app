@@ -19,20 +19,23 @@ const Bottom = () => {
 
   const renderTab = ({ route, focused }) => {
     return (
+        
       <BottomNavigation.Tab
         key={route.key}
         label={route.title}
         onPress={() => setIndex(routes.findIndex((r) => r.key === route.key))}
+        
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: focused ? '#2196F3' : '#fff', // Change the background color as needed
+          backgroundColor: focused ? 'gray' : 'gray', // Change the background color as needed
         }}
         labelStyle={{
-          color: focused ? '#fff' : '#000', // Change the text color as needed
+          color: focused ? 'gray' : 'gray', // Change the text color as needed
         }}
       />
+      
     );
   };
 
@@ -45,8 +48,8 @@ const Bottom = () => {
         renderTabBar={(props) => <BottomNavigation
           {...props}
           renderTab={renderTab}
-          activeColor="#2196F3"
-          inactiveColor="#000"
+          activeColor="gray"
+          inactiveColor="gray"
         />}
       />
     </View>

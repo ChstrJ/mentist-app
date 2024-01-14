@@ -6,6 +6,7 @@ import {
   Image,
   Alert,
   Platform,
+  ActivityIndicator,
   PermissionsAndroid,
 } from 'react-native';
 import {GiftedChat, Send, Bubble, Actions} from 'react-native-gifted-chat';
@@ -30,6 +31,7 @@ export default function Chatscreen() {
   const [messages, setMessages] = useState([]);
   const [initialLoad, setInitialLoad] = useState(10);
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   const [typing, Istyping] = useState();
   const [recording, setRecording] = useState(false);
   const [recognized, setRecognized] = useState('');
@@ -155,12 +157,27 @@ export default function Chatscreen() {
         );
         Istyping(false);
         setRecording(false);
+        chatHistory();
       })
       .catch(e => {
-        console.error('Error sending message:', e);
+        console.error('Error sending message:', e.response.data);
         Istyping(false);
         setRecording(false);
       });
+  };
+
+  const loader = async () => {
+    setLoading(true);
+    if (!chatHistory) {
+    } else {
+      try {
+        await chatHistory();
+      } catch (error) {
+        console.error('Error loading chat history:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   const onMicPress = async () => {
@@ -181,19 +198,21 @@ export default function Chatscreen() {
     getUser();
     getPermission();
 
+    loader();
+
     //speech recognition
     Voice.onSpeechStart = onSpeechStart;
     Voice.onSpeechEnd = onSpeechEnd;
     Voice.onSpeechRecognized = onSpeechRecognized;
     Voice.onSpeechResults = onSpeechResults;
 
-    const keepCalling = setInterval(() => {
-      chatHistory();
-    }, 1000); // keep calling the function
+    // const keepCalling = setInterval(() => {
+    //   chatHistory();
+    // }, 1000); // keep calling the function
 
     //destroy voice listeners when components unmounts
     return () => {
-      clearInterval(keepCalling);
+      // clearInterval(keepCalling);
       Voice.destroy().then(Voice.removeAllListeners);
     };
   }, []);
@@ -302,25 +321,31 @@ export default function Chatscreen() {
         /> */}
       </View>
 
-      <GiftedChat
-        messages={messages.slice(-initialLoad)}
-        onSend={newMessages => onSend(newMessages)}
-        user={{
-          _id: '2',
-          name: 'user',
-        }}
-        renderBubble={renderBubble}
-        messagesContainerStyle={{backgroundColor: 'white'}}
-        alwaysShowSend
-        renderSend={renderSend}
-        placeholder="Write a message..."
-        scrollToBottom={true}
-        loadEarlier={messages.length > initialLoad}
-        onLoadEarlier={loadMoreMsg}
-        isTyping={typing}
-        inverted={false}
-        renderActions={renderActions}
-      />
+      {loading ? (
+        <ActivityIndicator 
+        className="fixed bottom-[-45%]"
+        size={'large'} color={'#00A556'} />
+      ) : (
+        <GiftedChat
+          messages={messages.slice(-initialLoad)}
+          onSend={newMessages => onSend(newMessages)}
+          user={{
+            _id: '2',
+            name: 'user',
+          }}
+          renderBubble={renderBubble}
+          messagesContainerStyle={{backgroundColor: 'white'}}
+          alwaysShowSend
+          renderSend={renderSend}
+          placeholder="Write a message..."
+          scrollToBottom={true}
+          loadEarlier={messages.length > initialLoad}
+          onLoadEarlier={loadMoreMsg}
+          isTyping={typing}
+          inverted={false}
+          renderActions={renderActions}
+        />
+      )}
 
       {recording && (
         <View>
@@ -344,7 +369,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    top: sb() - 25,
+ 
+    top: sb() - 30,
     backgroundColor: '#00A556',
     elevation: 4,
   },
@@ -358,7 +384,7 @@ const styles = StyleSheet.create({
 
   image: {
     width: wp(10),
-    height: hp(5),
+    height: hp(6),
     marginRight: wp(2),
     marginTop: hp(1),
     marginBottom: hp(1),

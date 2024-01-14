@@ -27,6 +27,7 @@ import Btn from '../components/Btn';
 import TestingScreen from './TestingScreen';
 import SignUp from './SignUp';
 import Bottom from '../components/Bottom';
+import Call from '../components/Call';
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -60,7 +61,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    handleMood();
+    // handleMood();
     getUser();
   }, []);
 
@@ -105,6 +106,7 @@ const Dashboard = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{flexGrow: 1}}>
         <LogoutBtn onPress={() => handleLogout()} />
+        <Call onPress={() => navigation.push('Helplines')} />
 
         <View style={{marginTop: hp(2)}} className="flex items-center">
           <Logo />
@@ -130,18 +132,13 @@ const Dashboard = () => {
             Press={() => navigation.push('Progress')}
           />
 
-          <View
-            className=" flex-row justify-center w-full"
-            style={[styles1.bottomBar]}>
-            <Text style={styles.fontText}>Need to call someone?</Text>
-            <TouchableOpacity onPress={() => navigation.push('Helplines')}>
-              <Text style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
-                Click here
-              </Text>
-            </TouchableOpacity>
-          </View>
+     
 
-          <Bottom/>
+
+         
+      
+
+          
 
         </View>
       </ScrollView>
@@ -157,17 +154,7 @@ const styles1 = StyleSheet.create({
   container: {
     flex: 1,
   },
-  bottomBar: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    padding: 5,
-    backgroundColor: 'lightgrey',
-  },
-  fontText: {
-    fontSize: 14,
-  },
+ 
 });
 
 export default Dashboard;
