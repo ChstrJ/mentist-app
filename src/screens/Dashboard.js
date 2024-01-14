@@ -13,6 +13,7 @@ import Action from '../components/Action';
 import {getData, removeData} from '../helper/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from '../components/Logo';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Button, Text} from 'react-native-paper';
 
 import {
@@ -24,12 +25,15 @@ import {s, verticalScale as vs} from 'react-native-size-matters';
 import LogoutBtn from '../components/Logout';
 import Btn from '../components/Btn';
 import TestingScreen from './TestingScreen';
+import SignUp from './SignUp';
+import Bottom from '../components/Bottom';
 
 const Dashboard = () => {
   const navigation = useNavigation();
+  const Tab = createBottomTabNavigator();
 
   const [firstName, setFirstName] = useState('');
-  const [showMood, setShowMood] = useState(false)
+  const [showMood, setShowMood] = useState(false);
 
   // const [date, setDate] = useState(new Date());
   const [uid, setUID] = useState('');
@@ -52,13 +56,13 @@ const Dashboard = () => {
   };
 
   handleMood = () => {
-    navigation.push('Mental')
-  }
+    navigation.push('Mental');
+  };
 
   useEffect(() => {
-    handleMood()
+    handleMood();
     getUser();
-  },[]);
+  }, []);
 
   const getAppoint = () => {
     callApi('get', `/appointment/${uid}`, uid)
@@ -109,8 +113,6 @@ const Dashboard = () => {
           </Text>
         </View>
 
-       
-
         <View className="flex items-center" style={{marginTop: s(5)}}>
           <Action
             actionLabel="Chatbot AI"
@@ -128,13 +130,8 @@ const Dashboard = () => {
             Press={() => navigation.push('Progress')}
           />
 
-          <Btn
-            btnLabel={'mood'}
-            onPress={() => navigation.push('Mental')}
-          />
-
           <View
-            className=" flex-row justify-center w-full fixed"
+            className=" flex-row justify-center w-full"
             style={[styles1.bottomBar]}>
             <Text style={styles.fontText}>Need to call someone?</Text>
             <TouchableOpacity onPress={() => navigation.push('Helplines')}>
@@ -143,6 +140,9 @@ const Dashboard = () => {
               </Text>
             </TouchableOpacity>
           </View>
+
+          <Bottom/>
+
         </View>
       </ScrollView>
     </Background>
@@ -158,10 +158,10 @@ const styles1 = StyleSheet.create({
     flex: 1,
   },
   bottomBar: {
-    
+    position: 'absolute',
     left: 0,
     right: 0,
-    bottom: navbarHeight - 80,
+    bottom: 0,
     padding: 5,
     backgroundColor: 'lightgrey',
   },

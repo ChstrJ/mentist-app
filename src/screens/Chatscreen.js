@@ -12,7 +12,7 @@ import {GiftedChat, Send, Bubble, Actions} from 'react-native-gifted-chat';
 import {callApi} from '../helper/callApi';
 import StarRating from 'react-native-star-rating-widget';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import BackButton from '../components/BackButton';
 import {useNavigation} from '@react-navigation/native';
 import {getStatusBarHeight as sb} from 'react-native-status-bar-height';
@@ -65,20 +65,20 @@ export default function Chatscreen() {
     }
   };
 
-  const sendRating = async () => {
-    const rate = {
-      rate: rating,
-    };
+  // const sendRating = async () => {
+  //   const rate = {
+  //     rate: rating,
+  //   };
 
-    await callApi('post', '/chat/rate', rate)
-      .then(response => {
-        response.status === 200
-          ? Alert.alert('Rating Success!')
-          : Alert.alert('Rating Failed!');
-      })
-      .catch(e => console.log(e));
-    toggleModal(false);
-  };
+  //   await callApi('post', '/chat/rate', rate)
+  //     .then(response => {
+  //       response.status === 200
+  //         ? Alert.alert('Rating Success!')
+  //         : Alert.alert('Rating Failed!');
+  //     })
+  //     .catch(e => console.log(e));
+  //   toggleModal(false);
+  // };
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -226,11 +226,11 @@ export default function Chatscreen() {
     return (
       <Send {...props}>
         <View>
-          <MaterialCommunityIcons
+          <FontAwesome
             name="send"
             size={38}
             color="#00A556"
-            style={{marginBottom: 5, marginRight: 5}}
+            style={{marginBottom: 5, marginRight: 10}}
           />
         </View>
       </Send>
@@ -273,11 +273,11 @@ export default function Chatscreen() {
           style={styles.image}
         />
         <Text style={styles.headerText}>Hello, {firstName}</Text>
-        <View style={{position: 'absolute', right: 10}}>
+        {/* <View style={{position: 'absolute', right: 10}}>
           <SmallBtn onPress={modal} btnLabel="Rate" />
-        </View>
+        </View> */}
 
-        <Notif
+        {/* <Notif
           visible={isModalVisible}
           label="Done"
           header="Rate the response of the AI"
@@ -299,7 +299,7 @@ export default function Chatscreen() {
           press={() => {
             sendRating();
           }}
-        />
+        /> */}
       </View>
 
       <GiftedChat

@@ -26,9 +26,12 @@ function Mental() {
   };
 
   const sendMood = async () => {
-    const moodValue = Number(likertValue);
+    
+    const rate = {
+      rate: likertValue,
+    };
 
-    await callApi('post', '/chat/rate', moodValue)
+    await callApi('post', '/chat/rate', rate)
       .then(response => {
         console.log(response.data);
       })
@@ -36,7 +39,8 @@ function Mental() {
   };
 
   const handleMood = () => {
-    const mood = Number(likertValue);
+    const mood = likertValue;
+
 
     if (mood >= 7) {
       sendMood(mood);
@@ -57,6 +61,7 @@ function Mental() {
         <Text style={styles.fontSub} className="mt-10 flex text-center">
           On a scale of 1-10, how are you feeling today?
         </Text>
+        <Text className="text-center">From 1 </Text>
         <View className="flex-row justify-center mt-5 items-center">
           <RadioButton.Group
             onValueChange={handleLikertChange}

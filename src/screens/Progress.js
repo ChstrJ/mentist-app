@@ -1,4 +1,4 @@
-import {View, Text, Dimensions, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, Dimensions, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Background from './Background';
 import BackButton from '../components/BackButton';
@@ -12,9 +12,11 @@ import {
 import Progresspic from '../assets/Mental health-bro.svg';
 import Card from '../components/Card';
 import {callApi} from '../helper/callApi';
+import { s } from 'react-native-size-matters';
 
 export default function Progress() {
   const [chartData, setChartData] = useState([]);
+  const [loading, setLoading] = useState(false)
   const [isProgressEmpty, setProgressEmpty] = useState(false);
   const navigation = useNavigation();
 
@@ -24,6 +26,7 @@ export default function Progress() {
     backgroundGradientFromOpacity: 0,
     backgroundGradientTo: '#08130D',
     backgroundGradientToOpacity: 0.5,
+    legendMarginTop: 15,
     color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
     strokeWidth: 3, // optional, default 3
     barPercentage: 1,
@@ -32,20 +35,46 @@ export default function Progress() {
   //create colors for each rate
   const getColorRate = rate => {
     switch (rate) {
-      case 'Poor':
-        return 'red';
-      case 'Not Satisfied':
-        return 'orange';
-      case 'Good':
-        return 'purple';
-      case 'Satisfied':
-        return 'blue';
-      case 'Very Satisfied':
-        return 'green';
-      default:
+      case '10':
+        return 'darkred';
+      case '9':
         return 'gray';
+      case '8':
+        return 'purple';
+      case '7':
+        return 'hotpink';
+      case '6':
+        return 'blue';
+      case '5':
+        return 'saddlebrown';
+      case '4':
+        return 'darkorange';
+      case '3':
+        return 'forestgreen';
+      case '2':
+        return 'gold';
+      case '1':
+        return 'indigo';
+      default:
+        return 'white';
     }
   };
+
+  const ratingLabel = {
+  '1': 'Optimistic',
+  '2': 'Energetic',
+  '3': 'Happy',
+  '4': 'Content',
+  '5': 'Neutral',
+  '6': 'Sad',
+  '7': 'Stressed',
+  '8': 'Anxious',
+  '9': 'Depressed',
+  '10': 'Despairing',
+};
+
+
+
 
   const checkProgress = () => {
     chartData.length === 0 ? setProgressEmpty(true) : setProgressEmpty(false);
@@ -53,24 +82,46 @@ export default function Progress() {
 
   const getRate = async () => {
     try {
+      setLoading(true)
       const response = await callApi('get', '/chat/rate/result');
       const ratings = response.data.ratings;
-      const overall_total = response.data.total.overall_total;
+      
+      //total ng pinaka overall
+      const overall_total = response.data.total;
+      //overall ng each number
+      const overall = response.data.ratings.overall
+      
+      
       const chartData = ratings.map(item => {
         const percentage =
-          overall_total !== 0 ? ((item.overall / overall_total) * 100).toFixed(2): 0;
+        overall_total !== 0 ? ((item.overall / overall_total) * 100).toFixed(2): 0;
+        
+        
+        //kunin ko ung ginawa kong ratingLabel tapos i map ko sa item.rate na galing sa api
+        const ratingName = ratingLabel[item.rate] 
+        
+        
         return {
-          name: `% ${item.rate}`,
-          percentage: parseFloat(percentage),
+          name: `${ratingName}`,
+          percentage: parseInt(percentage),
           color: getColorRate(item.rate),
+          legendFontFamily: 'Poppins Regular',
           legendFontColor: 'black',
           legendFontSize: 15,
+          legendMarginTop: 5,
+          
         };
+        
       });
+     
+
+      chartData.sort((a,b) => b.percentage - a.percentage)
 
       setChartData(chartData);
+      setLoading(false)
     } catch (e) {
       console.error('Error:', e);
+      
     }
   };
 
@@ -93,19 +144,26 @@ export default function Progress() {
 
         <Text style={styles.fontTitle}>My Progress</Text>
 
-        {chartData.some(item => item.percentage !== 0) ? (
-          <View>
+       
+
+        {loading && chartData.some(item => item.percentage !== 0) ? (
+          <View className="">
+         
             <Card>
               <PieChart
                 data={chartData}
-                width={wp(100)}
-                height={hp(25)}
+                width={s(350)}
+                
+                height={s(215)}
                 chartConfig={chartConfig}
                 accessor={'percentage'}
                 backgroundColor={'transparent'}
-                paddingLeft={'-60'}
-                center={[45, 5]}
-                absolute
+                paddingLeft={'-25'}
+                
+                center={[25, 5]}
+              
+                
+                
               />
             </Card>
           </View>
@@ -114,7 +172,9 @@ export default function Progress() {
           <View style={styles.chatEmptyContainer}>
             <Text style={{fontFamily: 'Poppins Regular', fontSize: 17, display:'flex', textAlign: 'center'}}>
               No progress yet...
+              
             </Text>
+            <ActivityIndicator size={'large'} color={'#00A556'}/> 
           </View>
           </Card>
         )}
@@ -130,4 +190,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  legendItem: {
+    marginTop: 10,  // Adjust as needed
+},
 });
