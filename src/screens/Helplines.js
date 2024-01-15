@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, ScrollView, Image} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Image, Linking} from 'react-native';
 import React from 'react';
 import Card from '../components/Card';
 import HelplinePic from '../assets/psych.svg';
@@ -32,16 +32,37 @@ const Helplines = () => {
               source={require('../assets/doh.png')}
             />
             <View style={styles.cardContent}>
-              <Text style={styles.cardTitle}>NCMH Crisis Hotline</Text>
+              <Text selectable={true} style={styles.cardTitle}>
+                NCMH Crisis Hotline
+              </Text>
               <View style={styles.cardDetails}>
                 <Icon name="phone" size={30} style={styles.cardIcon} />
-                <Text style={styles.cardText}>1553 (Luzon-wide)</Text>
+                <Text selectable={true} style={styles.cardText}>
+                  1553 (Luzon-wide)
+                </Text>
               </View>
+
               <View style={styles.cardDetails}>
                 <Icon name="mobile" size={35} style={styles.cardPhone} />
-                <Text style={styles.cardText}>
-                  {'   0966-351-4518\n   0908-639-2672'}
-                </Text>
+                <View className="flex-col ml-3">
+                  <Text
+                    selectable={true}
+                    style={styles.cardText}
+                    onPress={() => {
+                      Linking.openURL('09663514518');
+                    }}>
+                    {'0966-351-4518'}
+                  </Text>
+
+                  <Text
+                    selectable={true}
+                    style={styles.cardText}
+                    onPress={() => {
+                      Linking.openURL('09086392672');
+                    }}>
+                    {'0908-639-2672\n'}
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -52,20 +73,22 @@ const Helplines = () => {
               source={require('../assets/pgh.jpg')}
             />
             <View style={styles.cardContent}>
-              <Text style={styles.cardTitle}>
+              <Text selectable={true} style={styles.cardTitle}>
                 PGH Psychiatry and Behavioral Medicine Department
               </Text>
-              <View style={styles.cardDetails}>
-                <Icon name="phone" size={30} style={styles.cardIcon} />
-                <Text style={styles.cardText}>
-                  (02) 554-8400
-                  {'\n'}
-                  (02) 8554-88470
-                  {'\n'}
-                  (02) 8526-0150
-                  {'\n'}
-                  (02) 554-8469
-                </Text>
+              <View>
+                <View style={styles.cardDetails}>
+                  <Icon name="phone" size={30} style={styles.cardIcon} />
+                  <Text selectable={true} style={styles.cardText}>
+                    (02) 554-8400
+                    {'\n'}
+                    (02) 8554-88470
+                    {'\n'}
+                    (02) 8526-0150
+                    {'\n'}
+                    (02) 554-8469
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -76,12 +99,13 @@ const Helplines = () => {
               source={require('../assets/amang.jpg')}
             />
             <View style={styles.cardContent}>
-              <Text style={styles.cardTitle}>
-              Amang Rodriguez Memorial Medical Center OPD Acute Psychiatric Unit
+              <Text selectable={true} style={styles.cardTitle}>
+                Amang Rodriguez Memorial Medical Center OPD Acute Psychiatric
+                Unit
               </Text>
               <View style={styles.cardDetails}>
                 <Icon name="phone" size={30} style={styles.cardIcon} />
-                <Text style={styles.cardText}>
+                <Text selectable={true} style={styles.cardText}>
                   (02) 8941 5854
                 </Text>
               </View>
@@ -94,10 +118,12 @@ const Helplines = () => {
               source={require('../assets/hopeline.jpg')}
             />
             <View style={styles.cardContent}>
-              <Text style={styles.cardTitle}>HopeLine</Text>
+              <Text selectable={true} style={styles.cardTitle}>
+                HopeLine
+              </Text>
               <View style={styles.cardDetails}>
                 <Icon name="mobile" size={35} style={styles.cardPhone} />
-                <Text style={styles.cardText}>
+                <Text selectable={true} style={styles.cardText}>
                   {'   0918-873-4673\n   0917-558-4673'}
                 </Text>
               </View>
@@ -144,12 +170,15 @@ const styles = StyleSheet.create({
   },
   cardIcon: {
     marginRight: s(5),
+    color: 'black',
   },
 
   cardPhone: {
     marginLeft: s(5),
+    color: 'black',
   },
   cardText: {
+    marginTop: 3,
     fontSize: s(14),
     marginLeft: s(5),
     color: '#555',

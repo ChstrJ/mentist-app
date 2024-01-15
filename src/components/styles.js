@@ -155,12 +155,14 @@ export const styles = StyleSheet.create({
   }, 
 
   textAppointBody: {
-    fontSize: 20,
+    fontSize: 18,
+    marginLeft: 7 ,
     fontFamily: 'Poppins-SemiBold', 
     marginVertical: 10,
     color: 'black'
 
   }, 
+  
 });
 
 export const modalStyle = StyleSheet.create({

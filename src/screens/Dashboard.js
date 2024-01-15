@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Linking
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Background from './Background';
@@ -26,12 +27,13 @@ import LogoutBtn from '../components/Logout';
 import Call from '../components/Call';
 import Loader from '../components/Loader';
 
-const Dashboard = () => {
-  const navigation = useNavigation();
+const Dashboard = ({}) => {
+  const navigation = useNavigation()
   const Tab = createBottomTabNavigator();
 
   const [firstName, setFirstName] = useState('');
   const [showMood, setShowMood] = useState(false);
+  const [moodHandled, setMoodHandled] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // const [date, setDate] = useState(new Date());
@@ -56,7 +58,7 @@ const Dashboard = () => {
 
   const handleMood = () => {
     setTimeout(() => {
-      navigation.push('Mental');
+      navigation.navigate('Mental');
     }, 1000);
   };
 
@@ -85,7 +87,7 @@ const Dashboard = () => {
       .then(response => {
         const res = JSON.stringify(response.data.appointments);
         console.log(res);
-        
+
         if (res == '[]') {
           setLoading(false);
           navigation.push('Appointment');
@@ -99,8 +101,11 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    handleMood();
+   
     getUser();
+    handleMood();
+    
+   
   }, []);
 
   return (
@@ -129,7 +134,7 @@ const Dashboard = () => {
                 Press={() => navigation.push('Chatscreen')}
               />
               <Action
-                actionLabel="Create Appointment"
+                actionLabel="Appointment"
                 source={require('../assets/appointment.png')}
                 Press={getAppoint}
               />
