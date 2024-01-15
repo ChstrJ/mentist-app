@@ -14,6 +14,7 @@ import OptionsModal from '../components/Modals/OptionsModal';
 import SuccessModal from '../components/Modals/SuccessModal';
 import {useDispatch} from 'react-redux';
 
+
 function ConfAppoint() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -42,33 +43,18 @@ function ConfAppoint() {
     }, 500);
   };
 
+ const confirmAppointmentDetails = async () => {
+    const date = await AsyncStorage.getItem('date')
+    const time = await AsyncStorage.getItem('time')
+    const AppID = await AsyncStorage.getItem('AppID')
+    setResDate(date);
+    setRestTime(time);
+    setAppId(AppID)
+  }
+
   // useEffect for data retrieval
   useEffect(() => {
-    AsyncStorage.getItem('date')
-      .then(response => {
-        setResDate(response);
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-    AsyncStorage.getItem('time')
-      .then(response => {
-        setRestTime(response);
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-    AsyncStorage.getItem('AppID')
-      .then(response => {
-        setAppId(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    confirmAppointmentDetails()
   }, []);
 
   const cancelAppointment = async () => {
@@ -77,7 +63,7 @@ function ConfAppoint() {
       .then(res => {
         const remove = AsyncStorage.removeItem('AppID');
         if (remove) {
-          handleSuccess()
+          handleSuccess();
         }
       })
       .catch(e => {
@@ -117,6 +103,7 @@ function ConfAppoint() {
       )}
 
       <SuccessModal
+        textHeader={'Success!'}
         textBody={'Appointment Cancelled'}
         visible={successModal}
         onClose={() => {

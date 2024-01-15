@@ -212,7 +212,7 @@ export default function Appointment() {
     callApi('post', '/appointment', Data)
       .then(response => {
         console.log(response.data)
-        const res = JSON.stringify(response);
+        // const res = JSON.stringify(response);
         const respo = JSON.stringify(response.data.appointment_id);
         console.log(respo + ' ' + res);
         navigation.push('Dashboard');
@@ -295,14 +295,13 @@ export default function Appointment() {
 
                 style={{width: s(310), flex: 1}}>
                   <Dropdown
-                    style={[style.dropdown, {borderWidth: 1} ]}
+                    style={[style.dropdown, {borderWidth: 1, color: 'black',} ]}
                     placeholderStyle={style.placeholderStyle}
                     selectedTextStyle={style.selectedTextStyle}
                     inputSearchStyle={style.inputSearchStyle}
                     iconStyle={style.iconStyle}
                     showsVerticalScrollIndicator={true}
                     data={consultData}
-
                     maxHeight={300}
                     labelField="name"
                     valueField="id"
@@ -423,7 +422,9 @@ const style = StyleSheet.create({
       borderRadius: 15,
       paddingHorizontal: 8,
       margin: 10,
+      color: 'black',
       fontFamily: 'Poppins Regular'
+    
       
     },
     icon: {
@@ -437,17 +438,20 @@ const style = StyleSheet.create({
       zIndex: 999,
       paddingHorizontal: 8,
       fontSize: 14,
+      color: 'black',
       fontFamily: 'Poppins Regular'
 
     },
     placeholderStyle: {
       fontSize: 16,
-      fontFamily: 'Poppins Regular'
+      fontFamily: 'Poppins Regular',
+      color: 'black',
    
     },
     selectedTextStyle: {
       fontSize: 16,
-      fontFamily: 'Poppins Regular'
+      fontFamily: 'Poppins Regular',
+      color: 'black',
      
     },
     iconStyle: {
@@ -457,6 +461,7 @@ const style = StyleSheet.create({
     inputSearchStyle: {
       height: 40,
       fontSize: 16,
+      color: 'black',
 
      
  

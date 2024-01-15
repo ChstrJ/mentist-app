@@ -174,12 +174,14 @@ const styles = StyleSheet.create({
   textBody: {
     marginTop: 10,
     fontSize: 18,
+    color: '#333333',
     textAlign: 'center',
     fontFamily: 'Poppins Regular',
   },
 
   textHeader: {
     fontSize: 20,
+    color: '#333333',
     textAlign: 'center',
     fontFamily: 'Poppins Bold',
     marginBottom: 10,

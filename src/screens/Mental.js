@@ -26,7 +26,6 @@ function Mental() {
   };
 
   const sendMood = async () => {
-    
     const rate = {
       rate: likertValue,
     };
@@ -41,7 +40,6 @@ function Mental() {
   const handleMood = () => {
     const mood = likertValue;
 
-
     if (mood >= 7) {
       sendMood(mood);
       navigation.push('Appointment');
@@ -54,57 +52,61 @@ function Mental() {
   };
 
   return (
-    <Background>
-      <BackButton goBack={navigation.goBack} />
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{flexGrow: 1}}>
+      <Background>
+        <BackButton goBack={navigation.goBack} />
 
-      <View className="p-4">
-        <Text style={styles.fontSub} className="mt-10 flex text-center">
-          On a scale of 1-10, how are you feeling today?
-        </Text>
-        <Text className="text-center">From 1 </Text>
-        <View className="flex-row justify-center mt-5 items-center">
-          <RadioButton.Group
-            onValueChange={handleLikertChange}
-            value={likertValue}>
-            <View className="flex">
+        <View className="p-4">
+          <Text style={styles.fontSub} className="mt-10 flex text-center">
+            On a scale of 1-10, how are you feeling today?
+          </Text>
+
+          <View className="flex-row justify-center mt-5 items-center">
+            <RadioButton.Group
+              onValueChange={handleLikertChange}
+              value={likertValue}>
               <View className="flex">
-                <RadioButton.Item
-                  label="Optimistic (1)"
-                  value="1"
-                  color="green"
-                />
+                <View className="flex">
+                  <RadioButton.Item
+                    label="Optimistic (1)"
+                    value="1"
+                    color="green"
+                  />
+                </View>
               </View>
-            </View>
 
-            <RadioButton.Item label="Energetic (2)" value="2" color="green" />
+              <RadioButton.Item label="Energetic (2)" value="2" color="green" />
 
-            <RadioButton.Item label="Happy (3)" value="3" color="green" />
+              <RadioButton.Item label="Happy (3)" value="3" color="green" />
 
-            <RadioButton.Item label="Content (4)" value="4" color="green" />
+              <RadioButton.Item label="Content (4)" value="4" color="green" />
 
-            <RadioButton.Item label="Neutral (5)" value="5" color="green" />
+              <RadioButton.Item label="Neutral (5)" value="5" color="green" />
 
-            <RadioButton.Item label="Sad (6)" value="6" color="green" />
+              <RadioButton.Item label="Sad (6)" value="6" color="green" />
 
-            <RadioButton.Item label="Stressed (7)" value="7" color="green" />
+              <RadioButton.Item label="Stressed (7)" value="7" color="green" />
 
-            <RadioButton.Item label="Anxious (8)" value="8" color="green" />
+              <RadioButton.Item label="Anxious (8)" value="8" color="green" />
 
-            <RadioButton.Item label="Depressed (9)" value="9" color="green" />
+              <RadioButton.Item label="Depressed (9)" value="9" color="green" />
 
-            <RadioButton.Item
-              label="Despairing (10)"
-              value="10"
-              color="green"
-            />
-          </RadioButton.Group>
+              <RadioButton.Item
+                label="Despairing (10)"
+                value="10"
+                color="green"
+              />
+            </RadioButton.Group>
+          </View>
+
+          <View className="flex justify-center items-center">
+            <BtnOutline btnLabel={'Confirm'} onPress={() => handleMood()} />
+          </View>
         </View>
-
-        <View className="flex justify-center items-center">
-          <BtnOutline btnLabel={'Confirm'} onPress={() => handleMood()} />
-        </View>
-      </View>
-    </Background>
+      </Background>
+    </ScrollView>
   );
 }
 

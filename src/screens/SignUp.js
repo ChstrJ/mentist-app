@@ -65,9 +65,7 @@ const SignUp = () => {
     }, 500);
   };
 
-  const handleError = () => {
-    setLoading(false);
-  };
+ 
 
   const closeModal = () => {
     setSuccessModal(false);
@@ -118,6 +116,7 @@ const SignUp = () => {
         });
     } else {
       Alert.alert('Something went wrong', 'Please try again later');
+      setLoading(false);
     }
   };
 
@@ -204,6 +203,7 @@ const SignUp = () => {
                         borderColor: 'grey',
                         borderRadius: 13,
                         width: s(290),
+                        color: 'black',
                       },
                       styles.fontField,
                     ]}>
@@ -230,10 +230,12 @@ const SignUp = () => {
                         borderColor: 'grey',
                         borderRadius: 13,
                         width: s(290),
+                        color: 'black'
                       },
                       styles.fontField,
                     ]}>
                     <Picker
+                    
                       mode="dropdown"
                       selectedValue={history}
                       onValueChange={itemValue => {

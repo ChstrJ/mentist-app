@@ -23,11 +23,8 @@ import {
 import {callApi} from '../helper/callApi';
 import {s, verticalScale as vs} from 'react-native-size-matters';
 import LogoutBtn from '../components/Logout';
-import Btn from '../components/Btn';
-import TestingScreen from './TestingScreen';
-import SignUp from './SignUp';
-import Bottom from '../components/Bottom';
 import Call from '../components/Call';
+import Loader from '../components/Loader';
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -35,6 +32,7 @@ const Dashboard = () => {
 
   const [firstName, setFirstName] = useState('');
   const [showMood, setShowMood] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // const [date, setDate] = useState(new Date());
   const [uid, setUID] = useState('');
@@ -56,43 +54,43 @@ const Dashboard = () => {
     removed ? navigation.navigate('Home') : console.log('Error logging out');
   };
 
-  handleMood = () => {
-    navigation.push('Mental');
+  const handleMood = () => {
+    setTimeout(() => {
+      navigation.push('Mental');
+    }, 1000);
   };
 
-  useEffect(() => {
-    // handleMood();
-    getUser();
-  }, []);
+  const getAppointmentDetails = async () => {
+    callApi('get', `/appointment/${uid}`, uid)
+      .then(response => {
+        const time = response.data.appointments[0].booking_time;
+        const date = response.data.appointments[0].date;
+        const appId = JSON.stringify(
+          response.data.appointments[0].appointment_id,
+        );
 
+        AsyncStorage.setItem('uid', uid);
+        AsyncStorage.setItem('time', time);
+        AsyncStorage.setItem('date', date);
+        AsyncStorage.setItem('AppID', appId);
+        AsyncStorage.getItem('AppID');
+        navigation.push('ConfAppoint');
+        setLoading(false);
+      })
+      .catch(e => console.log(e));
+  };
   const getAppoint = () => {
+    setLoading(true);
     callApi('get', `/appointment/${uid}`, uid)
       .then(response => {
         const res = JSON.stringify(response.data.appointments);
         console.log(res);
-
+        
         if (res == '[]') {
+          setLoading(false);
           navigation.push('Appointment');
         } else {
-          const time = response.data.appointments[0].booking_time;
-          const date = response.data.appointments[0].date;
-          const appId = JSON.stringify(
-            response.data.appointments[0].appointment_id,
-          );
-          console.log(res);
-          console.log(time, date);
-          AsyncStorage.setItem('uid', uid);
-          AsyncStorage.setItem('time', time);
-          AsyncStorage.setItem('date', date);
-          AsyncStorage.setItem('AppID', appId);
-          AsyncStorage.getItem('AppID')
-            .then(res => {
-              console.log(res);
-            })
-            .catch(e => {
-              console.log(e);
-            });
-          navigation.push('ConfAppoint');
+          getAppointmentDetails();
         }
       })
       .catch(e => {
@@ -100,49 +98,51 @@ const Dashboard = () => {
       });
   };
 
+  useEffect(() => {
+    handleMood();
+    getUser();
+  }, []);
+
   return (
-    <Background>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{flexGrow: 1}}>
-        <LogoutBtn onPress={() => handleLogout()} />
-        <Call onPress={() => navigation.push('Helplines')} />
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{flexGrow: 1}}>
+      <Background>
+        {loading ? (
+          <Loader />
+        ) : (
+          <View>
+            <LogoutBtn onPress={() => handleLogout()} />
+            <Call onPress={() => navigation.push('Helplines')} />
 
-        <View style={{marginTop: hp(2)}} className="flex items-center">
-          <Logo />
-          <Text className="mt-5" style={styles.fontHomeSub}>
-            Good to see you here, {firstName}{' '}
-          </Text>
-        </View>
+            <View style={{marginTop: hp(2)}} className="flex items-center">
+              <Logo />
+              <Text className="mt-5" style={styles.fontHomeSub}>
+                Good to see you here, {firstName}{' '}
+              </Text>
+            </View>
 
-        <View className="flex items-center" style={{marginTop: s(5)}}>
-          <Action
-            actionLabel="Chatbot AI"
-            source={require('../assets/chatbot.png')}
-            Press={() => navigation.push('Chatscreen')}
-          />
-          <Action
-            actionLabel="Create Appointment"
-            source={require('../assets/appointment.png')}
-            Press={getAppoint}
-          />
-          <Action
-            actionLabel="My Progress"
-            source={require('../assets/development.png')}
-            Press={() => navigation.push('Progress')}
-          />
-
-     
-
-
-         
-      
-
-          
-
-        </View>
-      </ScrollView>
-    </Background>
+            <View className="flex items-center" style={{marginTop: s(5)}}>
+              <Action
+                actionLabel="Chatbot AI"
+                source={require('../assets/chatbot.png')}
+                Press={() => navigation.push('Chatscreen')}
+              />
+              <Action
+                actionLabel="Create Appointment"
+                source={require('../assets/appointment.png')}
+                Press={getAppoint}
+              />
+              <Action
+                actionLabel="My Progress"
+                source={require('../assets/development.png')}
+                Press={() => navigation.push('Progress')}
+              />
+            </View>
+          </View>
+        )}
+      </Background>
+    </ScrollView>
   );
 };
 
@@ -154,7 +154,6 @@ const styles1 = StyleSheet.create({
   container: {
     flex: 1,
   },
- 
 });
 
 export default Dashboard;

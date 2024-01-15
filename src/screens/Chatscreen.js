@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
 
   image: {
     width: wp(10),
-    height: hp(6),
+    height: hp(5),
     marginRight: wp(2),
     marginTop: hp(1),
     marginBottom: hp(1),
