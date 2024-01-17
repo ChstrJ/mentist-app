@@ -42,6 +42,8 @@ const SignUp = () => {
   const [gender, setGender] = useState('male');
   const [history, setHistory] = useState('false');
 
+  const isSignUpButtonDisabled = !(firstName && lastName && username && email && phone_no && password && gender && history && date);
+
   const Data = {
     username: username,
     first_name: firstName,
@@ -235,7 +237,7 @@ const SignUp = () => {
                       styles.fontField,
                     ]}>
                     <Picker
-                    
+                      
                       mode="dropdown"
                       selectedValue={history}
                       onValueChange={itemValue => {
@@ -341,23 +343,7 @@ const SignUp = () => {
                   }
                 />
 
-                <Paper
-                  label={'Confirm Password'}
-                  icon={'key'}
-                  secureTextEntry={hidePass2}
-                  errors={touched.confirmPassword && errors.confirmPassword}
-                  touched={touched.confirmPassword}
-                  onChangeText={value => {
-                    handleChange('confirmPassword')(value);
-                  }}
-                  onBlur={() => setFieldTouched('confirmPassword')}
-                  right={
-                    <TextInput.Icon
-                      icon={hidePass2 ? 'eye-off' : 'eye'}
-                      onPress={togglePasswordVisibility2}
-                    />
-                  }
-                />
+                
 
                 <SuccessModal
                   textHeader={'Welcome!'}
@@ -367,7 +353,9 @@ const SignUp = () => {
                   btnLabel={'Close'}></SuccessModal>
 
                 <View className="mt-5 flex justify-center items-center">
-                  <Btn onPress={() => handleSubmit()} btnLabel="Register" />
+                  <Btn 
+                   disabled={isSignUpButtonDisabled}
+                  onPress={() => handleSubmit()} btnLabel="Register" />
                 </View>
 
                 <View

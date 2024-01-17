@@ -106,6 +106,15 @@ function App() {
             name="Appointment"
             component={Appointment}
           />
+           <Stack.Screen
+            options={{
+              gestureEnabled: true,
+              cardStyleInterpolator:
+                CardStyleInterpolators.forModalPresentationIOS,
+            }}
+            name="Helplines"
+            component={Helplines}
+          />
           <Stack.Screen
             options={{
               gestureEnabled: true,
@@ -124,15 +133,7 @@ function App() {
             component={ConfAppoint}
           />
 
-          <Stack.Screen
-            options={{
-              gestureEnabled: true,
-              cardStyleInterpolator:
-                CardStyleInterpolators.forModalPresentationIOS,
-            }}
-            name="Helplines"
-            component={Helplines}
-          />
+         
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

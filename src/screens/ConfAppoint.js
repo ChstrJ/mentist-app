@@ -16,9 +16,9 @@ import {useDispatch} from 'react-redux';
 import Background from './Background';
 import BackBack from '../components/BackBack';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import { scale as s, verticalScale as vs, moderateScale as ms } from 'react-native-size-matters';
+
 import Entypo from 'react-native-vector-icons/Entypo';
-
-
 
 function ConfAppoint({navigation = useNavigation()}) {
   const dispatch = useDispatch();
@@ -43,7 +43,10 @@ function ConfAppoint({navigation = useNavigation()}) {
   };
 
   const handleSuccess = () => {
-    navigation.navigate('Dashboard');
+    setTimeout(() => {
+      navigation.navigate('Dashboard');
+    }, 2000);
+
     console.log('remove success');
   };
 
@@ -75,9 +78,8 @@ function ConfAppoint({navigation = useNavigation()}) {
         console.log(response.data);
         const remove = AsyncStorage.removeItem('AppID');
         if (remove) {
-          handleSuccess();
-
           setSuccessModal(true);
+          handleSuccess();
         } else {
           console.log('remove failed');
           setLoading(false);
@@ -107,46 +109,40 @@ function ConfAppoint({navigation = useNavigation()}) {
                   <Text style={styles.textAppoint}>
                     My Appointment Schedule
                   </Text>
-                  <View className="flex-start p-3">
+                  <View className="flex-start mx-auto justify-center">
+
+
+
                     <View className=" flex-row items-center">
-                    <Fontisto
-                        name="doctor"
-                        size={25}
-                        color="#48444E"
-                      />
-                    <Text style={styles.textAppointBody}>
-                      Consultant: {conName} 
-                    </Text> 
+                      <Fontisto name="doctor" size={25} color="#48444E" />
+                      <Text style={styles.consultantLabel}>
+                        Name: 
+                      </Text>
+                      <Text style={styles.conName}>{conName}</Text>
                     </View>
 
-                     <View className=" flex-row items-center mr-2">
-                    <Entypo
-                        name="suitcase"
-                        size={25}
-                        color="#48444E"
-                      />
-                    <Text style={styles.textAppointBody}>
-                      Profession: {prof}
-                    </Text>
+                    <View className=" flex-row items-center">
+                      <Entypo name="suitcase" size={25} color="#48444E" />
+                      <Text style={styles.consultantLabel}>
+                        Profession: 
+                      </Text>
+                      <Text style={styles.conName}>{prof}</Text>
                     </View>
 
-
-                      <View className=" flex-row items-center">
-                    <Fontisto
-                        name="calendar"
-                        size={25}
-                        color="#48444E"
-                      />
-                    <Text style={styles.textAppointBody}>Date: {resdate}</Text>
+                    <View className=" flex-row items-center">
+                      <Fontisto name="calendar" size={25} color="#48444E" />
+                      <Text style={styles.consultantLabel}>
+                        Date:
+                      </Text>
+                      <Text style={styles.conName}>{resdate}</Text>
                     </View>
 
-                      <View className=" flex-row items-center">
-                    <Fontisto
-                        name="clock"
-                        size={25}
-                        color="#48444E"
-                      />
-                    <Text style={styles.textAppointBody}>Time: {restime}</Text>
+                    <View className=" flex-row items-center">
+                      <Fontisto name="clock" size={25} color="#48444E" />
+                      <Text style={styles.consultantLabel}>
+                        Time: 
+                      </Text>
+                      <Text style={styles.conName}>{restime}</Text>
                     </View>
                   </View>
 
@@ -194,17 +190,16 @@ function ConfAppoint({navigation = useNavigation()}) {
 export default ConfAppoint;
 
 const styles1 = StyleSheet.create({
- 
   consultantLabel: {
-    fontSize: 18,
-    marginLeft: 7 ,
-    fontFamily: 'Poppins-SemiBold', 
+    fontSize: s(18),
+    marginLeft: 7,
+    fontFamily: 'Poppins-SemiBold',
     marginVertical: 10,
-    color: 'black'
+    color: 'black',
   },
   conName: {
     fontSize: 18,
-    fontFamily: 'Poppins-Medium', 
-    color: 'black'
+    fontFamily: 'Poppins-Medium',
+    color: 'black',
   },
 });

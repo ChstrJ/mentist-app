@@ -24,6 +24,8 @@ import RNDateTimePicker from '@react-native-community/datetimepicker';
 import Paper from '../components/Paper';
 import {s} from 'react-native-size-matters';
 import {Dropdown} from 'react-native-element-dropdown';
+import BelowLabel from '../components/BelowLabel';
+import Helplines from './Helplines';
 
 export default function Appointment() {
   const navigation = useNavigation();
@@ -32,17 +34,16 @@ export default function Appointment() {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [isDialogVisible, setDialogVisible] = useState(false);
   const [id, setId] = useState('');
   const [firstName, setFirstName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setLoading] = useState(false);
-  const [notif, setNotif] = useState(false);
-  const [day, setDay] = useState('');
 
-  const [selConst, setSelConst] = useState(null);
+
+  const [selConst, setSelConst] = useState('');
+  const [selectedConsultantTime, setSelectedConsultantTime] = useState('')
   const [chosenDateText, setChosenDateText] = useState('');
-  const [chosenTimeText, setChosenTimeText] = useState('');
+  // const [chosenTimeText, setChosenTimeText] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const [value, setValue] = useState(null);
 
@@ -50,6 +51,8 @@ export default function Appointment() {
   const [consult, setConsultant] = useState([]);
   const [scheduleData, setScheduleData] = useState([]);
   const [schedule, setSchedule] = useState([]);
+  const [consultantTime, setConsultantTime] = useState([]);
+
 
   const getUserInfo = async () => {
     const uid = await AsyncStorage.getItem('id');
@@ -64,6 +67,7 @@ export default function Appointment() {
     getUserInfo();
     getConsultant();
     handleDatePicker();
+
   }, []);
 
   // const splitDate = date.toISOString()
@@ -76,14 +80,14 @@ export default function Appointment() {
     if (mode === 'date') {
       const formattedDate = currentDate.toLocaleDateString('en-PH');
       setChosenDateText(formattedDate);
-    } else if (mode === 'time') {
-      const formattedTime = new Date(currentDate).toLocaleTimeString('en-PH', {
-        hour12: true,
-        hour: 'numeric',
-        minute: 'numeric',
-        timeZone: 'Asia/Manila',
-      });
-      setChosenTimeText(formattedTime);
+    // } else if (mode === 'time') {
+    //   const formattedTime = new Date(currentDate).toLocaleTimeString('en-PH', {
+    //     hour12: true,
+    //     hour: 'numeric',
+    //     minute: 'numeric',
+    //     timeZone: 'Asia/Manila',
+    //   });
+    //   setChosenTimeText(formattedTime);
     }
   };
 
@@ -92,61 +96,67 @@ export default function Appointment() {
     user_id: id,
     phone_number: phoneNumber,
     date: date.toISOString().split('T')[0],
-    booking_time: date.toISOString().split('T')[1].split('.')[0],
+    booking_time: selectedConsultantTime // date.toISOString().split('T')[1].split('.')[0],
   };
 
-  // const getConsultant = async () => {
-  //   const reponse = await callApi('get', '/consultant')
+
+  const getConsultant = async () => {
+    try {
+      const response = await callApi('get', '/consultant');
+      const consultants = response.data.consultants;
+
+      const consultantData = consultants.map(consultant => ({
+        id: consultant.id,
+        name: consultant.name,
+        available_time: consultant.available_time,
+      }));
+
+      setConsultantData(consultantData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  const getConsultantTime = async () => {
+    try {
+      const response = await callApi('get', `./consultant`);
+      const consultants = response.data.consultants;
+  
+      const dropdownData = [];
+      
+      consultants.forEach(consultant => {
+        const { available_time } = consultant;
+        available_time.forEach(time => {
+          const formattedTime = new Date(`2024-01-01T${time}`).toLocaleTimeString('en-PH', { hour: 'numeric', minute: 'numeric', hour12: true });
+          dropdownData.push({ label: formattedTime, value: time });
+        });
+      });
+  
+      setConsultantTime(dropdownData);
+    } catch (e){
+      console.log(e);
+    }
+  }
+  
+  // const handleSchedule = async () => {
+  //   const conf = await callApi('get', '/consultant')
   //     .then(response => {
   //       const res = response.data.consultants;
-  //       const listCont = res.map(item => {
-  //         return {key: item.id, value: `${item.name}`};
-  //       });
-  //       setConsultant(listCont);
-  //       console.log(consult + 'const and listCont ' + listCont);
+
+  //       let count = Object.keys(res).length;
+  //       let schedArr = [];
+
+  //       for (let i = 0; i < count; i++) {
+  //         schedArr.push({
+  //           schedule: res[i].schedule,
+  //         });
+  //       }
+  //       setScheduleData(schedArr);
+  //       console.log(schedArr);
   //     })
   //     .catch(e => console.log(e));
   // };
-  const getConsultant = async () => {
-    const conf = await callApi('get', '/consultant')
-      .then(response => {
-        const res = response.data.consultants;
-        // getting all the count response
-        let count = Object.keys(res).length;
-        // creating empty array for object response
-        let constArr = [];
-
-        for (let i = 0; i < count; i++) {
-          // pushing through the empty array
-          constArr.push({
-            id: res[i].id, // id object
-            name: res[i].name, // creating name object
-          });
-        }
-        setConsultantData(constArr); // setting data for consultant
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
-  const handleSchedule = async () => {
-    const conf = await callApi('get', '/consultant')
-      .then(response => {
-        const res = response.data.consultants;
-
-        let count = Object.keys(res).length;
-        let schedArr = [];
-
-        for (let i = 0; i < count; i++) {
-          schedArr.push({
-            schedule: res[i].schedule,
-          });
-        }
-        setScheduleData(schedArr);
-        console.log(schedArr);
-      })
-      .catch(e => console.log(e));
-  };
 
   // const handleConsult = selectedValue => {
   //   const selectedConsultant = consult.find(
@@ -157,23 +167,8 @@ export default function Appointment() {
   //   }
   // };
 
-  const arr = [
-    {label: 'Item 1', value: '1'},
-    {label: 'Item 2', value: '2'},
-    {label: 'Item 3', value: '3'},
-    {label: 'Item 4', value: '4'},
-    {label: 'Item 5', value: '5'},
-    {label: 'Item 6', value: '6'},
-    {label: 'Item 7', value: '7'},
-    {label: 'Item 8', value: '8'},
-  ];
-  //create onchange
-  const onChange = (e, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios' ? true : false);
-
-    setDate(currentDate);
-  };
+  
+ 
 
   const showModeDate = () => {
     setShow(true);
@@ -199,8 +194,6 @@ export default function Appointment() {
 
         AsyncStorage.setItem('profName', profName);
         AsyncStorage.setItem('conName', conName);
-
-
 
         setLoading(false);
       })
@@ -280,8 +273,7 @@ export default function Appointment() {
                     labelField="name"
                     valueField="id"
                     placeholder={'Choose Consultant'}
-                    searchPlaceholder="Search..."
-                    value={consult.name}
+                    value={selConst}
                     renderLeftIcon={() => (
                       <Fontisto
                         style={style.icon}
@@ -290,37 +282,69 @@ export default function Appointment() {
                         color="#48444E"
                       />
                     )}
-                    onFocus={() => setIsFocus(true)}
-                    onBlur={() => setIsFocus(false)}
+              
                     onChange={item => {
+
+                      //after a user selected this appt id
                       setSelConst(item.id);
-                      console.log(item.id);
-                      setConsultant(item.name);
-                      setIsFocus(false);
+                      console.log(item.id)
+
+                      //call the id according to the user selected consultant kaso bug pa nakukuha nya lahat
+                      getConsultantTime()
+
+                     
+                 
                     }}
                   />
+                  
+                  
+                </View>
+                
+              </View>
 
-                  {/* <Dropdown
-                    style={[style.dropdown, {borderWidth: 1} ]}
+              <View
+                style={[
+                  {
+                    width: wp(80),
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    gap: 8,
+                  },
+                ]}
+                className="flex mt-5">
+                <View style={{width: s(290), flex: 1}}>
+                  <Dropdown
+                    style={[style.dropdown, {borderWidth: 1, color: 'black'}]}
                     placeholderStyle={style.placeholderStyle}
                     selectedTextStyle={style.selectedTextStyle}
                     inputSearchStyle={style.inputSearchStyle}
                     iconStyle={style.iconStyle}
-                    data={consultData}
-                    search
+                    showsVerticalScrollIndicator={true}
+                    data={consultantTime}
                     maxHeight={300}
-                    labelField="name"
-                    valueField="id"
-                    placeholder={'Choose Schedule'}
-                    searchPlaceholder="Search..."
-                    value={schedule}
-                    onFocus={() => setIsFocus(true)}
-                    onBlur={() => setIsFocus(false)}
+                    labelField="label"
+                    valueField="value"
+                    placeholder={'Choose Available Time'}
+                    value={selectedConsultantTime}
+                    renderLeftIcon={() => (
+                      <Fontisto
+                        style={style.icon}
+                        name="clock"
+                        size={25}
+                        color="#48444E"
+                      />
+                    )}
+               
                     onChange={item => {
-                      setConsultant(item.name);
-                      setIsFocus(false);
+                     setSelectedConsultantTime(item.value)
+                     console.log(selectedConsultantTime)
                     }}
-                /> */}
+                  />
+                  
+
+                  
                 </View>
               </View>
 
@@ -343,7 +367,7 @@ export default function Appointment() {
                 </TouchableOpacity>
               </View>
 
-              <View>
+              {/* <View>
                 <TouchableOpacity
                   onPress={() => {
                     showModeTime();
@@ -360,7 +384,7 @@ export default function Appointment() {
                     activeOutlineColor="green"
                   />
                 </TouchableOpacity>
-              </View>
+              </View> */}
 
               {show && (
                 <RNDateTimePicker
@@ -381,7 +405,16 @@ export default function Appointment() {
                   btnLabel="Confirm"
                   style={{zIndex: 0}}
                 />
+                  <BelowLabel
+                  onPress={() => navigation.navigate('Helplines')}
+                  text={
+                    'For urgent psychosocial support,'}
+                  highlightText={'Helplines'}
+                />
               </View>
+              
+
+           
             </View>
           </View>
         </Background>
@@ -417,18 +450,18 @@ const style = StyleSheet.create({
     top: 8,
     zIndex: 999,
     paddingHorizontal: 8,
-    fontSize: 14,
+    fontSize: s(14),
     color: 'black',
     fontFamily: 'Poppins Regular',
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: s(14),
     fontFamily: 'Poppins Regular',
     color: 'black',
     marginLeft: 10,
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: s(14),
     fontFamily: 'Poppins Regular',
     color: 'black',
     marginLeft: 10,

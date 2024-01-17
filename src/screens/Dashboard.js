@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  Linking
+  Linking,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Background from './Background';
@@ -15,7 +15,7 @@ import {getData, removeData} from '../helper/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from '../components/Logo';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Button, Text} from 'react-native-paper';
+import {Button, Text, Appbar} from 'react-native-paper';
 
 import {
   widthPercentageToDP as wp,
@@ -28,7 +28,7 @@ import Call from '../components/Call';
 import Loader from '../components/Loader';
 
 const Dashboard = ({}) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const Tab = createBottomTabNavigator();
 
   const [firstName, setFirstName] = useState('');
@@ -90,7 +90,7 @@ const Dashboard = ({}) => {
 
         if (res == '[]') {
           setLoading(false);
-          navigation.push('Appointment');
+          navigation.navigate('Appointment');
         } else {
           getAppointmentDetails();
         }
@@ -101,11 +101,8 @@ const Dashboard = ({}) => {
   };
 
   useEffect(() => {
-   
     getUser();
-    handleMood();
-    
-   
+    // handleMood();
   }, []);
 
   return (
@@ -117,8 +114,18 @@ const Dashboard = ({}) => {
           <Loader />
         ) : (
           <View>
-            <LogoutBtn onPress={() => handleLogout()} />
-            <Call onPress={() => navigation.push('Helplines')} />
+            <Appbar.Header>
+              <Appbar.Content title="Home" />
+              <Appbar.Action
+                icon="logout"
+                size={30}
+                onPress={() => {
+                  handleLogout();
+                }}
+              />
+            </Appbar.Header>
+
+            {/* <Call onPress={() => navigation.push('Helplines')} /> */}
 
             <View style={{marginTop: hp(2)}} className="flex items-center">
               <Logo />
@@ -131,7 +138,7 @@ const Dashboard = ({}) => {
               <Action
                 actionLabel="Chatbot AI"
                 source={require('../assets/chatbot.png')}
-                Press={() => navigation.push('Chatscreen')}
+                Press={() => navigation.navigate('Chatscreen')}
               />
               <Action
                 actionLabel="Appointment"

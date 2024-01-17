@@ -1,6 +1,7 @@
 
 import {StyleSheet, Dimensions} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { scale as s, verticalScale as vs, moderateScale as ms } from 'react-native-size-matters';
 
 export const styles = StyleSheet.create({
   CenterContainer: {
@@ -29,56 +30,73 @@ export const styles = StyleSheet.create({
   },
   fontTitle: {
     fontFamily: 'Poppins Bold',
-    fontSize: 25,
+    fontSize: s(23),
     color: '#333333'
   },
   fontBtn: {
     fontFamily: 'Poppins Bold',
-    fontSize: 22,
+    fontSize: s(18),
     color: '#333333'   
   },
   fontSub: {
     fontFamily: 'Poppins Regular',
-    fontSize: 20,
+    fontSize: s(20),
     color: '#333333'    
   },
 
   fontSmol: {
     fontFamily: 'Poppins Regular',
-    fontSize: 14,
-    color: '#333333'    
+    fontSize: s(14),
+    color: 'gray'    
   },
+
+  fontSmolLabel: {
+    fontFamily: 'Poppins Regular',
+    fontSize: s(14),
+    color: 'white'    
+  },
+
+  fontSmolGreen: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: s(16),
+    color: 'limegreen',
+    
+   
+   
+  },
+
   fontHome: {
     fontFamily: 'Poppins Bold',
-    fontSize: 40,
+    fontSize: s(35),
     color: '#00A556'    
   },
 
   fontHomeSub: {
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 20,
+    fontSize: s(15),
     color: '#333333'
   },
 
   fontSubHelp: {
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 18,
+    fontSize: s(18),
     color: '#333333'
   },
 
   fontSubGrey: {
     fontFamily: 'Poppins Regular',
-    fontSize: 15,
+    fontSize: s(15),
     color: 'grey'
   },
 
   fontText: {
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 18,
+    fontSize: s(14),
+    
   },
   fontField: {
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 17,
+    fontSize: s(14),
   },
   button:{
         borderRadius: 20,
@@ -162,6 +180,20 @@ export const styles = StyleSheet.create({
     color: 'black'
 
   }, 
+
+  consultantLabel: {
+    fontSize: s(17),
+    marginLeft: 10,
+    fontFamily: 'Poppins-SemiBold',
+    marginVertical: 10,
+    color: 'black',
+  },
+  conName: {
+    fontSize: s(15),
+    fontFamily: 'Poppins-Medium',
+    color: 'black',
+    marginLeft: 5
+  },
   
 });
 

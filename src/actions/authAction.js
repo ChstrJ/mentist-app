@@ -1,9 +1,14 @@
 import {callApi} from '../helper/callApi';
-import {storeData} from '../helper/auth';
+import {getData, storeData} from '../helper/auth';
 import {Alert} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+
+
 
 export const loginUser = (username, password, navigate, setLoading, loginAttempts, setLoginAttempts) => async dispatch => {
     try {
@@ -13,9 +18,12 @@ export const loginUser = (username, password, navigate, setLoading, loginAttempt
       const phone_no = response.data.user.phone_number;
       const id = JSON.stringify(response.data.user.id);
       const uname = response.data.user.username;
+
+      
   
       // Store in async storage
       storeData(token, first_name, id, phone_no, uname);
+      getData()
       dispatch({ type: 'LOGIN_SUCCESS', payload: { username, password } });
       navigate('Dashboard');
       setLoading(false);

@@ -14,6 +14,7 @@ import Card from '../components/Card';
 import {callApi} from '../helper/callApi';
 import { s } from 'react-native-size-matters';
 
+
 export default function Progress() {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(false)
@@ -138,9 +139,11 @@ export default function Progress() {
     contentContainerStyle={{flexGrow: 1}}>
       <BackButton goBack={navigation.goBack} />
       <View
+      
         style={{height: hp(90)}}
         className="flex justify-center items-center">
         <Progresspic width={250} height={250} />
+        
 
         <Text style={styles.fontTitle}>My Progress</Text>
 

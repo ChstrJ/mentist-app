@@ -14,13 +14,13 @@ export default function BtnOutline({btnLabel, onPress, dispatch}) {
         borderWidth: 2,
         borderRadius: 15,
         width: s(280),
-        height: s(40),
+        height: s(37),
         alignItems: 'center',
         justifyContent: 'center',
        
         marginVertical: 10,
       }}>
-      <Text style={{color: '#00A556', fontSize: 20, fontFamily: 'Poppins-SemiBold'}}>
+      <Text style={{color: '#00A556', fontSize: 17, fontFamily: 'Poppins-SemiBold'}}>
         {btnLabel}
       </Text>
     </TouchableOpacity>

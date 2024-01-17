@@ -16,6 +16,7 @@ import Btn from '../components/Btn';
 import Loginpic from '../assets/Login-broo.svg';
 import {loginUser} from '../actions/authAction';
 import Paper from '../components/Paper';
+import {getUser} from './Dashboard';
 
 const LogIn = ({}) => {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ const LogIn = ({}) => {
         loginUser(
           username,
           password,
-          navigation.navigate,
+          navigation.push,
           setLoading,
           loginAttempts,
           setLoginAttempts,
@@ -139,7 +140,7 @@ const LogIn = ({}) => {
               marginTop: 5,
             }}>
             <Text style={styles.fontText}>Don't have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.push('SignUp')}>
+            <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
               <Text style={[{color: 'green', marginLeft: 5}, styles.fontText]}>
                 Register here
               </Text>
