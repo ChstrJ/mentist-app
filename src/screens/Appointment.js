@@ -39,9 +39,8 @@ export default function Appointment() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setLoading] = useState(false);
 
-
   const [selConst, setSelConst] = useState('');
-  const [selectedConsultantTime, setSelectedConsultantTime] = useState('')
+  const [selectedConsultantTime, setSelectedConsultantTime] = useState('');
   const [chosenDateText, setChosenDateText] = useState('');
   // const [chosenTimeText, setChosenTimeText] = useState('');
   const [isFocus, setIsFocus] = useState(false);
@@ -52,7 +51,6 @@ export default function Appointment() {
   const [scheduleData, setScheduleData] = useState([]);
   const [schedule, setSchedule] = useState([]);
   const [consultantTime, setConsultantTime] = useState([]);
-
 
   const getUserInfo = async () => {
     const uid = await AsyncStorage.getItem('id');
@@ -67,7 +65,6 @@ export default function Appointment() {
     getUserInfo();
     getConsultant();
     handleDatePicker();
-
   }, []);
 
   // const splitDate = date.toISOString()
@@ -80,14 +77,14 @@ export default function Appointment() {
     if (mode === 'date') {
       const formattedDate = currentDate.toLocaleDateString('en-PH');
       setChosenDateText(formattedDate);
-    // } else if (mode === 'time') {
-    //   const formattedTime = new Date(currentDate).toLocaleTimeString('en-PH', {
-    //     hour12: true,
-    //     hour: 'numeric',
-    //     minute: 'numeric',
-    //     timeZone: 'Asia/Manila',
-    //   });
-    //   setChosenTimeText(formattedTime);
+      // } else if (mode === 'time') {
+      //   const formattedTime = new Date(currentDate).toLocaleTimeString('en-PH', {
+      //     hour12: true,
+      //     hour: 'numeric',
+      //     minute: 'numeric',
+      //     timeZone: 'Asia/Manila',
+      //   });
+      //   setChosenTimeText(formattedTime);
     }
   };
 
@@ -96,9 +93,8 @@ export default function Appointment() {
     user_id: id,
     phone_number: phoneNumber,
     date: date.toISOString().split('T')[0],
-    booking_time: selectedConsultantTime // date.toISOString().split('T')[1].split('.')[0],
+    booking_time: selectedConsultantTime, // date.toISOString().split('T')[1].split('.')[0],
   };
-
 
   const getConsultant = async () => {
     try {
@@ -112,33 +108,51 @@ export default function Appointment() {
       }));
 
       setConsultantData(consultantData);
+      // console.log(consultData)
     } catch (error) {
       console.log(error);
     }
   };
 
+  // const getConsultantTime = async () => {
+  //   try {
+  //     const response = await callApi('get', `./consultant`);
+  //     // console.log(JSON.stringify(response))
+  //     const consultants = response.data.consultants;
+  //     // console.log(consultants, "Etot");
+  //     const dropdownData = [];
 
-  const getConsultantTime = async () => {
-    try {
-      const response = await callApi('get', `./consultant`);
-      const consultants = response.data.consultants;
-  
-      const dropdownData = [];
-      
-      consultants.forEach(consultant => {
-        const { available_time } = consultant;
-        available_time.forEach(time => {
-          const formattedTime = new Date(`2024-01-01T${time}`).toLocaleTimeString('en-PH', { hour: 'numeric', minute: 'numeric', hour12: true });
-          dropdownData.push({ label: formattedTime, value: time });
-        });
-      });
-  
-      setConsultantTime(dropdownData);
-    } catch (e){
-      console.log(e);
+  //     consultants.forEach(consultant => {
+  //       const {available_time} = consultant;
+  //       available_time.forEach(time => {
+  //         const formattedTime = new Date(
+  //           `2024-01-01T${time}`,
+  //         ).toLocaleTimeString('en-PH', {
+  //           hour: 'numeric',
+  //           minute: 'numeric',
+  //           hour12: true,
+  //         });
+  //         dropdownData.push({label: formattedTime, value: time});
+  //       });
+  //     });
+
+  //     setConsultantTime(dropdownData);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
+    const getConsultantTime = async (time) => {
+      try{
+        // console.log(time, "time")
+        const constTime = time.map(min => ({
+          avail: min
+        }))
+
+        setConsultantTime(constTime)
+      }catch (error) {
+        console.log(error)
+      }
     }
-  }
-  
   // const handleSchedule = async () => {
   //   const conf = await callApi('get', '/consultant')
   //     .then(response => {
@@ -166,10 +180,16 @@ export default function Appointment() {
   //     setSelConst(selectedConsultant.key);
   //   }
   // };
-
-  
- 
-
+const data = [
+  {label: 'Item 1', value: '1'},
+  {label: 'Item 2', value: '2'},
+  {label: 'Item 3', value: '3'},
+  {label: 'Item 4', value: '4'},
+  {label: 'Item 5', value: '5'},
+  {label: 'Item 6', value: '6'},
+  {label: 'Item 7', value: '7'},
+  {label: 'Item 8', value: '8'},
+];
   const showModeDate = () => {
     setShow(true);
     setMode('date');
@@ -282,24 +302,15 @@ export default function Appointment() {
                         color="#48444E"
                       />
                     )}
-              
                     onChange={item => {
-
-                      //after a user selected this appt id
                       setSelConst(item.id);
-                      console.log(item.id)
-
-                      //call the id according to the user selected consultant kaso bug pa nakukuha nya lahat
-                      getConsultantTime()
-
-                     
-                 
+                      console.log(item.available_time, ' name ', item.name);
+                      getConsultantTime(item.available_time);
+                      // console.log(selConst, "eto")
+                      // getConsultantTime();
                     }}
                   />
-                  
-                  
                 </View>
-                
               </View>
 
               <View
@@ -324,8 +335,8 @@ export default function Appointment() {
                     showsVerticalScrollIndicator={true}
                     data={consultantTime}
                     maxHeight={300}
-                    labelField="label"
-                    valueField="value"
+                    labelField="avail"
+                    valueField="avail"
                     placeholder={'Choose Available Time'}
                     value={selectedConsultantTime}
                     renderLeftIcon={() => (
@@ -336,15 +347,11 @@ export default function Appointment() {
                         color="#48444E"
                       />
                     )}
-               
                     onChange={item => {
-                     setSelectedConsultantTime(item.value)
-                     console.log(selectedConsultantTime)
+                      setSelectedConsultantTime(item.value);
+                      console.log(selectedConsultantTime);
                     }}
                   />
-                  
-
-                  
                 </View>
               </View>
 
@@ -405,16 +412,12 @@ export default function Appointment() {
                   btnLabel="Confirm"
                   style={{zIndex: 0}}
                 />
-                  <BelowLabel
+                <BelowLabel
                   onPress={() => navigation.navigate('Helplines')}
-                  text={
-                    'For urgent psychosocial support,'}
+                  text={'For urgent psychosocial support,'}
                   highlightText={'Helplines'}
                 />
               </View>
-              
-
-           
             </View>
           </View>
         </Background>
