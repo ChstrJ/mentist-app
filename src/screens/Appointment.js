@@ -110,7 +110,7 @@ export default function Appointment() {
       }));
 
       setConsultantData(consultantData);
-      // console.log(consultData)
+      console.log(consultData);
     } catch (error) {
       console.log(error);
     }
@@ -153,6 +153,7 @@ export default function Appointment() {
       });
 
       setConsultantTime(constTime);
+      // console.log(constTime)
     } catch (error) {
       console.log(error);
     }
@@ -197,7 +198,7 @@ export default function Appointment() {
 
   const handleAppointment = async data => {
     setLoading(true);
-    await callApi('post', '/appointment', Data)
+    await callApi('post', '/appointment', data)
       .then(response => {
         navigation.navigate('Dashboard');
         Alert.alert(

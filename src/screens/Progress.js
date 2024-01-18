@@ -73,13 +73,13 @@ export default function Progress() {
     1: 'Optimistic',
     2: 'Energetic',
     3: 'Happy',
-    4: 'Content',
+    4: 'Satisfied',
     5: 'Neutral',
     6: 'Sad',
     7: 'Stressed',
     8: 'Anxious',
     9: 'Depressed',
-    10: 'Despairing',
+    10: 'Despair',
   };
 
   const checkProgress = () => {
