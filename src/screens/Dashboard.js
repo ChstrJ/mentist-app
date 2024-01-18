@@ -130,7 +130,7 @@ const Dashboard = ({}) => {
             <View style={{marginTop: hp(2)}} className="flex items-center">
               <Logo />
               <Text className="mt-5" style={styles.fontHomeSub}>
-                Good to see you here, {firstName}{' '}
+                Good to see you here, {firstName}{'!'}
               </Text>
             </View>
 
@@ -153,7 +153,12 @@ const Dashboard = ({}) => {
             </View>
           </View>
         )}
+
+       
       </Background>
+      <View className="justify-center items-center">
+      <Text className=" text-gray-600">© 2023-2024 4B-G4</Text>
+      </View>
     </ScrollView>
   );
 };
