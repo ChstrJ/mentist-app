@@ -148,7 +148,7 @@ const Dashboard = ({}) => {
               <Action
                 actionLabel="My Progress"
                 source={require('../assets/development.png')}
-                Press={() => navigation.push('Wellbeing')}
+                Press={() => navigation.push('Progress')}
               />
             </View>
           </View>

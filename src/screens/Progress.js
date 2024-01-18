@@ -1,4 +1,11 @@
-import {View, Text, Dimensions, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Background from './Background';
 import BackButton from '../components/BackButton';
@@ -12,12 +19,13 @@ import {
 import Progresspic from '../assets/Mental health-bro.svg';
 import Card from '../components/Card';
 import {callApi} from '../helper/callApi';
-import { s } from 'react-native-size-matters';
-
+import {s} from 'react-native-size-matters';
+import { Button } from 'react-native-paper';
+import Btn from '../components/Btn';
 
 export default function Progress() {
   const [chartData, setChartData] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [isProgressEmpty, setProgressEmpty] = useState(false);
   const navigation = useNavigation();
 
@@ -62,20 +70,17 @@ export default function Progress() {
   };
 
   const ratingLabel = {
-  '1': 'Optimistic',
-  '2': 'Energetic',
-  '3': 'Happy',
-  '4': 'Content',
-  '5': 'Neutral',
-  '6': 'Sad',
-  '7': 'Stressed',
-  '8': 'Anxious',
-  '9': 'Depressed',
-  '10': 'Despairing',
-};
-
-
-
+    1: 'Optimistic',
+    2: 'Energetic',
+    3: 'Happy',
+    4: 'Content',
+    5: 'Neutral',
+    6: 'Sad',
+    7: 'Stressed',
+    8: 'Anxious',
+    9: 'Depressed',
+    10: 'Despairing',
+  };
 
   const checkProgress = () => {
     chartData.length === 0 ? setProgressEmpty(true) : setProgressEmpty(false);
@@ -83,46 +88,41 @@ export default function Progress() {
 
   const getRate = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await callApi('get', '/chat/rate/result');
       const ratings = response.data.ratings;
-      
+
       //total ng pinaka overall
       const overall_total = response.data.total;
       //overall ng each number
-      const overall = response.data.ratings.overall
-      
-      
+      const overall = response.data.ratings.overall;
+
       const chartData = ratings.map(item => {
         const percentage =
-        overall_total !== 0 ? ((item.overall / overall_total) * 100).toFixed(2): 0;
-        
-        
+          overall_total !== 0
+            ? ((item.overall / overall_total) * 100).toFixed(2)
+            : 0;
+
         //kunin ko ung ginawa kong ratingLabel tapos i map ko sa item.rate na galing sa api
-        const ratingName = ratingLabel[item.rate] 
-        
-        
+        const ratingName = ratingLabel[item.rate];
+
         return {
           name: `${ratingName}`,
           percentage: parseInt(percentage),
           color: getColorRate(item.rate),
-          
+
           legendFontColor: 'black',
           legendFontSize: 15,
           legendMarginTop: 5,
-          
         };
-        
       });
-     
 
-      chartData.sort((a,b) => b.percentage - a.percentage)
+      chartData.sort((a, b) => b.percentage - a.percentage);
 
       setChartData(chartData);
-      setLoading(false)
+      setLoading(false);
     } catch (e) {
       console.error('Error:', e);
-      
     }
   };
 
@@ -134,55 +134,57 @@ export default function Progress() {
 
   return (
     <Background>
-        <ScrollView
-    showsVerticalScrollIndicator={false}
-    contentContainerStyle={{flexGrow: 1}}>
-      <BackButton goBack={navigation.goBack} />
-      <View
-      
-        style={{height: hp(90)}}
-        className="flex justify-center items-center">
-        <Progresspic width={250} height={250} />
-        
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{flexGrow: 1}}>
+        <BackButton goBack={navigation.goBack} />
+        <View
+          style={{height: hp(90)}}
+          className="flex justify-center items-center">
+          <Progresspic width={250} height={250} />
 
-        <Text style={styles.fontTitle}>My Progress</Text>
+          <Text style={styles.fontTitle}>My Progress</Text>
 
-       
-
-        {loading && chartData.some(item => item.percentage !== 0) ? (
-          <View className="">
-         
+          {loading && chartData.some(item => item.percentage !== 0) ? (
+            <View className="">
+              <Card>
+                <PieChart
+                  data={chartData}
+                  width={s(350)}
+                  height={s(215)}
+                  chartConfig={chartConfig}
+                  accessor={'percentage'}
+                  backgroundColor={'transparent'}
+                  paddingLeft={'-25'}
+                  center={[25, 5]}
+                />
+              </Card>
+            </View>
+          ) : (
             <Card>
-              <PieChart
-                data={chartData}
-                width={s(350)}
-                
-                height={s(215)}
-                chartConfig={chartConfig}
-                accessor={'percentage'}
-                backgroundColor={'transparent'}
-                paddingLeft={'-25'}
-                
-                center={[25, 5]}
-              
-                
-                
-              />
+              <View style={styles.chatEmptyContainer}>
+                <Text
+                  style={{
+                    fontFamily: 'Poppins Regular',
+                    fontSize: 17,
+                    display: 'flex',
+                    textAlign: 'center',
+                    color: 'black',
+                  }}>
+                  No progress yet...
+                </Text>
+                <ActivityIndicator size={'large'} color={'#00A556'} />
+              </View>
             </Card>
-          </View>
-        ) : (
-          <Card>
-          <View style={styles.chatEmptyContainer}>
-            <Text style={{fontFamily: 'Poppins Regular', fontSize: 17, display:'flex', textAlign: 'center', color:'black'}}>
-              No progress yet...
-              
-            </Text>
-            <ActivityIndicator size={'large'} color={'#00A556'}/> 
-          </View>
-          </Card>
-        )}
-      </View>
+          )}
+        </View>
       </ScrollView>
+      <View className="justify-center items-center">
+      <Btn
+        btnLabel={'Read About Mental Health'}
+        onPress={() => navigation.push('Wellbeing')}
+      />
+      </View>
     </Background>
   );
 }
@@ -194,6 +196,6 @@ const style = StyleSheet.create({
     justifyContent: 'center',
   },
   legendItem: {
-    marginTop: 10,  // Adjust as needed
-},
+    marginTop: 10, // Adjust as needed
+  },
 });

@@ -119,7 +119,7 @@ function App() {
           <Stack.Screen
             options={{
               gestureEnabled: true,
-              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+              cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
             }}
             name="Wellbeing"
             component={Wellbeing}

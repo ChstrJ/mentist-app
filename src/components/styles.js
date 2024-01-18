@@ -50,6 +50,12 @@ export const styles = StyleSheet.create({
     color: 'gray'    
   },
 
+  fontArticles: {
+    fontFamily: 'Poppins Regular',
+    fontSize: s(11),
+    color: 'gray'    
+  },
+
   fontSmolLabel: {
     fontFamily: 'Poppins Regular',
     fontSize: s(14),
@@ -75,6 +81,22 @@ export const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: s(15),
     color: '#333333'
+  },
+
+  fontProgress: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: s(17),
+    color: '#333333',
+    paddingHorizontal: 5,
+  },
+
+  fontProgressSub: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: s(13),
+    color: '#333333',
+    marginLeft: s(17),
+    
+    
   },
 
   fontSubHelp: {
