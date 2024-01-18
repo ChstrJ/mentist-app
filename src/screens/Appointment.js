@@ -38,6 +38,7 @@ export default function Appointment() {
   const [firstName, setFirstName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setLoading] = useState(false);
+  const [concern, setConcern] = useState('');
 
   const [selConst, setSelConst] = useState('');
   const [selectedConsultantTime, setSelectedConsultantTime] = useState('');
@@ -93,6 +94,7 @@ export default function Appointment() {
     user_id: id,
     phone_number: phoneNumber,
     date: date.toISOString().split('T')[0],
+    concern: concern,
     booking_time: selectedConsultantTime, // date.toISOString().split('T')[1].split('.')[0],
   };
 
@@ -141,18 +143,20 @@ export default function Appointment() {
   //     console.log(e);
   //   }
   // };
-    const getConsultantTime = async (time) => {
-      try{
-        // console.log(time, "time")
-        const constTime = time.map(min => ({
-          avail: min
-        }))
+  const getConsultantTime = async time => {
+    try {
+      // console.log(time, "time")
+      const constTime = time.map(min => {
+        return {
+          avail: min,
+        };
+      });
 
-        setConsultantTime(constTime)
-      }catch (error) {
-        console.log(error)
-      }
+      setConsultantTime(constTime);
+    } catch (error) {
+      console.log(error);
     }
+  };
   // const handleSchedule = async () => {
   //   const conf = await callApi('get', '/consultant')
   //     .then(response => {
@@ -180,16 +184,7 @@ export default function Appointment() {
   //     setSelConst(selectedConsultant.key);
   //   }
   // };
-const data = [
-  {label: 'Item 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-  {label: 'Item 5', value: '5'},
-  {label: 'Item 6', value: '6'},
-  {label: 'Item 7', value: '7'},
-  {label: 'Item 8', value: '8'},
-];
+
   const showModeDate = () => {
     setShow(true);
     setMode('date');
@@ -265,6 +260,15 @@ const data = [
                 disabled={true}
                 onChangeText={phoneNumber => {
                   setPhoneNumber(phoneNumber);
+                }}
+              />
+
+              <Paper
+                label={'Concern'}
+                icon={'message'}
+                value={concern}
+                onChangeText={concern => {
+                  setConcern(concern);
                 }}
               />
 
@@ -348,7 +352,7 @@ const data = [
                       />
                     )}
                     onChange={item => {
-                      setSelectedConsultantTime(item.value);
+                      setSelectedConsultantTime(item.avail);
                       console.log(selectedConsultantTime);
                     }}
                   />

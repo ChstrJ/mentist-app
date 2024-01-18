@@ -23,6 +23,7 @@ import ConfAppoint from './src/screens/ConfAppoint';
 import TestingScreen from './src/screens/TestingScreen';
 import Helplines from './src/screens/Helplines';
 import Mental from './src/screens/Mental';
+import Wellbeing from './src/screens/Wellbeing';
 
 const Stack = createStackNavigator();
 
@@ -114,6 +115,14 @@ function App() {
             }}
             name="Helplines"
             component={Helplines}
+          />
+          <Stack.Screen
+            options={{
+              gestureEnabled: true,
+              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            }}
+            name="Wellbeing"
+            component={Wellbeing}
           />
           <Stack.Screen
             options={{
