@@ -58,10 +58,15 @@ function ConfAppoint({navigation = useNavigation()}) {
     const AppID = await AsyncStorage.getItem('AppID');
 
     setResDate(date);
+    console.log(resdate)
     setRestTime(time);
+    console.log(restime)
     setAppId(AppID);
+    console.log(appId)
     setConName(conName);
+    console.log(conName)
     setProf(profName);
+    console.log(prof)
   };
 
   // useEffect for data retrieval
