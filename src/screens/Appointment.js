@@ -103,16 +103,22 @@ export default function Appointment() {
       const response = await callApi('get', '/consultant');
       const consultants = response.data.consultants;
 
+      
+
       const consultantData = consultants.map(consultant => ({
         id: consultant.id,
         name: consultant.name,
+        date: consultant.date,
         available_time: consultant.available_time,
       }));
+    
+      //if else condition? if the date is not weekend and the time is not 7am-5pm, show the time in future dates
+     
 
-      console.log(consultantData)
+    
 
       setConsultantData(consultantData);
-      console.log(consultData);
+      console.log(consultantData)
     } catch (error) {
       console.log(error);
     }
@@ -154,10 +160,11 @@ export default function Appointment() {
         };
       });
 
-      console.log(constTime)
+      //di ko alam kung tama to, if none avail time show "none" in dropdown else lagay lahat ng avail time sa dropdown
+      constTime === "None" ? "None" : setConsultantTime(constTime);
 
-      setConsultantTime(constTime);
-      // console.log(constTime)
+      
+      
     } catch (error) {
       console.log(error);
     }
@@ -322,24 +329,7 @@ export default function Appointment() {
                 </View>
               </View>
 
-              <View>
-                <TouchableOpacity
-                  onPress={() => {
-                    showModeDate();
-                  }}>
-                  <TextInput
-                    style={[{width: s(290)}, styles.fontField]}
-                    className="mt-5"
-                    label="Chosen Date"
-                    value={chosenDateText}
-                    outlineStyle={{borderRadius: 13}}
-                    mode="outlined"
-                    left={<TextInput.Icon icon={'calendar'} />}
-                    activeOutlineColor="green"
-                    editable={false}
-                  />
-                </TouchableOpacity>
-              </View>
+              
 
               <View
                 style={[
@@ -381,6 +371,25 @@ export default function Appointment() {
                     }}
                   />
                 </View>
+              </View>
+
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    showModeDate();
+                  }}>
+                  <TextInput
+                    style={[{width: s(290)}, styles.fontField]}
+                    className="mt-5"
+                    label="Chosen Date"
+                    value={chosenDateText}
+                    outlineStyle={{borderRadius: 13}}
+                    mode="outlined"
+                    left={<TextInput.Icon icon={'calendar'} />}
+                    activeOutlineColor="green"
+                    editable={false}
+                  />
+                </TouchableOpacity>
               </View>
 
               
