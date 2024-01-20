@@ -156,8 +156,8 @@ const Dashboard = ({}) => {
 
        
       </Background>
-      <View className="justify-center items-center">
-      <Text className=" text-gray-600">© 2023-2024 4B-G4</Text>
+      <View className="justify-center items-center bg-white">
+      <Text className=" text-gray-400">© 2023-2024 4B-G4</Text>
       </View>
     </ScrollView>
   );

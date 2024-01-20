@@ -27,8 +27,8 @@ export default function Wellbeing() {
         <View
         
           style={{
-            height: 220,
-            marginTop: 15,
+            height: s(220),
+            marginTop: s(15),
             borderBottomWidth: 0.5,
             borderColor: 'gray',
            
@@ -60,8 +60,8 @@ export default function Wellbeing() {
 
         <View
           style={{
-            height: 220,
-            marginTop: 15,
+            height: s(220),
+            marginTop: s(15),
             borderBottomWidth: 0.5,
             borderColor: 'gray',
            
@@ -95,8 +95,8 @@ export default function Wellbeing() {
         <View
     
           style={{
-            height: 220,
-            marginTop: 15,
+            height: s(220),
+            marginTop: s(15),
             borderBottomWidth: 0.5,
             borderColor: 'gray',
            

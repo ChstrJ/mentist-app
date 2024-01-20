@@ -109,6 +109,8 @@ export default function Appointment() {
         available_time: consultant.available_time,
       }));
 
+      console.log(consultantData)
+
       setConsultantData(consultantData);
       console.log(consultData);
     } catch (error) {
@@ -148,9 +150,11 @@ export default function Appointment() {
       // console.log(time, "time")
       const constTime = time.map(min => {
         return {
-          avail: min,
+          avail: min.toLocaleTimeString('en-PH'),
         };
       });
+
+      console.log(constTime)
 
       setConsultantTime(constTime);
       // console.log(constTime)
@@ -318,6 +322,25 @@ export default function Appointment() {
                 </View>
               </View>
 
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    showModeDate();
+                  }}>
+                  <TextInput
+                    style={[{width: s(290)}, styles.fontField]}
+                    className="mt-5"
+                    label="Chosen Date"
+                    value={chosenDateText}
+                    outlineStyle={{borderRadius: 13}}
+                    mode="outlined"
+                    left={<TextInput.Icon icon={'calendar'} />}
+                    activeOutlineColor="green"
+                    editable={false}
+                  />
+                </TouchableOpacity>
+              </View>
+
               <View
                 style={[
                   {
@@ -360,24 +383,7 @@ export default function Appointment() {
                 </View>
               </View>
 
-              <View>
-                <TouchableOpacity
-                  onPress={() => {
-                    showModeDate();
-                  }}>
-                  <TextInput
-                    style={[{width: s(290)}, styles.fontField]}
-                    className="mt-5"
-                    label="Chosen Date"
-                    value={chosenDateText}
-                    outlineStyle={{borderRadius: 13}}
-                    mode="outlined"
-                    left={<TextInput.Icon icon={'calendar'} />}
-                    activeOutlineColor="green"
-                    editable={false}
-                  />
-                </TouchableOpacity>
-              </View>
+              
 
               {/* <View>
                 <TouchableOpacity

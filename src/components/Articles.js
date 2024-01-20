@@ -19,10 +19,10 @@ const Articles = ({imageUri, text, link}) => {
           style={{
             height: s(180),
             width: s(150),
-            marginLeft: 20,
+            marginLeft: s(20),
             borderWidth: 0.5,
             borderColor: '#dddddd',
-            paddingBottom: 15,
+            paddingBottom: s(15),
           }}>
           <View style={{flex: 4}}>
             <Image
