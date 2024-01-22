@@ -103,22 +103,17 @@ export default function Appointment() {
       const response = await callApi('get', '/consultant');
       const consultants = response.data.consultants;
 
-      
-
       const consultantData = consultants.map(consultant => ({
         id: consultant.id,
         name: consultant.name,
         date: consultant.date,
         available_time: consultant.available_time,
       }));
-    
-      //if else condition? if the date is not weekend and the time is not 7am-5pm, show the time in future dates
-     
 
-    
+      //if else condition? if the date is not weekend and the time is not 7am-5pm, show the time in future dates
 
       setConsultantData(consultantData);
-      console.log(consultantData)
+      console.log(consultantData);
     } catch (error) {
       console.log(error);
     }
@@ -151,24 +146,41 @@ export default function Appointment() {
   //     console.log(e);
   //   }
   // };
+  // const getConsultantTime = async time => {
+  //   try {
+  //     // console.log(time, "time")
+  //     const constTime = time.map(min => {
+  //       return {
+  //         avail: min.toLocaleTimeString('en-PH'),
+  //       };
+  //     });
+
+  //     //di ko alam kung tama to, if none avail time show "none" in dropdown else lagay lahat ng avail time sa dropdown
+  //     constTime === 'None' ? 'None' : setConsultantTime(constTime);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const getConsultantTime = async time => {
     try {
-      // console.log(time, "time")
       const constTime = time.map(min => {
+        // Remove "PM" from the time string
+        const cleanedTime = min.replace(/\s*PM\s*$/, '');
+
         return {
-          avail: min.toLocaleTimeString('en-PH'),
+          avail: cleanedTime,
         };
       });
 
-      //di ko alam kung tama to, if none avail time show "none" in dropdown else lagay lahat ng avail time sa dropdown
-      constTime === "None" ? "None" : setConsultantTime(constTime);
-
-      
-      
+      // Check if constTime is not an empty array
+      constTime.length === 0
+        ? setConsultantTime('None')
+        : setConsultantTime(constTime);
     } catch (error) {
       console.log(error);
     }
   };
+
   // const handleSchedule = async () => {
   //   const conf = await callApi('get', '/consultant')
   //     .then(response => {
@@ -206,7 +218,9 @@ export default function Appointment() {
     setShow(true);
     setMode('time');
   };
-
+  const renderData = async data => {
+    console.log(JSON.stringify(data))
+  };
   const handleAppointment = async data => {
     setLoading(true);
     await callApi('post', '/appointment', data)
@@ -329,8 +343,6 @@ export default function Appointment() {
                 </View>
               </View>
 
-              
-
               <View
                 style={[
                   {
@@ -366,8 +378,8 @@ export default function Appointment() {
                       />
                     )}
                     onChange={item => {
+                      console.log(item.avail);
                       setSelectedConsultantTime(item.avail);
-                      console.log(selectedConsultantTime);
                     }}
                   />
                 </View>
@@ -391,8 +403,6 @@ export default function Appointment() {
                   />
                 </TouchableOpacity>
               </View>
-
-              
 
               {/* <View>
                 <TouchableOpacity
@@ -428,7 +438,10 @@ export default function Appointment() {
 
               <View className="flex items-center justify-center mt-5">
                 <Btn
-                  onPress={() => handleAppointment(Data)}
+                  onPress={() => 
+                    // handleAppointment(Data)
+                    renderData(Data)
+                }
                   btnLabel="Confirm"
                   style={{zIndex: 0}}
                 />
