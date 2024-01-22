@@ -111,8 +111,8 @@ export default function Appointment() {
       }));
 
       //if else condition? if the date is not weekend and the time is not 7am-5pm, show the time in future dates
-
-      setConsultantData(consultantData);
+      
+      await setConsultantData(consultantData);
       console.log(consultantData);
     } catch (error) {
       console.log(error);
@@ -221,8 +221,11 @@ export default function Appointment() {
   const renderData = async data => {
     console.log(JSON.stringify(data))
   };
+
+
   const handleAppointment = async data => {
     setLoading(true);
+    renderData(data)
     await callApi('post', '/appointment', data)
       .then(response => {
         navigation.navigate('Dashboard');
@@ -248,7 +251,7 @@ export default function Appointment() {
           console.error('Error Message:', errorMessage);
           Alert.alert('Something went wrong', errorMessage);
           if (errorMessage === undefined) {
-            Alert.alert('Something went wrong', 'Please select a consultant');
+            Alert.alert('Something went wrong', JSON.stringify(error.response.data.error));
           }
           setLoading(false);
         }
@@ -379,7 +382,8 @@ export default function Appointment() {
                     )}
                     onChange={item => {
                       console.log(item.avail);
-                      setSelectedConsultantTime(item.avail);
+                      // setSelectedConsultantTime(item.avail);
+                      setSelectedConsultantTime("21:00")
                     }}
                   />
                 </View>
@@ -439,8 +443,8 @@ export default function Appointment() {
               <View className="flex items-center justify-center mt-5">
                 <Btn
                   onPress={() => 
-                    // handleAppointment(Data)
-                    renderData(Data)
+                    handleAppointment(Data)
+                    // renderData(Data)
                 }
                   btnLabel="Confirm"
                   style={{zIndex: 0}}
