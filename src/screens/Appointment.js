@@ -124,12 +124,12 @@ export default function Appointment() {
     try {
       const constTime = time.map(min => {
         // Remove "PM " from the time string ADD AM ALSO
-        // const cleanedTime = min.replace(/\s*[APM]+\s*$/, '');
+        const twentyfourformat = min //convert mo dito re
 
         return {
-          //eto ung sinesend sa api
-          avail: min ,
-          //eto ung pang display lang sa dropdown
+          //eto ung sinesend sa api na ggwing 24 hr format
+          avail: twentyfourformat,
+          //eto ung pang display lang sa dropdown na mag ddisplay ng PM AT AM
           label: min
         };
       });
