@@ -95,7 +95,7 @@ export default function Appointment() {
     phone_number: phoneNumber,
     date: date.toISOString().split('T')[0],
     concern: concern,
-    booking_time: selectedConsultantTime, // date.toISOString().split('T')[1].split('.')[0],
+    booking_time: selectedConsultantTime // date.toISOString().split('T')[1].split('.')[0],
   };
 
   const getConsultant = async () => {
@@ -168,7 +168,10 @@ export default function Appointment() {
         const cleanedTime = min.replace(/\s*PM\s*$/, '');
 
         return {
+          //eto ung sinesend sa api
           avail: cleanedTime,
+          //eto ung pang display lang sa dropdown
+          label: min
         };
       });
 
@@ -222,6 +225,7 @@ export default function Appointment() {
     console.log(JSON.stringify(data))
   };
   const handleAppointment = async data => {
+    console.log(Data)
     setLoading(true);
     await callApi('post', '/appointment', data)
       .then(response => {
@@ -365,8 +369,8 @@ export default function Appointment() {
                     showsVerticalScrollIndicator={true}
                     data={consultantTime}
                     maxHeight={300}
-                    labelField="avail"
-                    valueField="avail"
+                    labelField="label" // dito pinalitan ko ng label
+                    valueField="avail" //eto lang ung sinsend sa api
                     placeholder={'Choose Available Time'}
                     value={selectedConsultantTime}
                     renderLeftIcon={() => (
@@ -379,7 +383,7 @@ export default function Appointment() {
                     )}
                     onChange={item => {
                       console.log(item.avail);
-                      setSelectedConsultantTime(item.avail);
+                      setSelectedConsultantTime(item.avail); //eto oh
                     }}
                   />
                 </View>
@@ -439,19 +443,19 @@ export default function Appointment() {
               <View className="flex items-center justify-center mt-5">
                 <Btn
                   onPress={() => 
-                    // handleAppointment(Data)
-                    renderData(Data)
+                   handleAppointment(Data)
+                  
                 }
                   btnLabel="Confirm"
                   style={{zIndex: 0}}
                 />
+              </View>
+            </View>
                 <BelowLabel
                   onPress={() => navigation.navigate('Helplines')}
                   text={'For urgent psychosocial support,'}
                   highlightText={'Helplines'}
                 />
-              </View>
-            </View>
           </View>
         </Background>
       )}
