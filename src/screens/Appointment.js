@@ -112,7 +112,7 @@ export default function Appointment() {
 
       //if else condition? if the date is not weekend and the time is not 7am-5pm, show the time in future dates
       
-      await setConsultantData(consultantData);
+      setConsultantData(consultantData);
       console.log(consultantData);
     } catch (error) {
       console.log(error);
@@ -251,7 +251,10 @@ export default function Appointment() {
           console.error('Error Message:', errorMessage);
           Alert.alert('Something went wrong', errorMessage);
           if (errorMessage === undefined) {
-            Alert.alert('Something went wrong', JSON.stringify(error.response.data.error));
+            // Alert.alert('Something went wrong', JSON.stringify(error.response.data.error));
+            
+            Alert.alert('Something went wrong', 'Error Details: ' + JSON.stringify(error.response.data.error));
+            console.log(JSON.stringify(error.response.data.error));
           }
           setLoading(false);
         }
@@ -383,7 +386,7 @@ export default function Appointment() {
                     onChange={item => {
                       console.log(item.avail);
                       // setSelectedConsultantTime(item.avail);
-                      setSelectedConsultantTime("21:00")
+                      setSelectedConsultantTime(item.avail)
                     }}
                   />
                 </View>
