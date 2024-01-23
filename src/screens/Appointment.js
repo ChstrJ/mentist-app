@@ -164,8 +164,8 @@ export default function Appointment() {
   const getConsultantTime = async time => {
     try {
       const constTime = time.map(min => {
-        // Remove "PM" from the time string
-        const cleanedTime = min.replace(/\s*PM\s*$/, '');
+        // Remove "PM " from the time string ADD AM ALSO
+        const cleanedTime = min.replace(/\s*[APM]+\s*$/, '');
 
         return {
           //eto ung sinesend sa api
@@ -458,12 +458,12 @@ export default function Appointment() {
                 />
               </View>
             </View>
+          </View>
                 <BelowLabel
                   onPress={() => navigation.navigate('Helplines')}
                   text={'For urgent psychosocial support,'}
                   highlightText={'Helplines'}
                 />
-          </View>
         </Background>
       )}
     </ScrollView>
