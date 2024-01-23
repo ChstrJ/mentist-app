@@ -95,7 +95,7 @@ export default function Appointment() {
     phone_number: phoneNumber,
     date: date.toISOString().split('T')[0],
     concern: concern,
-    booking_time: selectedConsultantTime // date.toISOString().split('T')[1].split('.')[0],
+    booking_time: selectedConsultantTime, // date.toISOString().split('T')[1].split('.')[0],
   };
 
   const getConsultant = async () => {
@@ -111,7 +111,7 @@ export default function Appointment() {
       }));
 
       //if else condition? if the date is not weekend and the time is not 7am-5pm, show the time in future dates
-      
+
       setConsultantData(consultantData);
       console.log(consultantData);
     } catch (error) {
@@ -119,18 +119,15 @@ export default function Appointment() {
     }
   };
 
-
-  const getConsultantTime = async time => {
+  const getConsultantTime = time => {
     try {
       const constTime = time.map(min => {
-        // Remove "PM " from the time string ADD AM ALSO
-        const twentyfourformat = min //convert mo dito re
-
+        const minStr = JSON.stringify(min);
+        const twentyfourformat = convertTime12to24(min);
+        console.log(twentyfourformat)
         return {
-          //eto ung sinesend sa api na ggwing 24 hr format
           avail: twentyfourformat,
-          //eto ung pang display lang sa dropdown na mag ddisplay ng PM AT AM
-          label: min
+          label: min,
         };
       });
 
@@ -143,7 +140,21 @@ export default function Appointment() {
     }
   };
 
+  const convertTime12to24 = time12h => {
+    const [time, modifier] = time12h.split(' ');
 
+    let [hours, minutes] = time.split(':');
+
+    if (hours === '12') {
+      hours = '00';
+    }
+
+    if (modifier === 'PM') {
+      hours = parseInt(hours, 10) + 12;
+    }
+
+    return `${hours}:${minutes}`;
+  };
   const showModeDate = () => {
     setShow(true);
     setMode('date');
@@ -154,14 +165,13 @@ export default function Appointment() {
     setMode('time');
   };
   const renderData = async data => {
-    console.log(JSON.stringify(data))
+    console.log(JSON.stringify(data));
   };
 
-
   const handleAppointment = async data => {
-    console.log(Data)
+    console.log(Data);
     setLoading(true);
-    renderData(data)
+    renderData(data);
     await callApi('post', '/appointment', data)
       .then(response => {
         navigation.navigate('Dashboard');
@@ -187,17 +197,18 @@ export default function Appointment() {
           console.error('Error Message:', errorMessage);
           Alert.alert('Something went wrong', errorMessage);
           if (errorMessage === undefined) {
+            const errorDetails = Object.keys(error.response.data.error).map(
+              key => {
+                const value = error.response.data.error[key];
 
-            const errorDetails = Object.keys(error.response.data.error).map(key => {
-              const value = error.response.data.error[key]
-
-              return { key, modifiedValue: value}
-            });
+                return {key, modifiedValue: value};
+              },
+            );
             Alert.alert(
               'Error',
               "You've already booked a session with this consultant today.",
             );
-            console.log(errorDetails)
+            console.log(errorDetails);
             /* Alert.alert('Something went wrong', 'Error Details: ' + JSON.stringify(error.response.data.error));
             console.log(JSON.stringify(error.response.data.error)); */
           }
@@ -287,7 +298,6 @@ export default function Appointment() {
                       setSelConst(item.id);
                       console.log(item.available_time, ' name ', item.name);
                       getConsultantTime(item.available_time);
-
                     }}
                   />
                 </View>
@@ -316,7 +326,7 @@ export default function Appointment() {
                     data={consultantTime}
                     maxHeight={300}
                     labelField="label" // dito pinalitan ko ng label
-                    valueField="avail" //eto lang ung sinsend sa api
+                    valueField="label" //eto lang ung sinsend sa api
                     placeholder={'Choose Available Time'}
                     value={selectedConsultantTime}
                     renderLeftIcon={() => (
@@ -327,8 +337,9 @@ export default function Appointment() {
                         color="#48444E"
                       />
                     )}
-                    onChange={(item) => {
-                      setSelectedConsultantTime(item.avail)
+                    onChange={item => {
+                      console.log(item.avail);
+                      setSelectedConsultantTime(item.avail);
                     }}
                   />
                 </View>
@@ -352,8 +363,6 @@ export default function Appointment() {
                 </TouchableOpacity>
               </View>
 
-
-
               {show && (
                 <RNDateTimePicker
                   themeVariant="dark"
@@ -370,21 +379,20 @@ export default function Appointment() {
               <View className="flex items-center justify-center mt-5">
                 <Btn
                   onPress={() => {
-                    handleAppointment(Data)
-                    renderData(Data)
-                  }
-                }
+                    handleAppointment(Data);
+                    renderData(Data);
+                  }}
                   btnLabel="Confirm"
                   style={{zIndex: 0}}
                 />
               </View>
             </View>
           </View>
-                <BelowLabel
-                  onPress={() => navigation.navigate('Helplines')}
-                  text={'For urgent psychosocial support,'}
-                  highlightText={'Helplines'}
-                />
+          <BelowLabel
+            onPress={() => navigation.navigate('Helplines')}
+            text={'For urgent psychosocial support,'}
+            highlightText={'Helplines'}
+          />
         </Background>
       )}
     </ScrollView>
