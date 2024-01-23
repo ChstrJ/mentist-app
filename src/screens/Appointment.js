@@ -119,56 +119,15 @@ export default function Appointment() {
     }
   };
 
-  // const getConsultantTime = async () => {
-  //   try {
-  //     const response = await callApi('get', `./consultant`);
-  //     // console.log(JSON.stringify(response))
-  //     const consultants = response.data.consultants;
-  //     // console.log(consultants, "Etot");
-  //     const dropdownData = [];
 
-  //     consultants.forEach(consultant => {
-  //       const {available_time} = consultant;
-  //       available_time.forEach(time => {
-  //         const formattedTime = new Date(
-  //           `2024-01-01T${time}`,
-  //         ).toLocaleTimeString('en-PH', {
-  //           hour: 'numeric',
-  //           minute: 'numeric',
-  //           hour12: true,
-  //         });
-  //         dropdownData.push({label: formattedTime, value: time});
-  //       });
-  //     });
-
-  //     setConsultantTime(dropdownData);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-  // const getConsultantTime = async time => {
-  //   try {
-  //     // console.log(time, "time")
-  //     const constTime = time.map(min => {
-  //       return {
-  //         avail: min.toLocaleTimeString('en-PH'),
-  //       };
-  //     });
-
-  //     //di ko alam kung tama to, if none avail time show "none" in dropdown else lagay lahat ng avail time sa dropdown
-  //     constTime === 'None' ? 'None' : setConsultantTime(constTime);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   const getConsultantTime = async time => {
     try {
       const constTime = time.map(min => {
         // Remove "PM" from the time string
-        const cleanedTime = min.replace(/\s*PM\s*$/, '');
+        // const cleanedTime = min.replace(/\s*PM\s*$/, '');
 
         return {
-          avail: cleanedTime,
+          avail: min ,
         };
       });
 
@@ -181,33 +140,6 @@ export default function Appointment() {
     }
   };
 
-  // const handleSchedule = async () => {
-  //   const conf = await callApi('get', '/consultant')
-  //     .then(response => {
-  //       const res = response.data.consultants;
-
-  //       let count = Object.keys(res).length;
-  //       let schedArr = [];
-
-  //       for (let i = 0; i < count; i++) {
-  //         schedArr.push({
-  //           schedule: res[i].schedule,
-  //         });
-  //       }
-  //       setScheduleData(schedArr);
-  //       console.log(schedArr);
-  //     })
-  //     .catch(e => console.log(e));
-  // };
-
-  // const handleConsult = selectedValue => {
-  //   const selectedConsultant = consult.find(
-  //     item => item.value === selectedValue,
-  //   );
-  //   if (selectedConsultant) {
-  //     setSelConst(selectedConsultant.key);
-  //   }
-  // };
 
   const showModeDate = () => {
     setShow(true);
@@ -251,10 +183,19 @@ export default function Appointment() {
           console.error('Error Message:', errorMessage);
           Alert.alert('Something went wrong', errorMessage);
           if (errorMessage === undefined) {
-            // Alert.alert('Something went wrong', JSON.stringify(error.response.data.error));
-            
-            Alert.alert('Something went wrong', 'Error Details: ' + JSON.stringify(error.response.data.error));
-            console.log(JSON.stringify(error.response.data.error));
+
+            const errorDetails = Object.keys(error.response.data.error).map(key => {
+              const value = error.response.data.error[key]
+
+              return { key, modifiedValue: value}
+            });
+            Alert.alert(
+              'Error',
+              "You've already booked a session with this consultant today.",
+            );
+            console.log(errorDetails)
+            /* Alert.alert('Something went wrong', 'Error Details: ' + JSON.stringify(error.response.data.error));
+            console.log(JSON.stringify(error.response.data.error)); */
           }
           setLoading(false);
         }
@@ -342,8 +283,7 @@ export default function Appointment() {
                       setSelConst(item.id);
                       console.log(item.available_time, ' name ', item.name);
                       getConsultantTime(item.available_time);
-                      // console.log(selConst, "eto")
-                      // getConsultantTime();
+
                     }}
                   />
                 </View>
@@ -383,15 +323,12 @@ export default function Appointment() {
                         color="#48444E"
                       />
                     )}
-                    onChange={item => {
-                      console.log(item.avail);
-                      // setSelectedConsultantTime(item.avail);
+                    onChange={(item) => {
                       setSelectedConsultantTime(item.avail)
                     }}
                   />
                 </View>
               </View>
-
               <View>
                 <TouchableOpacity
                   onPress={() => {
@@ -411,24 +348,7 @@ export default function Appointment() {
                 </TouchableOpacity>
               </View>
 
-              {/* <View>
-                <TouchableOpacity
-                  onPress={() => {
-                    showModeTime();
-                  }}>
-                  <TextInput
-                    className="mt-5"
-                    style={[{width: s(290)}, styles.fontField]}
-                    label="Chosen Time"
-                    value={chosenTimeText}
-                    mode="outlined"
-                    outlineStyle={{borderRadius: 13}}
-                    left={<TextInput.Icon icon={'clock'} />}
-                    editable={false}
-                    activeOutlineColor="green"
-                  />
-                </TouchableOpacity>
-              </View> */}
+
 
               {show && (
                 <RNDateTimePicker
@@ -445,9 +365,10 @@ export default function Appointment() {
 
               <View className="flex items-center justify-center mt-5">
                 <Btn
-                  onPress={() => 
+                  onPress={() => {
                     handleAppointment(Data)
-                    // renderData(Data)
+                    renderData(Data)
+                  }
                 }
                   btnLabel="Confirm"
                   style={{zIndex: 0}}
